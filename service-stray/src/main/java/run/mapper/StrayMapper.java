@@ -1,0 +1,106 @@
+package run.mapper;
+
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
+import run.bean.Stray;
+
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public interface StrayMapper {
+
+    @Select("<script>" +
+            "select a.*,b.stret_state from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and a.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and a.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by a.rtu_id,a.rtu_port,a.stret_id"+
+            "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>"+
+            "</script>")
+    List<Map<String,Object>> selectAllStray(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+
+    @Select("<script>" +
+            "select count(*) from ("+
+            "select * from stray_electricity_config where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,stret_id"+
+            ") as t"+
+            "</script>")
+    int selectAllStrayCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+
+    @Insert("insert into stray_electricity_config(site_id,rtu_id,rtu_port,rtu_baud_rate,stret_id,portId,equipType,stret_name,stret_model,stret_location,stret_threshold1,stret_threshold2,fullscale,calvalue,factor,computeType,stret_space,stret_ospace,portName) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{stret_id},#{portId},#{equipType},#{stret_name},#{stret_model},#{stret_location},#{stret_threshold1},#{stret_threshold2},#{fullscale},#{calvalue},#{factor},#{computeType},#{stret_space},#{stret_ospace},#{portName})")
+    int insertStray(Stray Stray);
+
+    @Delete("delete from stray_electricity_config where site_id = #{id}")
+    int deleteStrayBySite(int id);
+
+    @Delete("delete from stray_electricity_config where rtu_id = #{id}")
+    int deleteStrayByRTU(int id);
+
+    @Delete("delete from stray_electricity_config where rtu_id = #{rtu_id} and stret_id = #{stret_id} and rtu_port=#{rtu_port}")
+    int deleteStray(Map<String, Object> param);
+
+    @Update("update stray_electricity_config set site_id=#{site_id},rtu_baud_rate=#{rtu_baud_rate},equipType=#{equipType},stret_name=#{stret_name},stret_model=#{stret_model},stret_location=#{stret_location},stret_threshold1=#{stret_threshold1},stret_threshold2=#{stret_threshold2},fullscale=#{fullscale},calvalue=#{calvalue},factor=#{factor},computeType=#{computeType},stret_space=#{stret_space},stret_ospace=#{stret_ospace},portName=#{portName} where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and stret_id=#{stret_id} and portId=#{portId}")
+    int updateStray(Stray Stray);
+
+    @Select("select * from stray_electricity_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and stret_id=#{stret_id}")
+    List<Stray> selectStray(Map<String, Object> param);
+
+    @Select("select * from stray_electricity_now_data where rtu_id=#{rtu_id} group by stret_id")
+    List<Map<String,Object>> selectStrayByRTU(int rtu_id);
+
+    @Select("<script>" +
+            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.* from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"stret_id != null and stret_id != -1\">" +
+            "and b.stret_id =#{stret_id}"+
+            "</if>"+
+            "<if test=\"stret_location != null and stret_location != ''\">" +
+            "and stret_location like concat('%',#{stret_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>"+
+            "</script>")
+    List<Map<String,Object>> selectStrayHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("stret_id") int stret_id, @Param("stret_location") String stret_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    @Select("<script>" +
+            "select count(*) from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"stret_id != null and stret_id != -1\">" +
+            "and b.stret_id =#{stret_id}"+
+            "</if>"+
+            "<if test=\"stret_location != null and stret_location != ''\">" +
+            "and stret_location like concat('%',#{stret_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectStrayHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("stret_id") int stret_id, @Param("stret_location") String stret_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+}

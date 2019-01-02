@@ -1,0 +1,106 @@
+package run.mapper;
+
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
+import run.bean.Lightning;
+
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public interface LightningMapper {
+
+    @Select("<script>" +
+            "select a.*,b.ltn_state from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and a.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and a.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by a.rtu_id,a.rtu_port,a.ltn_id"+
+            "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>"+
+            "</script>")
+    List<Map<String,Object>> selectAllLightning(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+
+    @Select("<script>" +
+            "select count(*) from ("+
+            "select * from lightning_config where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,ltn_id"+
+            ") as t"+
+            "</script>")
+    int selectAllLightningCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+
+    @Insert("insert into lightning_config(site_id,rtu_id,rtu_port,rtu_baud_rate,ltn_id,ltn_name,ltn_model,ltn_location,ltn_threshold1,ltn_threshold2,ltn_times,ltn_space,ltn_ospace) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{ltn_id},#{ltn_name},#{ltn_model},#{ltn_location},#{ltn_threshold1},#{ltn_threshold2},#{ltn_times},#{ltn_space},#{ltn_ospace})")
+    int insertLightning(Lightning lightning);
+
+    @Delete("delete from lightning_config where site_id = #{id}")
+    int deleteLightningBySite(int id);
+
+    @Delete("delete from lightning_config where rtu_id = #{id}")
+    int deleteLightningByRTU(int id);
+
+    @Delete("delete from lightning_config where rtu_id = #{rtu_id} and ltn_id = #{ltn_id} and rtu_port=#{rtu_port}")
+    int deleteLightning(Map<String, Object> param);
+
+    @Update("update lightning_config set site_id=#{site_id},rtu_baud_rate=#{rtu_baud_rate},ltn_name=#{ltn_name},ltn_model=#{ltn_model},ltn_location=#{ltn_location},ltn_threshold1=#{ltn_threshold1},ltn_threshold2=#{ltn_threshold2},ltn_times=#{ltn_times},ltn_space=#{ltn_space},ltn_ospace=#{ltn_ospace} where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and ltn_id=#{ltn_id}")
+    int updateLightning(Lightning lightning);
+
+    @Select("select * from lightning_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and ltn_id=#{ltn_id}")
+    Lightning selectOneLight(Map<String,Object> param);
+
+    @Select("select * from lightning_now_data where rtu_id=#{rtu_id}")
+    List<Map<String,Object>> selectLightningByRTU(int rtu_id);
+
+    @Select("<script>" +
+            "select a.*,b.ltn_location,b.ltn_name,b.ltn_model,c.* from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"ltn_id != null and ltn_id != -1\">" +
+            "and b.ltn_id =#{ltn_id}"+
+            "</if>"+
+            "<if test=\"ltn_location != null and ltn_location != ''\">" +
+            "and ltn_location like concat('%',#{ltn_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>"+
+            "</script>")
+    List<Map<String,Object>> selectLightningHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("ltn_id") int ltn_id, @Param("ltn_location") String ltn_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    @Select("<script>" +
+            "select count(*) from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"ltn_id != null and ltn_id != -1\">" +
+            "and b.ltn_id =#{ltn_id}"+
+            "</if>"+
+            "<if test=\"ltn_location != null and ltn_location != ''\">" +
+            "and ltn_location like concat('%',#{ltn_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectLightningHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("ltn_id") int ltn_id, @Param("ltn_location") String ltn_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+}
