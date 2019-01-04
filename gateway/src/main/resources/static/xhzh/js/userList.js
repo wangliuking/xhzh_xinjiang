@@ -35,17 +35,34 @@ xh.load = function() {
         $scope.count = "15";//每页数据显示默认值
 	    $scope.businessMenu=true; //菜单变色
 
-        $http.get("../../auth/selectGroupList?start=0&limit=1000").
+        //判断是否登录start
+        $.ajax({
+            type: 'GET',
+            url: "../../connect/ensure",
+            async: false,
+            dataType: 'json',
+            success: function(response){
+
+            } ,
+            error: function () {
+                alert("登录已失效，请重新登录！");
+                window.location.href = "../login.html";
+                window.parent.location.href = "../login.html";
+            }
+        });
+        //判断是否登录end
+
+        $http.get("../../connect/selectGroupList?start=0&limit=1000").
         success(function(response){
             $scope.groups = response.items;
         });
 
-        $http.get("../../auth/selectRoleList?start=0&limit=1000").
+        $http.get("../../connect/selectRoleList?start=0&limit=1000").
         success(function(response){
             $scope.roles = response.items;
         });
 
-        $http.get("../../auth/selectUserList?start=0&limit="+pageSize).
+        $http.get("../../connect/selectUserList?start=0&limit="+pageSize).
         success(function(response){
             $scope.data = response.items;
             $scope.totals = response.totals;
@@ -87,7 +104,7 @@ xh.load = function() {
             }, function(isConfirm) {
                 if (isConfirm) {
                     $.ajax({
-                        url : '../../auth/deleteUser?username='+username,
+                        url : '../../connect/deleteUser?username='+username,
                         type : 'get',
                         dataType : "json",
                         async : false,
@@ -120,7 +137,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../auth/selectUserList?start=0&limit=" + limit+"&param="+searchUser).
+			$http.get("../../connect/selectUserList?start=0&limit=" + limit+"&param="+searchUser).
 			success(function(response){
 				console.log(response);
 				$scope.data = response.items;
@@ -141,7 +158,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../auth/selectUserList?start="+start+"&limit=" + limit+"&param="+searchUser).
+			$http.get("../../connect/selectUserList?start="+start+"&limit=" + limit+"&param="+searchUser).
 			success(function(response){
 				/*xh.maskHide();*/
 				$scope.start = (page - 1) * pageSize + 1;
@@ -170,7 +187,7 @@ xh.add = function() {
     console.log(f);
     var str = JSON.stringify(f);
 	$.ajax({
-		url : '../../auth/insertUser',
+		url : '../../connect/insertUser',
 		contentType : "application/json;charset=utf-8",
 		type : 'POST',
 		dataType : "json",
@@ -201,7 +218,7 @@ xh.edit = function() {
     });
     var str = JSON.stringify(f);
     $.ajax({
-        url : '../../auth/updateUser',
+        url : '../../connect/updateUser',
         contentType : "application/json;charset=utf-8",
         type : 'POST',
         dataType : "json",

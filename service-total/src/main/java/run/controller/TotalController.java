@@ -272,6 +272,11 @@ public class TotalController {
         Map<String,Object> param = new HashMap<>();
         param.put("startTime",list.get(list.size()-1)+" 00:00:00");
         param.put("endTime",list.get(0)+" 23:59:59");
+        String site_id = req.getParameter("site_id");
+        String rtu_id = req.getParameter("rtu_id");
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+
         List<Map<String,Object>> deviceOffTemp = totalService.selectDeviceOffByMonth(param);
         List<Integer> deviceOffList = new LinkedList<>();
         for(int i=0;i<list.size();i++){

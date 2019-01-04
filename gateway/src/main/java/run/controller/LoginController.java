@@ -22,9 +22,9 @@ public class LoginController {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         Map<String,Object> param = new HashMap<>();
-        System.out.println("username为： "+username+"====="+"password为： "+EncryptUtil.encrypt(password));
+        System.out.println("username为： "+username+"====="+"password为： "+ EncryptUtil.encrypt(password));
         param.put("username",username);
-        param.put("password", password);
+        param.put("password", EncryptUtil.encrypt(password));
         List<Map<String,Object>> list = loginService.selectUser(param);
         System.out.println("返回的userlist为： "+list);
         Map<String,Object> resultMap = new HashMap<>();

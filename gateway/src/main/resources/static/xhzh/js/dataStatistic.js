@@ -43,6 +43,23 @@ xh.load = function() {
 	app.controller("xhcontroller", function($scope,$http,$location) {
 		$scope.businessMenu=true; //菜单变色
 
+        //判断是否登录start
+        $.ajax({
+            type: 'GET',
+            url: "../../connect/ensure",
+            async: false,
+            dataType: 'json',
+            success: function(response){
+
+            } ,
+            error: function () {
+                alert("登录已失效，请重新登录！");
+                window.location.href = "../login.html";
+                window.parent.location.href = "../login.html";
+            }
+        });
+        //判断是否登录end
+
         $http.get("../../total/selectDeviceNum?site_id="+$location.search().id).
         success(function(response){
             $scope.siteInfo = response.siteInfo;
@@ -66,10 +83,10 @@ xh.load = function() {
 			$scope.search(1);
 		};
 
-
+        deviceForMonth($location.search().id);
 	});
 
-    statusForWeek();
+
 
 };
 
@@ -91,7 +108,7 @@ function statusForDevice() {
     var deviceNum = $scope.spdNum+$scope.etcrNum+$scope.lightningNum+$scope.staticNum+$scope.rswsNum+$scope.svtNum+$scope.hcNum+$scope.strayNum+$scope.catNum;
     // 指定图表的配置项和数据
     var option = {
-        color:['#00CD66', '#FFD700','#DCDCDC'],
+        color:['#00CD66', '#EEAD0E','#DCDCDC'],
         title: {
             text: '设备统计数：'+deviceNum,
             left: 'center'
@@ -135,136 +152,155 @@ function statusForDevice() {
     myChart.hideLoading();
 }
 
-//一周内设备状态变化
-function statusForWeek() {
+//设备一月状态统计
+function deviceForMonth(site_id) {
     // 基于准备好的dom，初始化echarts实例 macarons
-    var myChart = echarts.init(document.getElementById('statusForWeek'));
+    var myChart = echarts.init(document.getElementById('deviceForMonth'));
     myChart.showLoading();
 
-    var d = new Date();
+    $.ajax({
+        type: 'GET',
+        url: "../../total/selectAlarmByMonth?site_id="+site_id,
+        async: false,
+        dataType: 'json',
+        success: function(data){
+            console.log(data);
+            // 指定图表的配置项和数据
+            var option = {
+                color:['#EEAD0E','#8B7500','#8B6969'],
+                title: {
+                    text: '站点状态变化'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['设备异常','设备离线','RTU离线']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                xAxis:  {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data.list
+                },
+                yAxis: {
+                    type: 'value'
+                    /*axisLabel: {
+                        formatter: '{value} °C'
+                    }*/
+                },
+                series: [
+                    {
+                        name:'设备异常',
+                        type:'line',
+                        data:data.deviceWarningList,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name:'设备离线',
+                        type:'line',
+                        data:data.deviceOffList,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'},
+                                [{
+                                    symbol: 'none',
+                                    x: '90%',
+                                    yAxis: 'max'
+                                }, {
+                                    symbol: 'circle',
+                                    label: {
+                                        normal: {
+                                            position: 'start',
+                                            formatter: '最大值'
+                                        }
+                                    },
+                                    type: 'max',
+                                    name: '最高点'
+                                }]
+                            ]
+                        }
+                    },
+                    {
+                        name:'RTU离线',
+                        type:'line',
+                        data:data.rtuOffList,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'},
+                                [{
+                                    symbol: 'none',
+                                    x: '90%',
+                                    yAxis: 'max'
+                                }, {
+                                    symbol: 'circle',
+                                    label: {
+                                        normal: {
+                                            position: 'start',
+                                            formatter: '最大值'
+                                        }
+                                    },
+                                    type: 'max',
+                                    name: '最高点'
+                                }]
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+
+            myChart.hideLoading();
+        }
+    });
+    /*var d = new Date();
     var xAxisData = [];
-    for (var i = 0; i < 7; i++) {
-        xAxisData.push(d.getMonth()+1+"-"+(d.getDate()-i));
-    }
-
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '近期设备状态变化'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['正常','异常','离线']
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        xAxis:  {
-            type: 'category',
-            boundaryGap: false,
-            data: xAxisData
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} °C'
-            }
-        },
-        series: [
-            {
-                name:'正常',
-                type:'line',
-                data:[11, 11, 15, 13, 12, 13, 10],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'}
-                    ]
-                }
-            },
-            {
-                name:'异常',
-                type:'line',
-                data:[6, 3, 7, 10, 8, 7, 5],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            },
-            {
-                name:'离线',
-                type:'line',
-                data:[1, -2, 2, 5, 3, 2, 0],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            }
-        ]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-
-    myChart.hideLoading();
+    for (var i = 0; i < 30; i++) {
+        var year = d.getFullYear();
+        var month = d.getMonth()+1;
+        if(month < 10){
+            month = "0"+month;
+        }
+        var day = d.getDate();
+        if(day < 10){
+            day = "0"+day;
+        }
+        xAxisData.push(month+"-"+day);
+        d = new Date(d-24*60*60*1000);
+    }*/
 }

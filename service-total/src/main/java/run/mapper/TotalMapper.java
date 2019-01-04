@@ -284,9 +284,12 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history where type=1 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=1 " +
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+
@@ -295,9 +298,12 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history where type=3 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=3 " +
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+
@@ -306,9 +312,12 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history where type=2 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=2 " +
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+

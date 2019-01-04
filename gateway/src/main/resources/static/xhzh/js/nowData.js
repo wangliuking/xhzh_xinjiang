@@ -43,6 +43,23 @@ xh.load = function() {
 	app.controller("xhcontroller", function($scope,$http,$location) {
 		$scope.businessMenu=true; //菜单变色
 
+        //判断是否登录start
+        $.ajax({
+            type: 'GET',
+            url: "../../connect/ensure",
+            async: false,
+            dataType: 'json',
+            success: function(response){
+
+            } ,
+            error: function () {
+                alert("登录已失效，请重新登录！");
+                window.location.href = "../login.html";
+                window.parent.location.href = "../login.html";
+            }
+        });
+        //判断是否登录end
+
         $http.get("../../connect/selectAllSite").
         success(function(response){
         	var data = response.items;
