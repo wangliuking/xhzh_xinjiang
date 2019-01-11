@@ -166,4 +166,97 @@ public class TotalService {
     public List<Map<String,Object>> selectCatHistory(Map<String,Object> param){
         return totalMapper.selectCatHistory(param);
     }
+
+    public int selectSPDCountByTime(Map<String,Object> param){
+        return totalMapper.selectSPDCountByTime(param);
+    }
+
+    public int selectETCRCountByTime(Map<String,Object> param){
+        return totalMapper.selectETCRCountByTime(param);
+    }
+
+    public int selectLightningCountByTime(Map<String,Object> param){
+        return totalMapper.selectLightningCountByTime(param);
+    }
+
+    public int selectStaticCountByTime(Map<String,Object> param){
+        return totalMapper.selectStaticCountByTime(param);
+    }
+
+    public int selectRswsCountByTime(Map<String,Object> param){
+        return totalMapper.selectRswsCountByTime(param);
+    }
+
+    public int selectSvtCountByTime(Map<String,Object> param){
+        return totalMapper.selectSvtCountByTime(param);
+    }
+
+    public int selectHcCountByTime(Map<String,Object> param){
+        return totalMapper.selectHcCountByTime(param);
+    }
+
+    public int selectStrayCountByTime(Map<String,Object> param){
+        return totalMapper.selectStrayCountByTime(param);
+    }
+
+    public int selectCatCountByTime(Map<String,Object> param){
+        return totalMapper.selectCatCountByTime(param);
+    }
+
+    public int selectSPDTotal(Map<String,Object> param){
+        return totalMapper.selectSPDTotal(param);
+    }
+
+    public int selectETCRTotal(Map<String,Object> param){
+        return totalMapper.selectETCRTotal(param);
+    }
+
+    public int selectLightningTotal(Map<String,Object> param){
+        return totalMapper.selectLightningTotal(param);
+    }
+
+    public int selectStaticTotal(Map<String,Object> param){
+        return totalMapper.selectStaticTotal(param);
+    }
+
+    public int selectRswsTotal(Map<String,Object> param){
+        return totalMapper.selectRswsTotal(param);
+    }
+
+    public int selectSvtTotal(Map<String,Object> param){
+        return totalMapper.selectSvtTotal(param);
+    }
+
+    public int selectHcTotal(Map<String,Object> param){
+        return totalMapper.selectHcTotal(param);
+    }
+
+    public int selectStrayTotal(Map<String,Object> param){
+        return totalMapper.selectStrayTotal(param);
+    }
+
+    public int selectCatTotal(Map<String,Object> param){
+        return totalMapper.selectCatTotal(param);
+    }
+
+    public int selectSiteTotal(){
+        return totalMapper.selectSiteTotal();
+    }
+
+    public int selectRTUTotal(){
+        return totalMapper.selectRTUTotal();
+    }
+
+    public List<Map<String,Object>> selectSiteWarningTotal(Map<String,Object> param){
+        return totalMapper.selectSiteWarningTotal(param);
+    }
+
+    public List<Map<String,Object>> selectSiteDeviceOffTotal(Map<String,Object> param){
+        return totalMapper.selectSiteDeviceOffTotal(param);
+    }
+
+    public List<Map<String,Object>> selectSiteOffTotal(Map<String,Object> param){
+        return totalMapper.selectSiteOffTotal(param);
+    }
+
 }

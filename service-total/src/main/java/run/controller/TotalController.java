@@ -510,4 +510,44 @@ public class TotalController {
 
     }
 
+    @RequestMapping(value = "/selectIndexData",method = RequestMethod.GET)
+    public Map<String,Object> selectIndexData(HttpServletRequest req){
+        Map<String,Object> param = new HashMap<>();
+        param.put("rtu_id","");
+        param.put("site_id","");
+        int siteNum = totalService.selectSiteTotal();
+        int rtuNum = totalService.selectRTUTotal();
+        int spdNum = totalService.selectSPDTotal(param);
+        int etcrNum = totalService.selectETCRTotal(param);
+        int lightningNum = totalService.selectLightningTotal(param);
+        int staticNum = totalService.selectStaticTotal(param);
+        int rswsNum = totalService.selectRswsTotal(param);
+        int svtNum = totalService.selectSvtTotal(param);
+        int hcNum = totalService.selectHcTotal(param);
+        int strayNum = totalService.selectStrayTotal(param);
+        int catNum = totalService.selectCatTotal(param);
+        int deviceTotalNum = spdNum+etcrNum+lightningNum+staticNum+rswsNum+svtNum+hcNum+strayNum+catNum;
+
+        List<Map<String,Object>> deviceOff = totalService.selectDeviceOff(param);
+        List<Map<String,Object>> deviceWarning = totalService.selectDeviceWarning(param);
+        List<Map<String,Object>> rtuOffNum = totalService.selectRTUOff(param);
+        List<Map<String,Object>> rtuWarningNum = totalService.selectRTUWarning(param);
+        List<Map<String,Object>> siteWarningTop5 = totalService.selectSiteWarningTotal(param);
+        List<Map<String,Object>> siteDeviceOffTop5 = totalService.selectSiteDeviceOffTotal(param);
+        List<Map<String,Object>> siteOff = totalService.selectSiteOffTotal(param);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("siteWarningTop5",siteWarningTop5);
+        resultMap.put("siteDeviceOffTop5",siteDeviceOffTop5);
+        resultMap.put("siteOff",siteOff);
+        //resultMap.put("deviceOffCount",deviceOff.size());
+        //resultMap.put("deviceWarningCount",deviceWarning.size());
+        resultMap.put("siteNum",siteNum);
+        resultMap.put("rtuNum",rtuNum);
+        resultMap.put("deviceTotalNum",deviceTotalNum);
+        //resultMap.put("rtuOffNum",rtuOffNum.size());
+        resultMap.put("rtuWarningNum",rtuWarningNum.size());
+        resultMap.put("num",ScheduledService.getNowDataList());
+        return resultMap;
+    }
+
 }

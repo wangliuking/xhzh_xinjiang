@@ -43,6 +43,21 @@ html,body {
             map.setCurrentCity("成都");          // 设置地图显示的城市 此项是必须设置的
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
+            //添加轮廓线start
+            var bdary = new BMap.Boundary();
+            //var name = document.getElementById("districtName").value;
+            bdary.get("昆玉市", function(rs){      //获取行政区域
+                console.log(rs.boundaries);
+                map.clearOverlays();        //清除地图覆盖物
+                var count = rs.boundaries.length; //行政区域的点有多少个
+				//console.log(count);
+                for(var i = 0; i < count; i++){
+                    var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000"}); //建立多边形覆盖物
+                    map.addOverlay(ply);  //添加覆盖物
+                    map.setViewport(ply.getPath());    //调整视野
+                }
+            });
+            //添加轮廓线end
             /*$.ajax({
                 url : '../../connect/selectAllSite?access_token='+localStorage.getItem("access_token"),
                 contentType : "application/json;charset=utf-8",

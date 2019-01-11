@@ -18,6 +18,16 @@ public interface TotalMapper {
     List<Map<String,Object>> selectRTUOff(Map<String, Object> param);*/
 
     @Select("<script>" +
+            "select count(*) from site_config"+
+            "</script>")
+    int selectSiteTotal();
+
+    @Select("<script>" +
+            "select count(*) from rtu_config"+
+            "</script>")
+    int selectRTUTotal();
+
+    @Select("<script>" +
             "select a.*,b.site_id from rtu_now_data as a left join rtu_config as b on a.rtu_id = b.rtu_id where rtu_state = 1 "+
             "<if test=\"site_id != null and site_id != ''\">" +
             "and b.site_id =#{site_id}"+
@@ -34,6 +44,23 @@ public interface TotalMapper {
             "group by a.rtu_id"+
             "</script>")
     List<Map<String,Object>> selectRTUWarning(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select site_name as name,count(site_id) as value from (select b.site_id,c.site_name,a.* from rtu_alarm_data as a left join rtu_config as b on a.rtu_id = b.rtu_id left join site_config as c on b.site_id=c.site_id where type=3 and alarmStatus=1 group by a.rtu_id,a.rtu_channel,a.devieceId) as t " +
+            "group by site_id order by value desc limit 0,5"+
+            "</script>")
+    List<Map<String,Object>> selectSiteWarningTotal(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select site_name as name,count(site_id) as value from (select b.site_id,c.site_name,a.* from rtu_alarm_data as a left join rtu_config as b on a.rtu_id = b.rtu_id left join site_config as c on b.site_id=c.site_id where type=1 and alarmStatus=1 group by a.rtu_id,a.rtu_channel,a.devieceId) as t " +
+            "group by site_id order by value desc limit 0,5"+
+            "</script>")
+    List<Map<String,Object>> selectSiteDeviceOffTotal(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select a.rtu_id,b.* from rtu_now_data as a left join site_config as b on a.site_id=b.site_id where rtu_state=1 group by a.site_id"+
+            "</script>")
+    List<Map<String,Object>> selectSiteOffTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select a.* from rtu_alarm_data as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=3 and alarmStatus=1"+
@@ -89,6 +116,17 @@ public interface TotalMapper {
     List<Map<String,Object>> selectSPDCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from spd_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "</script>")
+    int selectSPDTotal(Map<String, Object> param);
+
+    @Select("<script>" +
             "select spd_number from spd_config where 1=1 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and rtu_id =#{rtu_id}"+
@@ -107,6 +145,18 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,rst_id"+
             "</script>")
     List<Map<String,Object>> selectETCRCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from (select * from resistance_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,rst_id) as t"+
+            "</script>")
+    int selectETCRTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select rtu_port from resistance_config where rst_id!=0"+
@@ -130,6 +180,18 @@ public interface TotalMapper {
     List<Map<String,Object>> selectLightningCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from (select * from lightning_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,ltn_id) as t"+
+            "</script>")
+    int selectLightningTotal(Map<String, Object> param);
+
+    @Select("<script>" +
             "select rtu_port from lightning_config where ltn_id!=0"+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and rtu_id =#{rtu_id}"+
@@ -149,6 +211,18 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,staet_id"+
             "</script>")
     List<Map<String,Object>> selectStaticCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from (select * from static_electricity_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,staet_id) as t"+
+            "</script>")
+    int selectStaticTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select rtu_port from static_electricity_config where staet_id!=0 "+
@@ -172,6 +246,18 @@ public interface TotalMapper {
     List<Map<String,Object>> selectRswsCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from (select * from humiture_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,hmt_id) as t"+
+            "</script>")
+    int selectRswsTotal(Map<String, Object> param);
+
+    @Select("<script>" +
             "select rtu_port from humiture_config where hmt_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and rtu_id =#{rtu_id}"+
@@ -191,6 +277,18 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,tilt_id"+
             "</script>")
     List<Map<String,Object>> selectSvtCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from (select * from tilt_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,tilt_id) as t"+
+            "</script>")
+    int selectSvtTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select rtu_port from tilt_config where tilt_id!=0 "+
@@ -214,6 +312,18 @@ public interface TotalMapper {
     List<Map<String,Object>> selectHcCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from (select * from electrical_safety_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,es_id) as t"+
+            "</script>")
+    int selectHcTotal(Map<String, Object> param);
+
+    @Select("<script>" +
             "select rtu_port from electrical_safety_config where es_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and rtu_id =#{rtu_id}"+
@@ -233,6 +343,18 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,stret_id"+
             "</script>")
     List<Map<String,Object>> selectStrayCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from (select * from stray_electricity_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,stret_id) as t"+
+            "</script>")
+    int selectStrayTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select rtu_port from stray_electricity_config where stret_id!=0 "+
@@ -263,6 +385,18 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,cathode_id"+
             "</script>")
     List<Map<String,Object>> selectCatCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from (select * from cathode_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != ''\">" +
+            "and rtu_id =#{rtu_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,cathode_id) as t"+
+            "</script>")
+    int selectCatTotal(Map<String, Object> param);
 
     @Select("<script>" +
             "select rtu_port from cathode_config where cathode_id!=0 "+
@@ -486,4 +620,78 @@ public interface TotalMapper {
             "order by write_time"+
             "</script>")
     List<Map<String,Object>> selectCatHistory(Map<String,Object> param);
+
+
+    @Select("<script>" +
+            "select count(*) from spd_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectSPDCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from resistance_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectETCRCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from lightning_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectLightningCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from static_electricity_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectStaticCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from humiture_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectRswsCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from tilt_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectSvtCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from electrical_safety_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectHcCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from stray_electricity_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectStrayCountByTime(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from cathode_old_data where 1=1 " +
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectCatCountByTime(Map<String,Object> param);
+
 }

@@ -103,10 +103,12 @@ public class MyFilter extends ZuulFilter{
             ctx.getResponse().getWriter().write("token is empty");
         } catch (Exception e) {
         }*/
-        if (!RedisTest.searchLoginUser(request.getSession().getId())) {
+
+        //请求验证
+        /*if (!RedisTest.searchLoginUser(request.getSession().getId())) {
             String redirectUrl = "/xhzh/login.html";
             sendRedirect(ctx.getResponse(), redirectUrl);
-        }
+        }*/
         return null;
 
     }

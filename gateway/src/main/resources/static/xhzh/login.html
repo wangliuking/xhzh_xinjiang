@@ -73,7 +73,7 @@
             color: #fff;
             outline: none;
             cursor: pointer;
-            background-color: rgba(41, 178, 255);
+            background-color: rgba(41, 178, 255,1);
         }
         .form-item button:hover {
             background-color: rgb(40, 190, 255);
@@ -352,7 +352,7 @@
                 success : function(data) {
                     console.log(data);
                     if(data.result == "登录成功"){
-                        window.location.href = "main.html";
+                        window.location.href = "screen.html";
                     }else{
                         alert("账户或密码错误！");
                     }

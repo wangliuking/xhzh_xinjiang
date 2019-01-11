@@ -14,23 +14,63 @@ var alarmji=true;
 var appElement = document.querySelector('[ng-controller=screen]');
 xh.load = function() {
 	var app = angular.module("app", []);
-
 	app.controller("screen", function($scope, $http) {
+        //判断是否登录start
+        $.ajax({
+            type: 'GET',
+            url: "../../connect/ensure",
+            async: false,
+            dataType: 'json',
+            success: function(response){
 
-        $("#siteNum").html(xh.formatNum(10));
-        $("#rtuNum").html(xh.formatNum(10));
-        $("#deviceNum").html(xh.formatNum(10));
-        $("#rtuOffNum").html(xh.formatNum(10));
+            } ,
+            error: function () {
+                alert("登录已失效，请重新登录！");
+                window.location.href = "../login.html";
+                window.parent.location.href = "../login.html";
+            }
+        });
+        //判断是否登录end
+        xh.initTotal();
+        //setInterval(xh.initTotal, 30000);
 
-        xh.map();
-        xh.groupTop5();
-        xh.userTop5();
-        xh.callInfo();
-        xh.getOneDay();
 	});
 };
 
-xh.map=function(){
+xh.initTotal = function(){
+	console.log("aaa");
+    $.ajax({
+        url : '../../total/selectIndexData',
+        type : 'GET',
+        dataType : "json",
+        async : false,
+        success : function(response) {
+            var siteNum = response.siteNum;
+            var rtuNum = response.rtuNum;
+            var deviceTotalNum = response.deviceTotalNum;
+            var rtuWarningNum = response.rtuWarningNum;
+            var siteWarningTop5 = response.siteWarningTop5;
+            var siteDeviceOffTop5 = response.siteDeviceOffTop5;
+            var siteOff = response.siteOff;
+            var data = response.num;
+
+            $("#siteNum").html(xh.formatNum(siteNum));
+            $("#rtuNum").html(xh.formatNum(rtuNum));
+            $("#deviceNum").html(xh.formatNum(deviceTotalNum));
+            $("#rtuOffNum").html(xh.formatNum(rtuWarningNum));
+
+            xh.map(siteOff);
+            xh.deviceWarningTop5(siteWarningTop5);
+            xh.deviceOffTop5(siteDeviceOffTop5);
+            xh.call(data);
+            xh.waterstatus(1,0);
+            xh.waterstatus(2,0);
+            xh.waterstatus(3,0);
+        }
+    });
+}
+
+xh.map=function(data){
 	// 设置容器宽高
 	var height=document.documentElement.clientHeight;
 	var width=document.documentElement.clientWidth;
@@ -51,7 +91,7 @@ xh.map=function(){
 		chart = ec.init(document.getElementById('map'));
 		require('echarts/util/mapData/params').params.CD = {
 		    getGeoJson: function (callback) {
-		        $.getJSON('lib/echarts/util/mapData/params/510100.json',callback);
+		        $.getJSON('lib/echarts/util/mapData/params/65.json',callback);
 		    }
 		}
 		var option = {
@@ -116,26 +156,28 @@ xh.map=function(){
 			                        label:{position:'bottom'}
 			                    }
 			                },
-			                data : name
+			                data : []
 			            }
 			            
 			        }
 			    ]
 			};
-		 /*for (var i in data) {
-             option.series[0].geoCoord[data[i].bsId+"-"+data[i].name] = [parseFloat(data[i].lng), parseFloat(data[i].lat)];
-         }*/
+		 for (var i in data) {
+             option.series[0].geoCoord[data[i].site_name] = [parseFloat(data[i].site_lng), parseFloat(data[i].site_lat)];
+             option.series[0].markPoint.data.push({"name":data[i].site_name});
+		 }
+        //option.series[0].geoCoord["1-乌鲁木齐"] = [87.68333, 43.76667];
 		chart.setOption(option);
 	});
 	
 }
-xh.groupTop5=function(){
+xh.deviceWarningTop5=function(data){
 	// 设置容器宽高
 	var height=document.documentElement.clientHeight;
 	var width=document.documentElement.clientWidth;
 	var resizeBarContainer = function() {
-		$("#group-top5").width((width/12)*3);
-		$("#group-top5").height((height-200)/3);
+		$("#deviceWarning-top5").width((width/12)*3);
+		$("#deviceWarning-top5").height((height-200)/2);
 	};
 	resizeBarContainer();
 
@@ -149,7 +191,7 @@ xh.groupTop5=function(){
 	
 	
 	require([ 'echarts', 'echarts/chart/funnel' ], function(ec) {
-		chart = ec.init(document.getElementById('group-top5'));
+		chart = ec.init(document.getElementById('deviceWarning-top5'));
 		var leglend=[]
 		/*for(var i=0;i<data.length;i++){
 			leglend.push(data[i].name+"-"+data[i].value);
@@ -165,7 +207,7 @@ xh.groupTop5=function(){
 			    calculable : false,
 			    series : [
 			              {
-					            name:'基站注册组',
+					            name:'设备异常',
 					            type:'funnel',
 					            width: 60,
 					            height:'80%',
@@ -181,7 +223,7 @@ xh.groupTop5=function(){
 					            },
 					            x:'10%',
 					            y:10,
-					            data:[{name:"站点1",value:"10"},{name:"站点2",value:"20"},{name:"站点3",value:"30"},{name:"站点4",value:"40"},{name:"站点5",value:"50"}]
+					            data:data
 					        }
 			    ]
 			};
@@ -194,13 +236,13 @@ xh.groupTop5=function(){
 	};*/
 	
 }
-xh.userTop5=function(){
+xh.deviceOffTop5=function(data){
 	// 设置容器宽高
 	var height=document.documentElement.clientHeight;
 	var width=document.documentElement.clientWidth;
 	var resizeBarContainer = function() {
-		$("#user-top5").width((width/12)*3);
-		$("#user-top5").height((height-200)/3);
+		$("#deviceOff-top5").width((width/12)*3);
+		$("#deviceOff-top5").height((height-200)/2);
 	};
 	resizeBarContainer();
 
@@ -214,7 +256,7 @@ xh.userTop5=function(){
 	
 	
 	require([ 'echarts', 'echarts/chart/funnel' ], function(ec) {
-		chart = ec.init(document.getElementById('user-top5'));
+		chart = ec.init(document.getElementById('deviceOff-top5'));
 		var leglend=[]
 		/*for(var i=0;i<data.length;i++){
 			leglend.push(data[i].name);
@@ -238,7 +280,7 @@ xh.userTop5=function(){
 			    calculable : false,
 			    series : [
 			        {
-			            name:'基站注册终端',
+			            name:'设备离线',
 			            type:'funnel',
 			            width: 60,
 			            height:'80%',
@@ -255,7 +297,7 @@ xh.userTop5=function(){
 			            
 			            x:'10%',
 			            y:10,
-			            data:[]
+			            data:data
 			        }
 			    ]
 			};
@@ -270,133 +312,133 @@ xh.userTop5=function(){
 	};*/
 	
 }
-xh.callInfo=function(){
-	// 设置容器宽高
-	var height=document.documentElement.clientHeight;
-	var width=document.documentElement.clientWidth;
-	var resizeBarContainer = function() {
-		$("#call-bar").width((width/12)*4-40);
-		$("#call-bar").height(height-450);
-	};
-	resizeBarContainer();
+xh.call = function(data) {
+    // 设置容器宽高
+    var height=document.documentElement.clientHeight;
+    var width=document.documentElement.clientWidth;
+    var resizeBarContainer = function() {
+        $("#call-bar").width((width/12)*4);
+        $("#call-bar").height(height-460);
+    };
+    resizeBarContainer();
 
-	// 基于准备好的dom，初始化echarts实例
-	var chart = null;
-	if (chart != null) {
-		chart.clear();
-		chart.dispose();
-	}
-	
-	
-	
-	require([ 'echarts', 'echarts/chart/bar','echarts/chart/line' ], function(ec) {
-		chart = ec.init(document.getElementById('call-bar'));
-		
-		var option = {
-			    tooltip : {
-			        trigger: 'axis'
-			    },
-			    legend: {
-			    	data:['呼叫时长','呼叫次数'],
-			    	textStyle:{
-			    		color:'#fff'
-			    	}
-			    },
-			    
-			    calculable : true,
-			    xAxis : [
-			        {
-			            type : 'category',
-			            axisLabel: {
-                            show: true,
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        },
-                        splitLine:{show: false},//去除网格线
-                        splitArea : {show : false},//去除网格区域
-			            data : ["00","01","02","03","04","05",
-			                    "06","07","08","09","10","11",
-			                    "12","13","14","15","16","17",
-			                    "18","19","20","21","22","23"]
-			        }
-			    ],
-			    yAxis : [ {
-                    type: 'value',
-                    name: '呼叫时长',
-                    min: 0,
-                    
-                    position: 'left',
+    // 基于准备好的dom，初始化echarts实例
+    var chart = null;
+    if (chart != null) {
+        chart.clear();
+        chart.dispose();
+    }
+    require([ 'echarts', 'echarts/chart/bar','echarts/chart/line' ], function(ec) {
+        chart = ec.init(document.getElementById('call-bar'));
+        var option = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['上报数据'],
+                textStyle:{
+                    color:'#fff'
+                }
+            },
+
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
                     axisLabel: {
-                        formatter: '{value} （分钟）',
-                        textStyle:{
-                        	color:'#fff'
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
                         }
+                    },
+                    splitLine:{show: false},//去除网格线
+                    splitArea : {show : false},//去除网格区域
+                    data : ["00","01","02","03","04","05",
+                        "06","07","08","09","10","11",
+                        "12","13","14","15","16","17",
+                        "18","19","20","21","22","23"]
+                }
+            ],
+            yAxis : [{
+                type: 'value',
+                name: '上报数据',
+                min: 0,
+
+                position: 'left',
+                axisLabel: {
+                    formatter: '{value} （条）',
+                    textStyle:{
+                        color:'#fff'
                     }
-                    },{
-	                    type: 'value',
-	                    name: '呼叫次数',
-	                    min: 0,
-	                  
-	                    position: 'right',
-	                    axisLabel: {
-	                        formatter: '{value} （次）',
-	                        textStyle:{
-	                        	color:'#fff'
-	                        }
-	                    }
-	                }],
-			    series : [{
-		            name:'次数',
-		            type:'bar',
-		            data:[],
-		            itemStyle:{normal:{color:'#FF00FF'}}
-		        }]
-			};
-		
-		/*$.ajax({
-			url : 'call/chart_call_hour_now',
-			type : 'POST',
-			dataType : "json",
-			async : false,
-			timeout:2000,
-			data:{
-				bsId:0,
-				time:xh.getOneDay(),
-				type:'hour'
-			},
-			success : function(response) {
-				var data = response.time;
-				var num = response.num;
-				var xData=[],yData=[],yData2=[];
-				
-				for(var i=0;i<data.length;i++){
-					xData.push(data[i].label);
-					yData.push(data[i].time);
-					yData2.push(num[i].num);
-				}
-				option.series[0].data = yData;
-				option.series[1].data = yData2;
-				option.xAxis[0].data = xData;
-				chart.setOption(option);
-				xh.maskHide();
+                }
+            }],
+            series : [{
+                name:'上报数据',
+                type:'line',
+                yAxisIndex:0,
+                itemStyle:{normal:{color:'yellow'}},
+                data:[]
+            }]
+        };
 
-			},
-			failure : function(response) {
-				xh.maskHide();
-			}
-		});*/
-		
-		
+        //start
+		//var response = {"num":[{"num":1246,"label":"00"},{"num":1003,"label":"01"},{"num":453,"label":"02"},{"num":277,"label":"03"},{"num":287,"label":"04"},{"num":352,"label":"05"},{"num":542,"label":"06"},{"num":5538,"label":"07"},{"num":11388,"label":"08"},{"num":8998,"label":"09"},{"num":8441,"label":"10"},{"num":480,"label":"11"},{"num":0,"label":"12"},{"num":0,"label":"13"},{"num":0,"label":"14"},{"num":0,"label":"15"},{"num":0,"label":"16"},{"num":0,"label":"17"},{"num":0,"label":"18"},{"num":0,"label":"19"},{"num":0,"label":"20"},{"num":0,"label":"21"},{"num":0,"label":"22"},{"num":0,"label":"23"}]};
+        var num = data;
+        var xData=[],yData=[];
 
-	});
-		
-	/*window.onresize = function() {
-		// 重置容器高宽
-		chart.resize();
-	};*/
-	
-}
+        for(var i=0;i<num.length;i++){
+            xData.push(num[i].label);
+            yData.push(num[i].num);
+        }
+        option.series[0].data = yData;
+        option.xAxis[0].data = xData;
+        chart.setOption(option);
+		//end
+        /*$.ajax({
+            url : 'call/chart',
+            type : 'POST',
+            dataType : "json",
+            async : false,
+            data:{
+                bsId:0,
+                time:xh.getOneDay(),
+                type:'hour'
+            },
+            success : function(response) {
+                var data = response.time;
+                var num = response.num;
+                var xData=[],yData=[],yData2=[];
+
+                for(var i=0;i<data.length;i++){
+                    xData.push(data[i].label);
+                    yData.push(data[i].time);
+                    yData2.push(num[i].num);
+                }
+                var bsId=parseInt($("select[name='bsId']").val());
+                var text="";
+
+                option.series[0].data = yData;
+                option.series[1].data = yData2;
+                option.xAxis[0].data = xData;
+                chart.setOption(option);
+                xh.maskHide();
+
+            },
+            failure : function(response) {
+                xh.maskHide();
+            }
+        });*/
+
+        chart.setOption(option);
+
+    });
+
+    // 用于使chart自适应高度和宽度
+    window.onresize = function() {
+        // 重置容器高宽
+        resizeBarContainer();
+    };
+};
 xh.waterstatus=function(id,totals){
 	var vaterColor="blue";
 	if(id==1){

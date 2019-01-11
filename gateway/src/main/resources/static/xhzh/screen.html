@@ -12,10 +12,6 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <script type="text/javascript" src="Resources/js/xhbootstrap-css.js"></script>
-<!-- <link rel="stylesheet" type="text/css"
-	href="lib/zTree_v3/css/zTreeStyle/zTreeStyle.css"> -->
-<link rel="stylesheet" href="lib/zTree_v3/css/metroStyle/metroStyle.css"
-	type="text/css">
 <!--[if lte IE 9]>
 <script src="Resources/js/jquery-1.8.3.min.js"></script>
 <script src="Resources/js/respond.min.js"></script>
@@ -104,10 +100,10 @@ html,body {
 				<div style="width:200px; margin-top:10px;"
 					class="panel-card hbmagenta card-filter">
 					<div class="card-img">
-						<i class="fa fa-user fa-3x"></i>
+						<i class="fa fa-bank fa-3x"></i>
 					</div>
 					<div class="card-info">
-						<label>站点[数量]</label><br />
+						<label>站点总数</label><br />
 						<div id="siteNum"></div>
 						<!-- <span>{{useOnlineCount}}</span><span>2</span><span>0</span> -->
 					</div>
@@ -118,10 +114,10 @@ html,body {
 				<div style="width:200px; margin-top:10px;"
 					class="panel-card hbblue card-filter">
 					<div class="card-img">
-						<i class="fa fa-user fa-3x"></i>
+						<i class="fa fa-cube fa-3x"></i>
 					</div>
 					<div class="card-info">
-						<label>RTU[数量]</label><br />
+						<label>RTU总数</label><br />
 						<div id="rtuNum"></div>
 					</div>
 				</div>
@@ -131,10 +127,10 @@ html,body {
 				<div style="width:200px;margin-top:10px;"
 					class="panel-card hbchocolate card-filter">
 					<div class="card-img">
-						<i class="fa fa-bar-chart fa-3x"></i>
+						<i class="fa fa-server fa-3x"></i>
 					</div>
 					<div class="card-info">
-						<label>设备[数量]</label><br/>
+						<label>设备总数</label><br/>
 						<div id="deviceNum"></div>
 					</div>
 				</div>
@@ -143,10 +139,10 @@ html,body {
 				<div style="width:200px;margin-top:10px;"
 					class="panel-card hbgred card-filter">
 					<div class="card-img">
-						<i class="fa fa-wifi fa-3x"></i>
+						<i class="fa fa-rss fa-3x"></i>
 					</div>
 					<div class="card-info">
-						<label>离线[数量]</label><br />
+						<label>RTU异常总数</label><br />
 						<div id="rtuOffNum"></div>
 					</div>
 				</div>
@@ -156,14 +152,14 @@ html,body {
 			<div class="col-md-3 lg-left">
 				<div class="row">
 					<div class="col-md-12 lg-box" style="margin-top:5px">
-						<p>当前基站注册组TOP5</p>
-						<div id="group-top5"></div>
+						<p>站点设备异常TOP5</p>
+						<div id="deviceWarning-top5"></div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12 lg-box" style="margin-top:5px">
-						<p>当前基站注册终端TOP5</p>
-						<div id="user-top5"></div>
+						<p>站点设备离线TOP5</p>
+						<div id="deviceOff-top5"></div>
 					</div>
 				</div>
 			</div>
@@ -171,7 +167,7 @@ html,body {
 			<div class="col-md-5 lg-center">
 				<div class="row">
 					<div class="col-md-12 lg-box">
-						<p>基站断站分布图</p>
+						<p>站点离线分布图</p>
 						<div id="map"></div>
 					</div>
 				</div>
@@ -180,7 +176,7 @@ html,body {
 			<div class="col-md-4 lg-right">
 				<div class="row">
 					<div class="col-md-12 lg-box">
-						<p>今日全网呼叫实时统计</p>
+						<p>今日设备上报数据实时统计</p>
 						<div id="call-bar" style="padding:0;"></div>
 					</div>
 				</div>
