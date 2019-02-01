@@ -45,4 +45,8 @@ public class RTUService {
     public int updateRTU(RTU rtu){
         return rtuMapper.updateRTU(rtu);
     }
+
+    public List<Map<String,Object>> selectAllRTUPosition(){
+        return rtuMapper.selectAllRTUPosition();
+    }
 }

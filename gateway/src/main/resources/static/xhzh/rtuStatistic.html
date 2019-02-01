@@ -98,30 +98,24 @@
                                 <tbody>
                                 <tr>
                                     <td rowspan="2" class="tableStyle">数字量</td>
-                                    <td class="tableStyle" ng-repeat="x in spdPort1" ng-if="compareSpd(x)" style="background-color: green;">{{x}}</td>
-                                    <td class="tableStyle" ng-repeat="x in spdPort1" ng-if="!compareSpd(x)">{{$index+1}}</td>
+                                    <td class="tableStyle" ng-repeat="x in spdPort1" ng-style="compareSpd(x)">{{x}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="tableStyle" ng-repeat="x in spdPort2" ng-if="compareSpd(x)" style="background-color: green;">{{x}}</td>
-                                    <td class="tableStyle" ng-repeat="x in spdPort2" ng-if="!compareSpd(x)">{{$index+5}}</td>
+                                    <td class="tableStyle" ng-repeat="x in spdPort2" ng-style="compareSpd(x)">{{x}}</td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" class="tableStyle">模拟量</td>
-                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-if="compareTest(x) != ''" style="background-color: green;">{{compareTest(x)}}</td>
-                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-if="compareTest(x) == ''">{{$index+1}}</td>
+                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-style="compareTestStyle(x)">{{compareTest(x)}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="tableStyle" ng-repeat="x in testPort2" ng-if="compareTest(x) != ''" style="background-color: green;">{{compareTest(x)}}</td>
-                                    <td class="tableStyle" ng-repeat="x in testPort2" ng-if="compareTest(x) == ''">{{$index+5}}</td>
+                                    <td class="tableStyle" ng-repeat="x in testPort2" ng-style="compareTestStyle(x)">{{compareTest(x)}}</td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" class="tableStyle">RS485</td>
-                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-if="compareRS(x) != ''" style="background-color: green;">{{compareRS(x)}}</td>
-                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-if="compareRS(x) == ''">{{$index+1}}</td>
+                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-style="compareRSStyle(x)">{{compareRS(x)}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="tableStyle" ng-repeat="x in testRS2" ng-if="compareRS(x) != ''" style="background-color: green;">{{compareRS(x)}}</td>
-                                    <td class="tableStyle" ng-repeat="x in testRS2" ng-if="compareRS(x) == ''">{{$index+6}}</td>
+                                    <td class="tableStyle" ng-repeat="x in testRS2" ng-style="compareRSStyle(x)">{{compareRS(x)}}</td>
                                 </tr>
                                 </tbody>
                             </table>

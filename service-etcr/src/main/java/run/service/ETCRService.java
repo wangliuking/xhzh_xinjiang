@@ -73,6 +73,10 @@ public class ETCRService {
         return ETCRMapper.selectETCRHistory(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
     }
 
+    public List<Map<String,Object>> exportAllETCRHistoryExcel(int site_id, int rtu_id, int rst_id, String rst_location,String startTime,String endTime){
+        return ETCRMapper.exportAllETCRHistoryExcel(site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+    }
+
     public int selectETCRHistoryCount(int start, int limit, int site_id, int rtu_id, int rst_id, String rst_location,String startTime,String endTime){
         return ETCRMapper.selectETCRHistoryCount(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
     }

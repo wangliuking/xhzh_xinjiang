@@ -62,7 +62,8 @@
             position: fixed;
             right: 0;
             color: #98a6ad;
-            left: 240px
+            left: 240px;
+            display: block;
         }
 
         .footer .footer-links a {
@@ -235,7 +236,7 @@
         <div class="header-section" style="border-bottom:1px solid #ccc;background-color:white;">
 
             <!--toggle button start-->
-            <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+            <a class="toggle-btn" href="javascript:void(0);" onclick="controllFoot()"><i class="fa fa-bars"></i></a>
             <!--toggle button end-->
 
             <!--search start-->
@@ -254,19 +255,10 @@
             <div class="menu-right">
                 <ul class="notification-menu">
 
-                    <li ng-if="voiceTag==1"><a href="#" onclick="xh.stopMap3()"
-                                               class="btn btn-default dropdown-toggle info-number" data-toggle="tooltip"
-                                               data-placement="right"
-                                               title="关闭告警音">
-                        <img src="Resources/images/icon/32/bell.png" id="close-bell"/>
-                        <span class="badge">{{AlarmTotals}}</span>
-                    </a>
-                    </li>
-
                     <li><a href="#"
                            class="btn btn-default dropdown-toggle info-number"
                            data-toggle="dropdown"> <i class="fa fa-envelope-o"></i> <span
-                            class="badge">{{email}}</span> <span>站内信</span>
+                            class="badge">{{email}}</span> <span>消息</span>
                     </a>
                         <div class="dropdown-menu dropdown-menu-head pull-right">
                             <h5 class="title">新消息</h5>
@@ -279,23 +271,7 @@
                             </ul>
                         </div>
                     </li>
-                    <!-- <li><a href="Views/monitor/event.html" target="mainframe"
-                        class="btn btn-default dropdown-toggle info-number"> <i
-                            class="fa fa-bell-o"></i> <span class="badge">4</span> <span>待办事项</span>
-                    </a></li> -->
-                    <!--<li><a href="#"
-                           class="btn btn-default dropdown-toggle info-number"
-                           data-toggle="dropdown"> <i class="fa fa-qrcode"></i> <span
-                            class="badge">1</span> <span>点我，扫一扫</span>
-                    </a>
-                        <div class="dropdown-menu dropdown-menu-head pull-right">
-                            <h5 class="title">运维APP 安卓版下载链接,扫一扫</h5>
-                            <div style="padding:20px;">
-                                <img alt="" src="Resources/app/apk.png">
-                            </div>
 
-                        </div>
-                    </li>-->
                     <li><a href="#" class="btn btn-default dropdown-toggle"
                            data-toggle="dropdown"> <img
                             src="Resources/images/icon/64/user.png" alt=""/> {{loginUser}}
@@ -330,7 +306,7 @@
         <footer class="footer">
             <div class="container-fluid" style="font-size: 15px">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         2018 © 成都中航信虹科技股份有限公司
                     </div>
                     <div class="col-md-3">
@@ -383,6 +359,14 @@
 
             }
         });
+    }
+    function controllFoot() {
+        var dis = $(".footer").css("display");
+        if(dis == "block"){
+            $(".footer").css("display","none");
+        }else{
+            $(".footer").css("display","block");
+        }
     }
 </script>
 

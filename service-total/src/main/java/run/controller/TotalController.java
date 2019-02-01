@@ -31,13 +31,13 @@ public class TotalController {
             param.put("site_id","");
         }
         System.out.println("param : "+param);
-        List<Map<String,Object>> siteInfo = totalService.selectSiteById(param);
+        //List<Map<String,Object>> siteInfo = totalService.selectSiteById(param);
         List<Map<String,Object>> rtuOffNum = totalService.selectRTUOff(param);
         List<Map<String,Object>> rtuWarningNum = totalService.selectRTUWarning(param);
         int rtuNum = totalService.selectRTUNumBySiteId(param);
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("siteInfo",siteInfo);
-        System.out.println(" siteInfo : "+siteInfo);
+        //resultMap.put("siteInfo",siteInfo);
+        //System.out.println(" siteInfo : "+siteInfo);
         resultMap.put("rtuOffNum",rtuOffNum.size());
         resultMap.put("rtuWarningNum",rtuWarningNum.size());
         resultMap.put("rtuNum",rtuNum);
@@ -156,100 +156,138 @@ public class TotalController {
         }
         Map<String,Object> resultMap = new HashMap<>();
         //数字量
-        List<Integer> spdPort = totalService.selectSPDPort(param);
+        List<Map<String,Object>> spdPort = totalService.selectSPDPort(param);
         resultMap.put("spdPort",spdPort);
         //模拟量
         List<Map<Integer,String>> testList = new ArrayList<>();
-        List<Integer> staryTest = totalService.selectStrayTestPort(param);
+        List<Map<String,Object>> staryTest = totalService.selectStrayTestPort(param);
         if(staryTest != null){
             for(int i=0;i<staryTest.size();i++){
-                int temp = staryTest.get(i);
+                String t = staryTest.get(i).get("rtu_port")+"";
+                int temp = Integer.parseInt(t);
                 Map<Integer,String> tempMap = new HashMap<>();
                 tempMap.put(temp,"杂散电流");
+                tempMap.put(0,staryTest.get(i).get("stret_state")+"");
+                tempMap.put(-1,staryTest.get(i).get("alarm")+"");
                 testList.add(tempMap);
             }
         }
-        List<Integer> catTest = totalService.selectCatTestPort(param);
+        List<Map<String,Object>> catTest = totalService.selectCatTestPort(param);
         if(catTest != null){
             for(int i=0;i<catTest.size();i++){
-                int temp = catTest.get(i);
+                String t = catTest.get(i).get("rtu_port")+"";
+                int temp = Integer.parseInt(t);
                 Map<Integer,String> tempMap = new HashMap<>();
                 tempMap.put(temp,"阴极保护");
+                tempMap.put(0,catTest.get(i).get("cathode_state")+"");
+                tempMap.put(-1,catTest.get(i).get("alarm")+"");
                 testList.add(tempMap);
             }
         }
         resultMap.put("testList",testList);
         //485
-        List<Map<Integer,String>> rs485List = new ArrayList<>();
-        List<Integer> etcrPort = totalService.selectETCRPort(param);
+        List<Map<String,Object>> rs485List = new ArrayList<>();
+        List<Map<String,Object>> etcrPort = totalService.selectETCRPort(param);
         if(etcrPort != null){
             for(int i=0;i<etcrPort.size();i++){
-                int temp = etcrPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"接地电阻");
+                String temp = etcrPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","接地电阻");
+                tempMap.put("port",temp);
+                tempMap.put("status",etcrPort.get(i).get("rst_state")+"");
+                tempMap.put("deviceId",etcrPort.get(i).get("rst_id")+"");
+                tempMap.put("alarm",etcrPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> lightningPort = totalService.selectLightningPort(param);
+        List<Map<String,Object>> lightningPort = totalService.selectLightningPort(param);
         if(lightningPort != null){
             for(int i=0;i<lightningPort.size();i++){
-                int temp = lightningPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"雷电流");
+                String temp = lightningPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","雷电流");
+                tempMap.put("port",temp);
+                tempMap.put("status",lightningPort.get(i).get("ltn_state")+"");
+                tempMap.put("deviceId",lightningPort.get(i).get("ltn_id")+"");
+                tempMap.put("alarm",lightningPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> staticPort = totalService.selectStaticPort(param);
+        List<Map<String,Object>> staticPort = totalService.selectStaticPort(param);
         if(staticPort != null){
             for(int i=0;i<staticPort.size();i++){
-                int temp = staticPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"静电");
+                String temp = staticPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","静电");
+                tempMap.put("port",temp);
+                tempMap.put("status",staticPort.get(i).get("staet_state")+"");
+                tempMap.put("deviceId",staticPort.get(i).get("staet_id")+"");
+                tempMap.put("alarm",staticPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> rswsPort = totalService.selectRswsPort(param);
+        List<Map<String,Object>> rswsPort = totalService.selectRswsPort(param);
         if(rswsPort != null){
             for(int i=0;i<rswsPort.size();i++){
-                int temp = rswsPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"温湿度");
+                String temp = rswsPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","温湿度");
+                tempMap.put("port",temp);
+                tempMap.put("status",rswsPort.get(i).get("hmt_state")+"");
+                tempMap.put("deviceId",rswsPort.get(i).get("hmt_id")+"");
+                tempMap.put("alarm",rswsPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> svtPort = totalService.selectSvtPort(param);
+        List<Map<String,Object>> svtPort = totalService.selectSvtPort(param);
         if(svtPort != null){
             for(int i=0;i<svtPort.size();i++){
-                int temp = svtPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"倾斜度");
+                String temp = svtPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","倾斜度");
+                tempMap.put("port",temp);
+                tempMap.put("status",svtPort.get(i).get("tilt_state")+"");
+                tempMap.put("deviceId",svtPort.get(i).get("tilt_id")+"");
+                tempMap.put("alarm",svtPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> hcPort = totalService.selectHcPort(param);
+        List<Map<String,Object>> hcPort = totalService.selectHcPort(param);
         if(hcPort != null){
             for(int i=0;i<hcPort.size();i++){
-                int temp = hcPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"电气安全");
+                String temp = hcPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","电气安全");
+                tempMap.put("port",temp);
+                tempMap.put("status",hcPort.get(i).get("es_state")+"");
+                tempMap.put("deviceId",hcPort.get(i).get("es_id")+"");
+                tempMap.put("alarm",hcPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> strayPort = totalService.selectStray485Port(param);
+        List<Map<String,Object>> strayPort = totalService.selectStray485Port(param);
         if(strayPort != null){
             for(int i=0;i<strayPort.size();i++){
-                int temp = strayPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"杂散电流");
+                String temp = strayPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","杂散电流");
+                tempMap.put("port",temp);
+                tempMap.put("status",strayPort.get(i).get("stret_state")+"");
+                tempMap.put("deviceId",strayPort.get(i).get("stret_id")+"");
+                tempMap.put("alarm",strayPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }
-        List<Integer> catPort = totalService.selectCat485Port(param);
+        List<Map<String,Object>> catPort = totalService.selectCat485Port(param);
         if(catPort != null){
             for(int i=0;i<catPort.size();i++){
-                int temp = catPort.get(i);
-                Map<Integer,String> tempMap = new HashMap<>();
-                tempMap.put(temp,"阴极保护");
+                String temp = catPort.get(i).get("rtu_port")+"";
+                Map<String,Object> tempMap = new HashMap<>();
+                tempMap.put("type","阴极保护");
+                tempMap.put("port",temp);
+                tempMap.put("status",catPort.get(i).get("cathode_state")+"");
+                tempMap.put("deviceId",catPort.get(i).get("cathode_id")+"");
+                tempMap.put("alarm",catPort.get(i).get("alarm")+"");
                 rs485List.add(tempMap);
             }
         }

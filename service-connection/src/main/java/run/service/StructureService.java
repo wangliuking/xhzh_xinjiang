@@ -17,6 +17,10 @@ public class StructureService {
         return structureMapper.selectAll();
     }
 
+    public List<Map<String,Object>> selectStructureList(Map<String,Object> param){
+        return structureMapper.selectStructureList(param);
+    }
+
     public int insert(Node node){
         return structureMapper.insert(node);
     }

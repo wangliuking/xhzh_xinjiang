@@ -125,6 +125,11 @@ public class RTUController {
         return rtuService.selectRTUById(id);
     }
 
+    @RequestMapping(value = "/selectAllRTUPosition",method = RequestMethod.GET)
+    public List<Map<String,Object>> selectAllRTUPosition (){
+        return rtuService.selectAllRTUPosition();
+    }
+
     @RequestMapping(value = "/insertRTU", method = RequestMethod.POST)
     public Map<String, Object> insertSite (@RequestBody RTU rtu){
         int result = rtuService.insertRTU(rtu);

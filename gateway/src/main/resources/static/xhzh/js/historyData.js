@@ -129,6 +129,23 @@ xh.load = function() {
             xh.pagging(1, parseInt($scope.totals), $scope);
             xh.maskHide();
         });
+
+        /*导出测试*/
+        $scope.test = function(){
+            var site_id = $("#siteName").val();
+            var rtu_id = $("#rtuName").val();
+            var location = $("#location").val();
+            var deviceId = $("#deviceId").val();
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+
+            console.log(deviceName+" "+site_id+" "+rtu_id+" "+location+" "+deviceId);
+
+            $http.get("../../exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+            success(function(response){
+
+            });
+        }
 		
 		/* 刷新数据 */
 		$scope.refresh = function() {

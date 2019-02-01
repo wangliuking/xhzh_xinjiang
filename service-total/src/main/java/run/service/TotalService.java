@@ -43,7 +43,7 @@ public class TotalService {
         return totalMapper.selectSPDCount(param);
     }
 
-    public List<Integer> selectSPDPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectSPDPort(Map<String,Object> param){
         return totalMapper.selectSPDPort(param);
     }
 
@@ -51,7 +51,7 @@ public class TotalService {
         return totalMapper.selectETCRCount(param);
     }
 
-    public List<Integer> selectETCRPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectETCRPort(Map<String,Object> param){
         return totalMapper.selectETCRPort(param);
     }
 
@@ -59,7 +59,7 @@ public class TotalService {
         return totalMapper.selectLightningCount(param);
     }
 
-    public List<Integer> selectLightningPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectLightningPort(Map<String,Object> param){
         return totalMapper.selectLightningPort(param);
     }
 
@@ -67,7 +67,7 @@ public class TotalService {
         return totalMapper.selectStaticCount(param);
     }
 
-    public List<Integer> selectStaticPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectStaticPort(Map<String,Object> param){
         return totalMapper.selectStaticPort(param);
     }
 
@@ -75,7 +75,7 @@ public class TotalService {
         return totalMapper.selectRswsCount(param);
     }
 
-    public List<Integer> selectRswsPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectRswsPort(Map<String,Object> param){
         return totalMapper.selectRswsPort(param);
     }
 
@@ -83,7 +83,7 @@ public class TotalService {
         return totalMapper.selectSvtCount(param);
     }
 
-    public List<Integer> selectSvtPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectSvtPort(Map<String,Object> param){
         return totalMapper.selectSvtPort(param);
     }
 
@@ -91,7 +91,7 @@ public class TotalService {
         return totalMapper.selectHcCount(param);
     }
 
-    public List<Integer> selectHcPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectHcPort(Map<String,Object> param){
         return totalMapper.selectHcPort(param);
     }
 
@@ -99,11 +99,11 @@ public class TotalService {
         return totalMapper.selectStrayCount(param);
     }
 
-    public List<Integer> selectStray485Port(Map<String,Object> param){
+    public List<Map<String,Object>> selectStray485Port(Map<String,Object> param){
         return totalMapper.selectStray485Port(param);
     }
 
-    public List<Integer> selectStrayTestPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectStrayTestPort(Map<String,Object> param){
         return totalMapper.selectStrayTestPort(param);
     }
 
@@ -111,11 +111,11 @@ public class TotalService {
         return totalMapper.selectCatCount(param);
     }
 
-    public List<Integer> selectCat485Port(Map<String,Object> param){
+    public List<Map<String,Object>> selectCat485Port(Map<String,Object> param){
         return totalMapper.selectCat485Port(param);
     }
 
-    public List<Integer> selectCatTestPort(Map<String,Object> param){
+    public List<Map<String,Object>> selectCatTestPort(Map<String,Object> param){
         return totalMapper.selectCatTestPort(param);
     }
 

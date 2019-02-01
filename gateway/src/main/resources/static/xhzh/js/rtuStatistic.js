@@ -99,21 +99,52 @@ xh.load = function() {
 
         $scope.compareRS = function (x) {
             var rs485List = $scope.rs485List;
+            var count = 0;
+            var type;
             for(var i=0;i<rs485List.length;i++){
                 var temp = rs485List[i];
+                var port = temp["port"];
+                if(x == port){
+                    count++;
+                    type = temp["type"];
+                }
+            }
+            if(count>0){
+                return type+"("+count+")";
+            }else{
+                return x;
+            }
+        };
 
-                for (var p in temp) {
-                    if (temp.hasOwnProperty(p)){
-                        //console.log("p : "+p);
-                        //console.log("values : "+temp[p]);
-                        if(p == x){
-                            return temp[p];
-                        }
+        $scope.compareRSStyle = function (x) {
+            var rs485List = $scope.rs485List;
+            var count = 0;
+            var status = 0;
+            var alarm = 0;
+            for(var i=0;i<rs485List.length;i++){
+                var temp = rs485List[i];
+                var port = temp["port"];
+                if(x == port){
+                    count++;
+                    if(temp["status"] != null && temp["status"] != ""){
+                        status = status + parseInt(temp["status"]);
+                    }
+                    if(temp["alarm"] != null && temp["alarm"] != ""){
+                        alarm = alarm + parseInt(temp["alarm"]);
                     }
                 }
-
             }
-            return "";
+            if(count>0){
+                if(status > 0 && alarm == 0){
+                    return {"background-color" : "red"};
+                }else if(status > 0 && alarm > 0){
+                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
+                }else if(status == 0 && alarm > 0){
+                    return {"background-color" : "#EEAD0E"};
+                }
+            }else{
+                return {"background-color" : "grey"};
+            }
         };
 
         $scope.compareTest = function (x) {
@@ -132,18 +163,52 @@ xh.load = function() {
                 }
 
             }
-            return "";
+            return x;
+        };
+
+        $scope.compareTestStyle = function (x) {
+            var testList = $scope.testList;
+            for(var i=0;i<testList.length;i++){
+                var temp = testList[i];
+
+                for (var p in temp) {
+                    if (temp.hasOwnProperty(p)){
+                        //console.log("p : "+p);
+                        //console.log("values : "+temp[p]);
+                        if(p == x){
+                            var state = temp["0"];
+                            var alarm = temp["-1"];
+                            if(state == 0 && alarm == 0){
+                                return {"background-color" : "green"};
+                            }else if(state > 0 && alarm == 0){
+                                return {"background-color" : "red"};
+                            }else if(state > 0 && alarm > 0){
+                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
+                            }else if(state == 0 && alarm > 0){
+                                return {"background-color" : "#EEAD0E"};
+                            }
+                        }
+                    }
+                }
+
+            }
+            return {"background-color" : "grey"};
         };
 
         $scope.compareSpd = function (x) {
             var spdPorts = $scope.spdPort;
             for(var i=0;i<spdPorts.length;i++){
-                var temp = spdPorts[i];
+                var temp = spdPorts[i].spd_number;
                 if(temp == x){
-                    return true;
+                    var state = spdPorts[i].spd_state;
+                    if(state == 0){
+                        return {"background-color" : "green"};
+                    }else{
+                        return {"background-color" : "red"};
+                    }
                 }
             }
-            return false;
+            return {"background-color" : "grey"};
         };
 
 		/* 刷新数据 */

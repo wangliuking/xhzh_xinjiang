@@ -58,7 +58,7 @@ public interface TotalMapper {
     List<Map<String,Object>> selectSiteDeviceOffTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select a.rtu_id,b.* from rtu_now_data as a left join site_config as b on a.site_id=b.site_id where rtu_state=1 group by a.site_id"+
+            "select a.*,b.rtu_id,c.rtu_state from site_config as a left join rtu_config as b on a.site_id=b.site_id left join rtu_now_data as c on b.rtu_id=c.rtu_id where b.rtu_id is null or rtu_state=1 group by a.site_id"+
             "</script>")
     List<Map<String,Object>> selectSiteOffTotal(Map<String, Object> param);
 
@@ -127,12 +127,12 @@ public interface TotalMapper {
     int selectSPDTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select spd_number from spd_config where 1=1 "+
+            "select a.spd_number,b.spd_state from spd_config as a left join spd_now_data as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
             "</script>")
-    List<Integer> selectSPDPort(Map<String, Object> param);
+    List<Map<String,Object>> selectSPDPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from resistance_config where 1=1 "+
@@ -159,13 +159,13 @@ public interface TotalMapper {
     int selectETCRTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from resistance_config where rst_id!=0"+
+            "select a.rtu_port,sum(rst_state) rst_state,sum(alarm) alarm,a.rst_id from resistance_config as a left join resistance_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno where a.rst_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.rst_id"+
             "</script>")
-    List<Integer> selectETCRPort(Map<String, Object> param);
+    List<Map<String,Object>> selectETCRPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from lightning_config where 1=1 "+
@@ -192,13 +192,13 @@ public interface TotalMapper {
     int selectLightningTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from lightning_config where ltn_id!=0"+
+            "select a.rtu_port,b.ltn_state,a.ltn_id,alarm from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id where a.ltn_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port,ltn_id"+
+            "group by a.rtu_id,a.rtu_port,a.ltn_id"+
             "</script>")
-    List<Integer> selectLightningPort(Map<String, Object> param);
+    List<Map<String,Object>> selectLightningPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from static_electricity_config where 1=1 "+
@@ -225,13 +225,13 @@ public interface TotalMapper {
     int selectStaticTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from static_electricity_config where staet_id!=0 "+
+            "select a.rtu_port,b.staet_state,alarm,a.staet_id from static_electricity_config as a left join static_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.staet_id=b.staet_id where a.staet_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.staet_id"+
             "</script>")
-    List<Integer> selectStaticPort(Map<String, Object> param);
+    List<Map<String,Object>> selectStaticPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from humiture_config where 1=1 "+
@@ -258,13 +258,13 @@ public interface TotalMapper {
     int selectRswsTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from humiture_config where hmt_id!=0 "+
+            "select a.rtu_port,b.hmt_state,sum(tempAlarm)+sum(humiAlarm) alarm,a.hmt_id from humiture_config as a left join humiture_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.hmt_id=b.hmt_id where a.hmt_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.hmt_id"+
             "</script>")
-    List<Integer> selectRswsPort(Map<String, Object> param);
+    List<Map<String,Object>> selectRswsPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from tilt_config where 1=1 "+
@@ -291,13 +291,13 @@ public interface TotalMapper {
     int selectSvtTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from tilt_config where tilt_id!=0 "+
+            "select a.rtu_port,b.tilt_state,alarm,a.tilt_id from tilt_config as a left join tilt_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.tilt_id=b.tilt_id where a.tilt_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.tilt_id"+
             "</script>")
-    List<Integer> selectSvtPort(Map<String, Object> param);
+    List<Map<String,Object>> selectSvtPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from electrical_safety_config where 1=1 "+
@@ -324,13 +324,13 @@ public interface TotalMapper {
     int selectHcTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from electrical_safety_config where es_id!=0 "+
+            "select a.rtu_port,b.es_state,alarm,a.es_id from electrical_safety_config as a left join electrical_safety_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.es_id=b.es_id where a.es_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.es_id"+
             "</script>")
-    List<Integer> selectHcPort(Map<String, Object> param);
+    List<Map<String,Object>> selectHcPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from stray_electricity_config where 1=1 "+
@@ -357,22 +357,22 @@ public interface TotalMapper {
     int selectStrayTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from stray_electricity_config where stret_id!=0 "+
+            "select a.rtu_port,sum(stret_state) stret_state,sum(alarm) alarm,a.stret_id from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id and a.portId=b.portId where a.stret_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.stret_id"+
             "</script>")
-    List<Integer> selectStray485Port(Map<String, Object> param);
+    List<Map<String,Object>> selectStray485Port(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from stray_electricity_config where stret_id=0 "+
+            "select a.rtu_port,b.stret_state,sum(alarm) alarm from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id and a.portId=b.portId where a.stret_id=0"+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port"+
             "</script>")
-    List<Integer> selectStrayTestPort(Map<String, Object> param);
+    List<Map<String,Object>> selectStrayTestPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select * from cathode_config where 1=1 "+
@@ -399,22 +399,22 @@ public interface TotalMapper {
     int selectCatTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from cathode_config where cathode_id!=0 "+
+            "select a.rtu_port,b.cathode_state,alarm,a.cathode_id from cathode_config as a left join cathode_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.cathode_id=b.cathode_id where a.cathode_id!=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port,a.cathode_id"+
             "</script>")
-    List<Integer> selectCat485Port(Map<String, Object> param);
+    List<Map<String,Object>> selectCat485Port(Map<String, Object> param);
 
     @Select("<script>" +
-            "select rtu_port from cathode_config where cathode_id=0 "+
+            "select a.rtu_port,b.cathode_state,sum(alarm) alarm from cathode_config as a left join cathode_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.cathode_id=b.cathode_id where a.cathode_id=0 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
-            "and rtu_id =#{rtu_id}"+
+            "and a.rtu_id =#{rtu_id}"+
             "</if>"+
-            "group by rtu_id,rtu_port"+
+            "group by a.rtu_id,a.rtu_port"+
             "</script>")
-    List<Integer> selectCatTestPort(Map<String, Object> param);
+    List<Map<String,Object>> selectCatTestPort(Map<String, Object> param);
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +

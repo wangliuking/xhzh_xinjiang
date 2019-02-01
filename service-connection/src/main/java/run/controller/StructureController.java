@@ -27,6 +27,19 @@ public class StructureController {
 
     }
 
+    @RequestMapping(value = "/selectStructureList")
+    public List<Map<String,Object>> selectStructureList (HttpServletRequest req){
+        Map<String,Object> param = new HashMap<>();
+        String industry = req.getParameter("industry");
+        if(industry == null || "".equals(industry)){
+            param.put("industry","");
+        }else{
+            param.put("industry",industry);
+        }
+        List<Map<String,Object>> nodeList = structureService.selectStructureList(param);
+        return nodeList;
+    }
+
     @RequestMapping(value = "/insertStructure")
     public Map<String, Object> insertStructure (@RequestBody Node node){
         Map<String,Object> params = new HashMap<>();

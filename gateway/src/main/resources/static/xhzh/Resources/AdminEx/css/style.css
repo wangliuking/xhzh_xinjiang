@@ -724,7 +724,7 @@ h5.left-nav-title {
 }
 
 .notification-menu .dropdown-menu-usermenu {
-    background: #65cea7;
+    background: #428bca;
     min-width: 200px;
 }
 
@@ -4733,7 +4733,7 @@ ol.comment-list {
 	right: 0;
 }
 .left-side-collapsed #mainframe{
-	margin: 0 0 0 53px;
+	margin: 51px 0 0 53px;
 	padding: 0;
 	position: fixed;
 	/* width:100%; */
