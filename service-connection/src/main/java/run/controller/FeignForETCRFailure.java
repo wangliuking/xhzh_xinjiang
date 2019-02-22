@@ -4,14 +4,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FeignForETCRFailure implements FeignForETCR {
-    @Override
-    public String deleteETCRBySite(String site_id) {
-        return null;
-    }
 
     @Override
-    public String deleteETCRByRTU(String rtu_id) {
-        return null;
+    public Object deleteETCR(String rtu_id,String rst_id,String rtu_port) {
+        System.out.println("etcr service is not available !");
+        return 0;
     }
 
     @Override

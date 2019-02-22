@@ -160,7 +160,7 @@ public class SiteController {
     }
 
     @RequestMapping(value = "/updateSite", method = RequestMethod.POST)
-    public Map<String, Object> updateSite(@RequestBody Site site){
+    public Map<String, Object> updateSite(@RequestBody Site site,HttpServletRequest req){
         int result = siteService.updateSite(site);
         Map<String,Object> map = new HashMap<>();
         if(result>0){

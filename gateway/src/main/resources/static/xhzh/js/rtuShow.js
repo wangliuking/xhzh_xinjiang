@@ -163,6 +163,152 @@ xh.load = function() {
             });
         }
 
+        $scope.changeRSTabClass = function(x){
+            var type = $scope.deviceTypeChoosed;
+            var chooseDevId = $scope.modalDeviceId;
+            if($scope.modal485Test == 1){
+                //为模拟量
+                return "nav-link active";
+            }
+            if(type == 1){
+                if(x.rst_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 3){
+                if(x.ltn_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 4){
+                if(x.staet_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 5){
+                if(x.hmt_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 6){
+                if(x.tilt_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 7){
+                if(x.es_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 8){
+                if(x.stret_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }else if(type == 9){
+                if(x.cathode_id == chooseDevId){
+                    return "nav-link active";
+                }else{
+                    return "nav-link";
+                }
+            }
+        }
+
+        $scope.changeRSContentClass = function(x){
+            var type = $scope.deviceTypeChoosed;
+            var chooseDevId = $scope.modalDeviceId;
+            if($scope.modal485Test == 1){
+                //为模拟量
+                return "tab-pane show active";
+            }
+            if(type == 1){
+                if(x.rst_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 3){
+                if(x.ltn_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 4){
+                if(x.staet_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 5){
+                if(x.hmt_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 6){
+                if(x.tilt_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 7){
+                if(x.es_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 8){
+                if(x.stret_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }else if(type == 9){
+                if(x.cathode_id == chooseDevId){
+                    return "tab-pane show active";
+                }else{
+                    return "tab-pane";
+                }
+            }
+        }
+
+        $scope.showRSDev = function(event,x){
+            //将状态设置为485，便于ng-class操作
+            $scope.modal485Test = 0;
+            var tempList = $scope.rs485List;
+            var showList = [];
+            for(var i=0;i<tempList.length;i++){
+                if(tempList[i].port == x){
+                    showList.push(tempList[i]);
+                }
+            }
+            var tempHtml = "";
+            var redColor = 'background:-webkit-linear-gradient(left, red , #EEAD0E);background:-o-linear-gradient(top, red, #EEAD0E);background:-moz-linear-gradient(top, red, #EEAD0E);background:linear-gradient(to top, red , #EEAD0E)';
+            var greenColor = 'background:-webkit-linear-gradient(top, #008B00 , #00FF00);background:-o-linear-gradient(top, #008B00 , #00FF00);background:-moz-linear-gradient(top, #008B00 , #00FF00);background:linear-gradient(to top, #008B00 , #00FF00)';
+            for(var i=0;i<showList.length;i++){
+                var color = "";
+                if(showList[i].alarm == 0 && showList[i].status == 0){
+                    color = greenColor;
+                }else{
+                    color = redColor;
+                }
+                tempHtml += '<div class="tableStyle" style="float: left;margin:2px;'+color+'"><a href="javascript:void(0);" style="color: white;" onclick="popToModel('+x+','+showList[i].deviceId+')">'+showList[i].deviceId+'</a></div>';
+            }
+            $(event.target).popover({
+                placement:'bottom',
+                /*title:'啦啦啦',*/
+                html:true,
+                content:'<div style="height: 70px;">'+tempHtml+'</div>'
+            }).popover('show');
+        }
+
         $scope.showRSDevice = function(x){
             var type = $scope.judgeDeviceRSType(x);
             $scope.setTimeType = 1;
@@ -170,6 +316,9 @@ xh.load = function() {
         }
 
         $scope.showTestDevice = function(x){
+            //将状态设置为模拟，便于ng-class操作
+            $scope.modal485Test = 1;
+
             var type = $scope.judgeDeviceTestType(x);
             $scope.setTimeType = 0;
             console.log(type);
@@ -375,15 +524,11 @@ xh.load = function() {
                 }
             }
             if(count>0){
-                if(status > 0 && alarm == 0){
-                    return {"background-color" : "red"};
-                }else if(status > 0 && alarm > 0){
-                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                }else if(status == 0 && alarm > 0){
-                    return {"background-color" : "#EEAD0E"};
+                if(status == 0 && alarm == 0){
+                    return {"background" : "-webkit-linear-gradient(top, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
+                }else{
+                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                 }
-            }else{
-                return {"background-color" : "grey"};
             }
         };
 
@@ -419,20 +564,15 @@ xh.load = function() {
                             var state = temp["0"];
                             var alarm = temp["-1"];
                             if(state == 0 && alarm == 0){
-                                return {"background-color" : "green"};
-                            }else if(state > 0 && alarm == 0){
-                                return {"background-color" : "red"};
-                            }else if(state > 0 && alarm > 0){
-                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                            }else if(state == 0 && alarm > 0){
-                                return {"background-color" : "#EEAD0E"};
+                                return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
+                            }else{
+                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                             }
                         }
                     }
                 }
 
             }
-            return {"background-color" : "grey"};
         };
 
         $scope.compareSpd = function (x) {
@@ -442,13 +582,12 @@ xh.load = function() {
                 if(temp == x){
                     var state = spdPorts[i].spd_state;
                     if(state == 0){
-                        return {"background-color" : "green"};
+                        return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)"};
                     }else{
-                        return {"background-color" : "red"};
+                        return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)"};
                     }
                 }
             }
-            return {"background-color" : "grey"};
         };
 
 		/* 刷新数据 */
@@ -469,23 +608,33 @@ xh.refresh = function() {
 
 var countdown = 60;
 var result = "no";
-
+var initValue;
 function settime(obj) {
     var $scope = angular.element(appElement).scope();
-    console.log("=====");
-    console.log($scope.setTimeType);
+    //console.log("=====");
+    //console.log($scope.setTimeType);
     //console.log(obj);
     if(countdown == 60){
+        initValue = $(obj).text();
         var rtu_id = $("#testRTU").val();
-        var channo = $(obj).siblings("input").eq(0).val();
+        var deviceType = $(obj).val();
+        var channo;
+        var deviceId;
+        if(deviceType == 5 || deviceType == 6 || deviceType == 7){
+            channo = $(obj).parent().parent().siblings().eq(0).find("div").eq(0).find("input").val();
+            deviceId = $(obj).parent().parent().siblings().eq(0).find("div").eq(1).find("input").val();
+        }else{
+            channo = $(obj).parent().parent().siblings().eq(0).find("div").find("input").val();
+            deviceId = $(obj).parent().parent().siblings().eq(1).find("div").find("input").val();
+        }
+
         if($scope.setTimeType == 0){
             channo = parseInt(channo)+20;
         }
-        var deviceId = $(obj).siblings("input").eq(1).val();
-        var deviceType = $(obj).val();
         var name = $(obj).attr("name");
-        //console.log($(obj).siblings("input"));
         console.log(rtu_id+"=="+channo+"=="+deviceId+"=="+deviceType+"=="+name);
+
+        //var data = {"resultValue":[9,8,7,6,5]};
         $.ajax({
             url : '../../mq/getDeviceInfo?rtu_id='+rtu_id+'&channo='+channo+'&deviceId='+deviceId+'&deviceType='+deviceType+"&portId="+name,
             contentType : "application/json;charset=utf-8",
@@ -498,60 +647,55 @@ function settime(obj) {
                 if(deviceType == 3){//温湿度
                     var i = parseFloat(data.resultValue[0]);
                     var j = parseFloat(data.resultValue[1]);
-                    $(obj).siblings("input").eq(2).val(j);
-                    $(obj).siblings("input").eq(3).val(i);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(j);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(i);
                 }else if(deviceType == 5){//倾斜度
                     var x = parseFloat(data.resultValue[0]);
                     var y = parseFloat(data.resultValue[1]);
-                    $(obj).siblings("input").eq(2).val(x);
-                    $(obj).siblings("input").eq(3).val(y);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(x);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(y);
                     var tanX = Math.tan(x/180*(Math.PI));
                     var tanY = Math.tan(y/180*(Math.PI));
                     var Z = Math.sqrt((tanX*tanX)+(tanY*tanY));
-                    $(obj).siblings("input").eq(4).val(tanX);
-                    $(obj).siblings("input").eq(5).val(tanY);
-                    $(obj).siblings("input").eq(6).val(Z);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(tanX);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(tanY);
+                    $(obj).parent().parent().siblings().eq(3).find("div").find("input").val(Z);
                 }else if(deviceType == 6){//电气安全
                     var a = parseFloat(data.resultValue[0]);
                     var b = parseFloat(data.resultValue[1]);
                     var c = parseFloat(data.resultValue[2]);
                     var d = parseFloat(data.resultValue[3]);
-                    $(obj).siblings("input").eq(2).val(a);
-                    $(obj).siblings("input").eq(3).val(b);
-                    $(obj).siblings("input").eq(4).val(c);
-                    $(obj).siblings("input").eq(5).val(d);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(a);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(b);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(c);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(d);
                 }else if(deviceType == 7){//杂散电流
                     var a = parseFloat(data.resultValue[0]);
                     var b = parseFloat(data.resultValue[1]);
                     var c = parseFloat(data.resultValue[2]);
                     var d = parseFloat(data.resultValue[3]);
-                    $(obj).siblings("input").eq(2).val(a);
-                    $(obj).siblings("input").eq(3).val(b);
-                    $(obj).siblings("input").eq(4).val(c);
-                    $(obj).siblings("input").eq(5).val(d);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(a);
+                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(b);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(c);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(d);
                 }else{
                     var i = parseFloat(data.resultValue);
                     var a = Math.round(i*100);
                     var res = a/100;
-                    $(obj).siblings("input").eq(2).val(res);
+                    $(obj).parent().parent().siblings().eq(2).find("div").find("input").val(res);
                 }
-
-            },
-            error : function() {
             }
         });
     }
 
     if (countdown == 0) {
         $("button").attr('disabled',false);
-        //obj.removeAttribute("disabled");
-        obj.innerHTML = "";
+        console.log("进来了！！！"+initValue);
+        obj.innerHTML = initValue;
         countdown = 60;
-        //$scope.testETCR1 = Math.floor(Math.random()*10)+1.1;
         return;
     } else {
         $("button").attr('disabled',true);
-        //obj.setAttribute("disabled", true);
         obj.innerHTML = countdown;
         countdown--;
     }
@@ -562,11 +706,18 @@ function settime(obj) {
     }else{
         $("button").attr('disabled',false);
         //obj.removeAttribute("disabled");
-        obj.innerHTML = "";
+        obj.innerHTML = initValue;
         countdown = 60;
         //$scope.testETCR1 = Math.floor(Math.random()*10)+1.1;
         result = "no";
         return;
     }
 
+}
+
+function popToModel(x,deviceId) {
+    //pop悬浮窗跳转模态框
+    var $scope = angular.element(appElement).scope();
+    $scope.modalDeviceId = deviceId;
+    $scope.showRSDevice(x);
 }

@@ -141,6 +141,8 @@ xh.load = function() {
                     return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
                 }else if(status == 0 && alarm > 0){
                     return {"background-color" : "#EEAD0E"};
+                }else{
+                    return {"background-color" : "green"};
                 }
             }else{
                 return {"background-color" : "grey"};
@@ -204,7 +206,7 @@ xh.load = function() {
                     if(state == 0){
                         return {"background-color" : "green"};
                     }else{
-                        return {"background-color" : "red"};
+                        return {"background-color" : "#EEAD0E"};
                     }
                 }
             }

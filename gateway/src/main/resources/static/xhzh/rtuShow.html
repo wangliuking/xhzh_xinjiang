@@ -34,11 +34,44 @@
         .tableStyle {
             width: 60px;
             height: 60px;
-            background-color: #0caff4;
-            color: white;
             text-align: center;
-            font-size: 18px;
-            border: 1px solid white;
+            line-height: 60px;
+            border:0px;
+            background:-webkit-linear-gradient(#37578C, #608BAE);
+            background:-moz-linear-gradient(#37578C, #608BAE);
+            background:-ms-linear-gradient(#37578C, #608BAE);
+            background:-o-linear-gradient(#37578C, #608BAE);
+            background:linear-gradient(#37578C, #608BAE);
+            box-shadow:0px 4px 0px 0px #37578C;
+            color:#FFFFFF;
+            font-family:Verdana, Geneva, sans-serif;
+            font-weight:bold;
+            font-size:16px;
+            text-decoration:none;
+            vertical-align:middle;
+
+            padding:2px 10px 2px 10px;
+            border-radius:5px 5px 5px 5px;
+
+        }
+        .tableStyle:hover{
+            background:-webkit-linear-gradient(#37578C, #5467ae);
+            background:-moz-linear-gradient(#37578C, #5467ae);
+            background:-ms-linear-gradient(#37578C, #5467ae);
+            background:-o-linear-gradient(#37578C, #5467ae);
+            background:linear-gradient(#37578C, #5467ae);
+        }
+        table tr{
+            margin-top: 10px;
+        }
+        .rtuTable{
+            height:320px;
+            width: 100%;
+            border-collapse:separate;
+            border-spacing:2px 5px;
+        }
+        .popover{
+            z-index: 99;
         }
     </style>
 </head>
@@ -126,19 +159,19 @@
                             <h4 class="header-title">RTU下挂设备</h4>
                             <hr/>
                             <div ng-show="rtuId == 0">暂无相关设备</div>
-                            <table ng-show="rtuId != 0" style="height:320px;width: 100%;">
+                            <table ng-show="rtuId != 0" class="rtuTable">
                                 <tbody>
                                 <tr>
                                     <td rowspan="1" class="tableStyle">数字量</td>
                                     <td class="tableStyle" ng-repeat="x in spdPort1" ng-style="compareSpd(x)">{{$index+1}}</td>
                                 </tr>
                                 <tr>
-                                    <td rowspan="1" class="tableStyle">模拟量</td>
-                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-style="compareTestStyle(x)"><a href="javascript:void(0);" ng-click="showTestDevice(x)" style="color: white;">{{compareTest(x)}}</a></td>
+                                    <td rowspan="1" class="tableStyle" style="pointer-events: none;">模拟量</td>
+                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-style="compareTestStyle(x)" ng-click="showTestDevice(x)">{{compareTest(x)}}</td>
                                 </tr>
                                 <tr>
-                                    <td rowspan="1" class="tableStyle">RS485</td>
-                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-style="compareRSStyle(x)"><a href="javascript:void(0);" ng-click="showRSDevice(x)" style="color: white;">{{compareRS(x)}}</a></td>
+                                    <td rowspan="1" class="tableStyle" style="pointer-events: none;">RS485</td>
+                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-style="compareRSStyle(x)" ng-click="showRSDev($event,x)">{{compareRS(x)}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -164,6 +197,7 @@
 
 <div ng-include="'rtuShow-show.html'"></div>
 <!-- bundle -->
+<script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="angularjs/jquery-3.2.1.min.js"></script>
 <script src="angularjs/angular.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -178,6 +212,7 @@
     xh.load();
     $(document).ready(function() {
         $('.splash').css('display', 'none');
+        $("[data-toggle='popover']").popover();
     });
 </script>
 </body>

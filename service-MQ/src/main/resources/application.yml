@@ -7,6 +7,10 @@ spring:
     password: XinHong12345
     driver-class-name: com.mysql.jdbc.Driver
 eureka:
+  instance:
+    prefer-ip-address: true #以IP地址注册到服务中心
+    hostname: ${spring.cloud.client.ipAddress}
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
   client:
     serviceUrl:
       defaultZone: http://test:test@localhost:8081/eureka/

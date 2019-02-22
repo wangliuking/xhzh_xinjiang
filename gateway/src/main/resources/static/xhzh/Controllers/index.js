@@ -15,10 +15,29 @@ xh.load = function() {
 			$('body').attr('id', "skin-blur-ocean");
 		}
 
-		/*$http.get("web/webMenu").success(function(response) {
-			$scope.menu=response.items;
-		
-		});*/
+        //判断是否登录start
+        $.ajax({
+            type: 'GET',
+            url: "../../connect/ensure",
+            async: false,
+            dataType: 'json',
+            success: function(response){
+
+            } ,
+            error: function () {
+                alert("登录已失效，请重新登录！");
+                window.location.href = "../login.html";
+                window.parent.location.href = "../login.html";
+            }
+        });
+        //判断是否登录end
+
+		$http.get("../../getLoginUser").success(function(response) {
+			console.log("======");
+			console.log(response);
+            console.log("======");
+            $scope.power = response;
+		});
 	});
 };
 /* 获取cookie */

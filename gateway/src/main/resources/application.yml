@@ -100,6 +100,10 @@ zuul:
       path: /total/**
       serviceId: service-total
 eureka:
+  instance:
+    prefer-ip-address: true #以IP地址注册到服务中心
+    hostname: ${spring.cloud.client.ipAddress}
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
   client:
     service-url:
       defaultZone: http://test:test@localhost:8081/eureka/

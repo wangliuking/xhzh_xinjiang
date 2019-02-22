@@ -21,6 +21,22 @@ public class RTUController {
     @Autowired
     FeignForSPD feignForSPD;
     @Autowired
+    FeignForETCR feignForETCR;
+    @Autowired
+    FeignForLightning feignForLightning;
+    @Autowired
+    FeignForStatic feignForStatic;
+    @Autowired
+    FeignForRsws feignForRsws;
+    @Autowired
+    FeignForSvt feignForSvt;
+    @Autowired
+    FeignForHc feignForHc;
+    @Autowired
+    FeignForStray feignForStray;
+    @Autowired
+    FeignForCat feignForCat;
+    @Autowired
     FeignForMQ feignForMQ;
     @Autowired
     AsyncController asyncController;
@@ -159,6 +175,8 @@ public class RTUController {
         param.put("rtu",rtu);
         param.put("op",1);
         asyncController.asyncSendRtuDelNewConf(param);
+        //删除相关设备配置
+        asyncController.asyncDelDeviceByRTUID(id);
         Map<String,Object> map = new HashMap<>();
         if(res>0){
             map.put("success",true);

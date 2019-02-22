@@ -124,7 +124,7 @@ xh.load = function() {
 		};
 
 		/* 删除 */
-		$scope.delBs = function(id) {
+		$scope.delBs = function(id,siteInfo) {
 			swal({
 				title : "提示",
 				text : "确定要删除该站点吗？这同时会删除RTU和相关设备",
@@ -147,6 +147,19 @@ xh.load = function() {
 							if (data.success) {
 								toastr.success(data.message, '提示');
 								$scope.refresh();
+
+                                //记录日志
+                                var type = "删除操作";
+                                var content = "删除了站点"+siteInfo.site_name;
+                                $.ajax({
+                                    url : "../../insertLog?type="+type+"&content="+content,
+                                    contentType : "application/json;charset=utf-8",
+                                    type : 'GET',
+                                    success : function() {
+                                        console.log("记录日志结束");
+                                    }
+                                });
+
 							} else {
 								toastr.error(data.message, '提示');
 							}
@@ -294,6 +307,19 @@ xh.addRTU = function() {
                 $('#addRTU').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "新增操作";
+                var content = "新增了RTU id为"+f.rtu_id;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
+
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -326,6 +352,20 @@ xh.add = function() {
                 $('#add').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //console.log(str);
+                //记录日志
+                var type = "新增操作";
+                var content = "新增了站点"+f.site_name;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
+
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -359,6 +399,19 @@ xh.edit = function() {
                 $('#edit').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了站点,站点为"+f.site_name;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
+
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();

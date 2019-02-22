@@ -36,7 +36,7 @@ public class ExcelUtil {
         //写入List<>中的数据
         int rowNum = 1;
 
-        String[] headers = { "学号", "姓名", "身份类型", "登录密码"};
+        String[] headers = { "RTU-ID", "设备ID", "RTU端口号", "继电器编号","设备类型","数值","记录时间"};
         //headers表示excel表中第一行的表头
         HSSFRow row = sheet.createRow(0);
         //在excel表中添加表头
@@ -51,22 +51,31 @@ public class ExcelUtil {
             HSSFRow row1 = sheet.createRow(rowNum);
             row1.createCell(0).setCellValue(map.get("rtu_id")+"");
             row1.createCell(1).setCellValue(map.get("rst_id")+"");
-            row1.createCell(2).setCellValue(map.get("rst_location")+"");
-            row1.createCell(3).setCellValue(map.get("rst_name")+"");
+            row1.createCell(2).setCellValue(map.get("rtu_channel")+"");
+            row1.createCell(3).setCellValue(map.get("relayno")+"");
+            row1.createCell(4).setCellValue(map.get("rst_type")+"");
+            row1.createCell(5).setCellValue(map.get("rst_value")+"");
+            row1.createCell(6).setCellValue(map.get("write_time")+"");
             rowNum++;
         }
 
         //准备将Excel的输出流通过response输出到页面下载
+        System.out.println(workbook.getSheet("test"));
+        System.out.println(sheet.getHeader());
         //八进制输出流
+        System.out.println("八进制输出流");
         response.setContentType("application/octet-stream");
 
         //设置导出Excel的名称
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+        System.out.println("设置导出Excel的名称");
+        response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1") +".xls");
 
         //刷新缓冲
+        System.out.println("刷新缓冲");
         response.flushBuffer();
 
         //workbook将Excel写入到response的输出流中，供页面下载该Excel文件
+        System.out.println("workbook将Excel写入到response的输出流");
         workbook.write(response.getOutputStream());
 
         //关闭workbook

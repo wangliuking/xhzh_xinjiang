@@ -61,6 +61,30 @@ public interface AlarmInfoMapper {
     @Insert("replace into rtu_alarm_data(rtu_id,rtu_channel,devieceId,deviceType,relayNo,alarmStatus,udpateTime,type,alarmStr) values(#{rtuId},#{channo},#{deviceid},#{devicetype},#{relayno},#{status},now(),3,#{alarmStr})")
     int insertAlarmNow(AlarmInfo alarmInfo);
 
-    @Delete("delete from rtu_alarm_data where channo=#{channo} and deviceid=#{deviceid} and relayno=#{relayno} and rtuId=#{rtuId} and devicetype=#{devicetype} and type=3")
+    @Delete("delete from rtu_alarm_data where rtu_channel=#{channo} and devieceId=#{deviceid} and relayNo=#{relayno} and rtu_id=#{rtuId} and deviceType=#{devicetype} and type=3")
     int deleteAlarmNow(AlarmInfo alarmInfo);
+
+    @Update("update resistance_now_data set rst_state=1 where rtu_id=#{rtuId} and rst_id=#{deviceid} and rtu_channel=#{channo} and relayno=#{relayno}")
+    int updateEtcrNow(AlarmInfo alarmInfo);
+
+    @Update("update lightning_now_data set ltn_state=1 where rtu_id=#{rtuId} and ltn_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateLightningNow(AlarmInfo alarmInfo);
+
+    @Update("update static_electricity_now_data set staet_state=1 where rtu_id=#{rtuId} and staet_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateStaticNow(AlarmInfo alarmInfo);
+
+    @Update("update humiture_now_data set hmt_state=1 where rtu_id=#{rtuId} and hmt_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateRswsNow(AlarmInfo alarmInfo);
+
+    @Update("update tilt_now_data set tilt_state=1 where rtu_id=#{rtuId} and tilt_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateSvtNow(AlarmInfo alarmInfo);
+
+    @Update("update electrical_safety_now_data set es_state=1 where rtu_id=#{rtuId} and es_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateHcNow(AlarmInfo alarmInfo);
+
+    @Update("update stray_electricity_now_data set stret_state=1 where rtu_id=#{rtuId} and stret_id=#{deviceid} and rtu_channel=#{channo} and portId=#{relayno}")
+    int updateStrayNow(AlarmInfo alarmInfo);
+
+    @Update("update cathode_now_data set cathode_state=1 where rtu_id=#{rtuId} and cathode_id=#{deviceid} and rtu_channel=#{channo}")
+    int updateCatNow(AlarmInfo alarmInfo);
 }

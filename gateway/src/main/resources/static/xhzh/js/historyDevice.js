@@ -91,7 +91,6 @@ xh.load = function() {
         success(function(response){
             var data = response.items;
             var siteNames = [];
-            siteNames.push({"site_id":"","site_name":"全部站点"});
             for(var i=0;i<data.length;i++){
                 siteNames.push({"site_id":data[i].site_id,"site_name":data[i].site_name});
             }
@@ -126,6 +125,125 @@ xh.load = function() {
         var goSiteId = $location.search().id;
         if(typeof(goSiteId) == "undefined" ){
             goSiteId = "";
+        }
+
+        //多级联动start
+        $scope.changeSiteName = function(x){
+            console.log(x);
+            $http.get("../../connect/selectAllRTU?site_id="+x).
+            success(function(response){
+                var data = response.items;
+                var rtuNames = [];
+                for(var i=0;i<data.length;i++){
+                    rtuNames.push({"rtu_id":data[i].rtu_id,"rtu_name":data[i].rtu_id});
+                }
+                $scope.rtuNames = rtuNames;
+            });
+        }
+
+        $scope.changeDeviceName = function(x){
+            var deviceName = $("#deviceName").val();
+            var rtu_id = $("#rtuName").val();
+            if(deviceName == 1){
+                $http.get("../../spd/selectAllSPD?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].spd_number});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 2){
+                $http.get("../../etcr/selectAllETCR?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].rst_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 3){
+                $http.get("../../lightning/selectAllLightning?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].ltn_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 4){
+                $http.get("../../static/selectAllStatic?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].staet_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 5){
+                $http.get("../../rsws/selectAllRsws?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].hmt_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 6){
+                $http.get("../../svt/selectAllSvt?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].tilt_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 7){
+                $http.get("../../hc/selectAllHc?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].es_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 8){
+                $http.get("../../stray/selectAllStray?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].stret_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }else if(deviceName == 9){
+                $http.get("../../cat/selectAllCat?rtu_id="+rtu_id).
+                success(function(response){
+                    console.log(response);
+                    var tempArr = response.items;
+                    var deviceIdArr = [];
+                    for(var i=0;i<tempArr.length;i++){
+                        deviceIdArr.push({"id":tempArr[i].cathode_id});
+                    }
+                    $scope.deviceIds = deviceIdArr;
+                });
+            }
         }
 		
 		/* 刷新数据 */

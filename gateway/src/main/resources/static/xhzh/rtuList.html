@@ -94,25 +94,27 @@
                     <!-- end page title -->
                     <div class="row">
                     <div class="card" style="width:22%;margin:30px 0 0px 30px;border-radius:8px;background-color: #FFFAFA;" ng-repeat="x in data">
-                        <div ng-if="x.rtu_state == 0" class="pull-left" style="width:100px;height: 42px;background-color: #27b056;line-height: 41px;border-top-left-radius:8px;">
-                            <img src="iconfont/防护.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">正常</span>
-                        </div>
-                        <div ng-if="x.rtu_state == 2" class="pull-left" style="width:100px;height: 42px;background-color: #b08723;line-height: 41px;border-top-left-radius:8px;">
-                            <img src="iconfont/防护.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">异常</span>
-                        </div>
-                        <div ng-if="x.rtu_state == 1" class="pull-left" style="width:100px;height: 42px;background-color: #bfbfbf;line-height: 41px;border-top-left-radius:8px;"">
-                            <img src="iconfont/离线检查.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">离线</span>
-                        </div>
+                        <div>
+                            <div ng-if="x.rtu_state == 0" style="float:left;width:28%;height: 42px;background-color: #27b056;line-height: 41px;border-top-left-radius:8px;">
+                                <img src="iconfont/防护.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">正常</span>
+                            </div>
+                            <div ng-if="x.rtu_state == 2" style="float:left;width:28%;height: 42px;background-color: #b08723;line-height: 41px;border-top-left-radius:8px;">
+                                <img src="iconfont/防护.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">异常</span>
+                            </div>
+                            <div ng-if="x.rtu_state == 1" style="float:left;width:28%;height: 42px;background-color: #bfbfbf;line-height: 41px;border-top-left-radius:8px;"">
+                                <img src="iconfont/离线检查.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">离线</span>
+                            </div>
 
-                        <div class="pull-right" style="width:242px;position: absolute;top:1%;right: 0;">
-                            <button type="button" class="btn btn-outline-light"  title="在该RTU中添加设备" ng-click="goDevice(x.rtu_id,x.site_id)"><i class="mdi mdi-plus" style="color: #4876FF;"></i></button>
-                            <button type="button" class="btn btn-outline-light" title="修改该RTU" ng-click="showEdit($index)"><i class="mdi mdi-box-cutter" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="数据统计" ng-click="goRTUStatistic(x.rtu_id)"><i class="mdi mdi-atlassian" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="设备列表" ng-click="goDevice(x.rtu_id)"><i class=" mdi mdi-camera-metering-matrix" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="删除该RTU" ng-click="delBs(x.rtu_id)"><i class="mdi mdi-close-circle" style="color: #EE4000;"></i> </button>
+                            <div style="float:right;width:66%;margin-top: 3px;">
+                                <button type="button" class="btn btn-outline-light"  title="在该RTU中添加设备" ng-click="goDevice(x.rtu_id,x.site_id)"><i class="mdi mdi-plus" style="color: #4876FF;"></i></button>
+                                <button type="button" class="btn btn-outline-light" title="修改该RTU" ng-click="showEdit($index)"><i class="mdi mdi-box-cutter" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="数据统计" ng-click="goRTUStatistic(x.rtu_id)"><i class="mdi mdi-atlassian" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="设备列表" ng-click="goDevice(x.rtu_id)"><i class=" mdi mdi-camera-metering-matrix" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="删除该RTU" ng-click="delBs(x.rtu_id)"><i class="mdi mdi-close-circle" style="color: #EE4000;"></i> </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive-sm">

@@ -101,26 +101,29 @@
                     <!-- end page title -->
                     <div class="row">
                     <div class="card" style="width:22%;margin:30px 0 0px 30px;border-radius:8px;background-color: #FFFAFA;" ng-repeat="x in data">
-                        <div ng-if="x.status == 0" class="pull-left" style="width:100px;height: 41px;background-color: #27b056;line-height: 41px;border-top-left-radius:8px;">
-                            <img src="iconfont/防护.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">正常</span>
-                        </div>
-                        <div ng-if="x.status == 2" class="pull-left" style="width:100px;height: 41px;background-color: #b08723;line-height: 41px;border-top-left-radius:8px;">
-                            <img src="iconfont/账号异常.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">异常</span>
-                        </div>
-                        <div ng-if="x.status == 1" class="pull-left" style="width:100px;height: 41px;background-color: #bfbfbf;line-height: 41px;border-top-left-radius:8px;">
-                            <img src="iconfont/断开.png" width="30" height="30" style="margin:0 6px 6px 6px;">
-                            <span style="color: white;">断开</span>
+                        <div>
+                            <div ng-if="x.status == 0" style="float:left;width:28%;height: 41px;background-color: #27b056;line-height: 41px;border-top-left-radius:8px;">
+                                <img src="iconfont/防护.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">正常</span>
+                            </div>
+                            <div ng-if="x.status == 2" style="float:left;width:28%;height: 41px;background-color: #b08723;line-height: 41px;border-top-left-radius:8px;">
+                                <img src="iconfont/账号异常.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">异常</span>
+                            </div>
+                            <div ng-if="x.status == 1" style="float:left;width:28%;height: 41px;background-color: #bfbfbf;line-height: 41px;border-top-left-radius:8px;">
+                                <img src="iconfont/断开.png" width="30" height="30" style="margin:0 2px 6px 6px;">
+                                <span style="color: white;">断开</span>
+                            </div>
+
+                            <div style="float:right;width:66%;margin-top: 3px;">
+                                <button type="button" class="btn btn-outline-light"  title="在该站点中添加RTU" ng-click="showAddRtu(x.site_id)"><i class="mdi mdi-plus" style="color: #4876FF;"></i></button>
+                                <button type="button" class="btn btn-outline-light" title="修改该站点配置" ng-click="showEdit($index)"><i class="mdi mdi-box-cutter" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="数据统计" ng-click="goStatistic(x.site_id)"><i class="mdi mdi-atlassian" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="历史数据" ng-click="goHistory(x.site_id)"><i class="mdi mdi-chart-bar" style="color: #4876FF;"></i> </button>
+                                <button type="button" class="btn btn-outline-light" title="删除该站点" ng-click="delBs(x.site_id,x)"><i class="mdi mdi-close-circle" style="color: #EE4000;"></i> </button>
+                            </div>
                         </div>
 
-                        <div class="pull-right" style="width:242px;position: absolute;top:1%;right: 0;">
-                            <button type="button" class="btn btn-outline-light"  title="在该站点中添加RTU" ng-click="showAddRtu(x.site_id)"><i class="mdi mdi-plus" style="color: #4876FF;"></i></button>
-                            <button type="button" class="btn btn-outline-light" title="修改该站点配置" ng-click="showEdit($index)"><i class="mdi mdi-box-cutter" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="数据统计" ng-click="goStatistic(x.site_id)"><i class="mdi mdi-atlassian" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="历史数据" ng-click="goHistory(x.site_id)"><i class="mdi mdi-chart-bar" style="color: #4876FF;"></i> </button>
-                            <button type="button" class="btn btn-outline-light" title="删除该站点" ng-click="delBs(x.site_id)"><i class="mdi mdi-close-circle" style="color: #EE4000;"></i> </button>
-                        </div>
                         <div class="card-body">
                             <div class="table-responsive-sm">
                                 <table class="table table-centered mb-0">

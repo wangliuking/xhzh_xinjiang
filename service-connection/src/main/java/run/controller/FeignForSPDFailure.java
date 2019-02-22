@@ -19,4 +19,10 @@ public class FeignForSPDFailure implements FeignForSPD {
         System.out.println("spd service is not available !");
         return 0;
     }
+
+    @Override
+    public Object deleteSPD(String rtu_id,String spd_number,String site_id) {
+        System.out.println("spd service is not available !");
+        return 0;
+    }
 }

@@ -58,7 +58,7 @@
         .footer {
             border-top: 1px solid rgba(152, 166, 173, .2);
             bottom: 0;
-            padding: 12px 30px 13px;
+            padding: 6px 30px 7px;
             position: fixed;
             right: 0;
             color: #98a6ad;
@@ -140,17 +140,15 @@
                     <img alt="" src="Resources/images/icon/64/user.png"
                          class="media-object">
                     <div class="media-body">
-                        <h4>{{loginUser}}</h4>
+                        <h4>{{power.username}}</h4>
                         <span></span>
                     </div>
                 </div>
 
                 <h5 class="left-nav-title">会员中心</h5>
                 <ul class="nav nav-pills nav-stacked custom-nav">
-                    <li><a href="Views/operations/email.html" target="mainframe"><i
-                            class="fa fa-user"></i> <span>邮件</span></a></li>
-                    <li><a href="Views/web/updateMember.html" target="mainframe"><i
-                            class="fa fa-cog"></i> <span>修改个人资料</span></a></li>
+                    <!--<li><a href="Views/web/updateMember.html" target="mainframe"><i
+                            class="fa fa-cog"></i> <span>修改个人资料</span></a></li>-->
                     <li><a href="javascript:void(0);" onclick="js_method()"><i class="fa fa-sign-out"></i>
                         <span>退出</span></a></li>
                 </ul>
@@ -158,20 +156,27 @@
 
             <!--sidebar nav start-->
             <ul class="nav nav-pills nav-stacked custom-nav">
-                <li class="menu-list nav-active"><a href=""><i
-                        class="fa fa-flash"></i> <span>智能防护</span></a>
+                <li class="menu-list"><a href=""><i
+                        class="fa fa-desktop"></i> <span>大屏显示</span></a>
                     <ul class="sub-menu-list">
-                        <li><a href="Views/menu/menu_device.html" target="mainframe">现场配置</a></li>
-                        <li><a href="Views/menu/menu_search.html"
-                               target="mainframe"> 数据查询</a></li>
-                        <li><a href="dataStatistics.html"
-                               target="mainframe">数据统计</a></li>
-                        <li><a href="systemAlarm.html" target="mainframe">系统报警</a></li>
-                        <li><a href="deviceMaintainList.html" target="mainframe">设备维护记录</a></li>
+                        <li><a href="screen.html" target="mainframe">可视化</a></li>
                     </ul>
                 </li>
 
-                <li class="menu-list"><a href=""><i class="fa fa-print"></i>
+                <li ng-show="power.menu_protect == 1" class="menu-list nav-active"><a href=""><i
+                        class="fa fa-flash"></i> <span>智能防护</span></a>
+                    <ul class="sub-menu-list">
+                        <li ng-show="power.menu_protect_conf == 1"><a href="Views/menu/menu_device.html" target="mainframe">现场配置</a></li>
+                        <li ng-show="power.menu_protect_search == 1"><a href="Views/menu/menu_search.html"
+                               target="mainframe"> 数据查询</a></li>
+                        <li ng-show="power.menu_protect_count == 1"><a href="dataStatistics.html"
+                               target="mainframe">数据统计</a></li>
+                        <li ng-show="power.menu_protect_alarm == 1"><a href="systemAlarm.html" target="mainframe">系统报警</a></li>
+                        <li ng-show="power.menu_protect_maintain == 1"><a href="deviceMaintainList.html" target="mainframe">设备维护记录</a></li>
+                    </ul>
+                </li>
+
+                <li ng-show="power.menu_security == 1" class="menu-list"><a href=""><i class="fa fa-print"></i>
                     <span>智能安防</span></a>
                     <ul class="sub-menu-list">
                         <li><a href=""
@@ -179,7 +184,7 @@
 
                     </ul>
                 </li>
-                <li class="menu-list"><a href=""><i class="fa fa-tint"></i>
+                <li ng-show="power.menu_fire == 1" class="menu-list"><a href=""><i class="fa fa-tint"></i>
                     <span>智能消防</span></a>
                     <ul class="sub-menu-list">
                         <li><a href=""
@@ -187,7 +192,7 @@
 
                     </ul>
                 </li>
-                <li class="menu-list"><a href=""><i class="fa fa-certificate"></i>
+                <li ng-show="power.menu_weather == 1" class="menu-list"><a href=""><i class="fa fa-certificate"></i>
                     <span>智能气象</span></a>
                     <ul class="sub-menu-list">
                         <li><a href="" target="mainframe"> 闪电预警</a></li>
@@ -197,7 +202,7 @@
                                target="mainframe"> 大气电场</a></li>
                     </ul>
                 </li>
-                <li class="menu-list"><a href=""><i class="fa fa-book"></i>
+                <li ng-show="power.menu_culture == 1" class="menu-list"><a href=""><i class="fa fa-book"></i>
                     <span>智能文博</span></a>
                     <ul class="sub-menu-list">
                         <li><a href=""
@@ -205,18 +210,18 @@
 
                     </ul>
                 </li>
-                <li class="menu-list"><a href=""><i class="fa fa-laptop"></i>
+                <li ng-show="power.menu_manage == 1" class="menu-list"><a href=""><i class="fa fa-laptop"></i>
                     <span>平台管理</span></a>
                     <ul class="sub-menu-list">
-                        <li><a href="structure.html" target="mainframe">
+                        <li ng-show="power.menu_manage_structure == 1"><a href="structure.html" target="mainframe">
                             组织结构</a></li>
-                        <li><a href="userList.html" target="mainframe">
+                        <li ng-show="power.menu_manage_user == 1"><a href="userList.html" target="mainframe">
                             用户管理</a></li>
-                        <li><a href="groupList.html"
+                        <li ng-show="power.menu_manage_group == 1"><a href="groupList.html"
                                target="mainframe"> 用户组管理</a></li>
-                        <li><a href="roleList.html" target="mainframe">
+                        <li ng-show="power.menu_manage_role == 1"><a href="roleList.html" target="mainframe">
                             角色管理</a></li>
-                        <li><a href="" target="mainframe">
+                        <li ng-show="power.menu_manage_log == 1"><a href="systemLog.html" target="mainframe">
                             日志查询</a></li>
                     </ul>
                 </li>
@@ -245,7 +250,7 @@
 
                 <!-- <i class="fa fa-"></i> -->
                 <span class="input-group ">公告&nbsp;<i class="fa fa-volume-up"></i></span>
-                <marquee class="" class="form-control">{{news}}</marquee>
+                <marquee class="" class="form-control">新平台准备上线了！！！</marquee>
 
                 <!-- <marquee class="form-control">Welcom CSDN!</marquee> -->
             </div>
@@ -255,7 +260,7 @@
             <div class="menu-right">
                 <ul class="notification-menu">
 
-                    <li><a href="#"
+                    <!--<li><a href="#"
                            class="btn btn-default dropdown-toggle info-number"
                            data-toggle="dropdown"> <i class="fa fa-envelope-o"></i> <span
                             class="badge">{{email}}</span> <span>消息</span>
@@ -270,17 +275,17 @@
 
                             </ul>
                         </div>
-                    </li>
+                    </li>-->
 
                     <li><a href="#" class="btn btn-default dropdown-toggle"
                            data-toggle="dropdown"> <img
-                            src="Resources/images/icon/64/user.png" alt=""/> {{loginUser}}
+                            src="Resources/images/icon/64/user.png" alt=""/> {{power.name}}
                         <span class="caret"></span>
                     </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-                            <li><a href="Views/operations/email.html"
-                                   target="mainframe"><i class="fa fa-user"></i> 邮件</a></li>
-                            <li><a href="Views/web/updateMember.html"
+                            <!--<li><a href="Views/operations/email.html"
+                                   target="mainframe"><i class="fa fa-user"></i> 邮件</a></li>-->
+                            <li><a href="userList.html"
                                    target="mainframe"><i class="fa fa-cog"></i> 修改个人资料</a></li>
                             <li><a href="javascript:void(0);" onclick="loginOut()"><i class="fa fa-sign-out"></i>退出</a></li>
                         </ul>
@@ -306,13 +311,11 @@
         <footer class="footer">
             <div class="container-fluid" style="font-size: 15px">
                 <div class="row">
-                    <div class="col-md-8">
-                        2018 © 成都中航信虹科技股份有限公司
+                    <div class="col-md-9">
+                        2019 © 成都中航信虹科技股份有限公司
                     </div>
                     <div class="col-md-3">
                         <div class="text-md-right footer-links d-none d-sm-block">
-                            <a href="">关于</a>
-                            <a href="">支持</a>
                             <a href="">联系我们</a>
                         </div>
                     </div>

@@ -41,15 +41,15 @@ public class ScheduledService {
         }else if(Integer.parseInt(hour) == 0){
             str = "23";
         }else{
-            str = hour;
+            str = (Integer.parseInt(hour)-1)+"";
         }
         System.out.println("当前时间：" + nowTime);
         System.out.println("hour：" + hour);
         System.out.println("startTime：" + nowTime+" "+str+":00:00");
         System.out.println("endTime：" + nowTime+" "+str+":59:59");
         Map<String,Object> param = new HashMap<>();
-        param.put("startTime",nowTime+":00:00");
-        param.put("endTime",nowTime+":59:59");
+        param.put("startTime",nowTime+" "+str+":00:00");
+        param.put("endTime",nowTime+" "+str+":59:59");
         int spdNum = totalService.selectSPDCountByTime(param);
         int etcrNum = totalService.selectETCRCountByTime(param);
         int lightningNum = totalService.selectLightningCountByTime(param);
@@ -63,7 +63,7 @@ public class ScheduledService {
         for(int i=0;i<nowDataList.size();i++){
             Map<String,Object> temp = nowDataList.get(i);
             String label = temp.get("label")+"";
-            if(hour.equals(label)){
+            if((Integer.parseInt(hour)-1+"").equals(label)){
                 Map<String,Object> params = new HashMap<>();
                 params.put("label",label);
                 params.put("num",total);

@@ -141,10 +141,7 @@ xh.load = function() {
 
             console.log(deviceName+" "+site_id+" "+rtu_id+" "+location+" "+deviceId);
 
-            $http.get("../../exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
-            success(function(response){
-
-            });
+            window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime;
         }
 		
 		/* 刷新数据 */

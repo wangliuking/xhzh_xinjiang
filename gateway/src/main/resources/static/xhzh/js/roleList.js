@@ -59,6 +59,9 @@ xh.load = function() {
             xh.pagging(1, parseInt($scope.totals), $scope);
         });
 
+        $scope.goPower = function(id,name) {
+            window.location.href = '/xhzh/power.html?id='+id+"&name="+name;
+        };
 
         /* 显示添加框 */
         $scope.showMod = function() {

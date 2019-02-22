@@ -57,4 +57,31 @@ public interface RTUMapper {
 
     @Select("select a.*,b.site_name,b.site_lat,b.site_lng from rtu_config as a left join site_config as b on a.site_id=b.site_id")
     List<Map<String,Object>> selectAllRTUPosition();
+
+    @Delete("delete from spd_config where rtu_id = #{rtu_id}")
+    int delSpd(int rtu_id);
+
+    @Delete("delete from resistance_config where rtu_id = #{rtu_id}")
+    int delEtcr(int rtu_id);
+
+    @Delete("delete from lightning_config where rtu_id = #{rtu_id}")
+    int delLightning(int rtu_id);
+
+    @Delete("delete from static_electricity_config where rtu_id = #{rtu_id}")
+    int delStatic(int rtu_id);
+
+    @Delete("delete from humiture_config where rtu_id = #{rtu_id}")
+    int delRsws(int rtu_id);
+
+    @Delete("delete from tilt_config where rtu_id = #{rtu_id}")
+    int delSvt(int rtu_id);
+
+    @Delete("delete from electrical_safety_config where rtu_id = #{rtu_id}")
+    int delHc(int rtu_id);
+
+    @Delete("delete from stray_electricity_config where rtu_id = #{rtu_id}")
+    int delStray(int rtu_id);
+
+    @Delete("delete from cathode_config where rtu_id = #{rtu_id}")
+    int delCat(int rtu_id);
 }

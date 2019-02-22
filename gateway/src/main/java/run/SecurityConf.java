@@ -44,6 +44,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             .antMatchers("/feign/**").permitAll()
             .antMatchers("/connect/**").permitAll()
             .antMatchers("/loginOut").permitAll()
+            .antMatchers("/getLoginUser").permitAll()
+            .antMatchers("/selectLogList").permitAll()
+            .antMatchers("/insertLog").permitAll()
             .antMatchers("/local/**").permitAll()
             .antMatchers("/login").permitAll()
             .antMatchers("/auth/**").permitAll()
@@ -59,7 +62,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             .antMatchers("/alarm/**").permitAll()
             .antMatchers("/mq/**").permitAll()
             .antMatchers("/total/**").permitAll()
-            .antMatchers("/exportAllETCRHistoryExcel").permitAll()
             .anyRequest()//所有请求
             .authenticated();//所有请求都进行权限验证
         http.csrf().disable();

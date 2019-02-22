@@ -8,6 +8,9 @@ import run.feign.FeignConf;
 
 @FeignClient(name="service-spd",configuration= FeignConf.class,fallback = FeignForSPDFailure.class)
 public interface FeignForSPD {
+    @RequestLine("GET /deleteSPD?rtu_id={rtu_id}&spd_number={spd_number}&site_id={site_id}")
+    @Headers("Content-Type: application/json")
+    public Object deleteSPD(@Param("rtu_id") String rtu_id,@Param("spd_number") String spd_number,@Param("site_id") String site_id);
 
     @RequestLine("GET /deleteSPDBySite?site_id={site_id}")
     @Headers("Content-Type: application/json")

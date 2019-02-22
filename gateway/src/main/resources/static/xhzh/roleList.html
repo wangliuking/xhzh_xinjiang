@@ -15,6 +15,7 @@
     <!-- App css -->
     <!-- build:css -->
     <link href="./css/app.min.css" rel="stylesheet" type="text/css"/>
+    <!--<link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>-->
     <link href="./css/sweet-alert.css" rel="stylesheet" type="text/css"/>
     <link href="./css/toastr.min.css" rel="stylesheet" type="text/css"/>
     <style>
@@ -83,7 +84,6 @@
                                         ng-click="showMod()">新增
                                 </button>
                             </form>
-
                         </div>
 
                     </div>
@@ -125,6 +125,8 @@
                                         <a href="#" ng-click="showEdit($index)">修改</a>
                                         |
                                         <a href="#" ng-click="delBs(x.id)">删除</a>
+                                        |
+                                        <a href="#" ng-click="goPower(x.id,x.name)">菜单权限</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -173,8 +175,9 @@
 <!-- 修改 -->
 <div ng-include="'roleList-edit.html'"></div>
 <!-- bundle -->
-<script src="./javascript/app.min.js"></script>
 <script src="angularjs/jquery-3.2.1.min.js"></script>
+<!--<script src="./javascript/app.min.js"></script>-->
+
 <script src="angularjs/angular.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="angularjs/metisMenu.min.js"></script>

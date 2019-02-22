@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>信虹智慧服务平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
+    <meta content="Coderthemes" name="author"/>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- third party css -->
+    <!--<link href="./css/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />-->
+    <!-- third party css end -->
+    <!-- App css -->
+    <!-- build:css -->
+    <link href="./css/app.min.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/sweet-alert.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/toastr.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        /*下拉菜单样式*/
+        .selectForArea {
+            padding: .45rem .9rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            color: #6c757d;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid black;
+            border-radius: .1rem;
+            border-radius: 8px;
+        }
+
+        .tableStyle {
+            width: 60px;
+            height: 60px;
+            background-color: #0caff4;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body ng-app="app" ng-controller="xhcontroller" style="padding-right:0!important;background-color: #d8d4d4;">
+<!-- splash screen-->
+<div class="splash" style="position: fixed;z-index: 2001;background: white;color: gray;top: 0;bottom: 0;left: 0;right: 0;">
+    <div class="splash-title" style="text-align: center;max-width: 500px;margin: 15% auto;padding: 20px;">
+        <h1 style="font-size: 26px;color: #004894;">数据加载中，请耐心等待</h1>
+        <img src="xhIcon/loading.gif" width="100" height="100"/>
+    </div>
+</div>
+<!-- Begin page -->
+<div class="wrapper">
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="content-page" style="padding: 5px 5px 5px 0px;">
+        <!-- Start Content-->
+        <div class="container-fluid" style="border: 1px solid #8B8378;border-radius: 8px;">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-left">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">当前位置</li>
+                                <li class="breadcrumb-item"><a href="Views/menu/menu_device.html"
+                                                               target="_self">设备列表</a></li>
+                                <li class="breadcrumb-item"><a href="siteList.html" target="_self">RTU列表</a></li>
+                                <li class="breadcrumb-item">数据统计</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <form id="searchForm" class="form-inline">
+                    <select class="selectForArea" id="testIndustrys" ng-model="x" ng-change="changeIndustry(x)" style="width:12%;">
+                        <option value="">请选择行业</option>
+                        <option ng-repeat="x in industrys" ng-value="x">{{x}}</option>
+                    </select>
+                    <select class="selectForArea" id="testCompanyName" ng-model="y" ng-change="changeCompany(y)" style="width:12%;">
+                        <option value="">请选择组织结构</option>
+                        <option ng-repeat="y in companys" ng-value="y">{{y}}</option>
+                    </select>
+                    <select class="selectForArea" id="testSiteName" ng-model="z" ng-change="changeSite(z)" style="width:12%;">
+                        <option value="">请选择站点</option>
+                        <option ng-repeat="z in siteNames" ng-value="z.id">{{z.name}}</option>
+                    </select>
+                    <select class="selectForArea" id="testRTU" style="width:12%;">
+                        <option value="">请选择RTU</option>
+                        <option ng-repeat="a in rtuNames" ng-value="a.rtu_id">{{a.rtu_id}}</option>
+                    </select>
+                    <button type="button" class="btn btn-success btn-rounded" ng-click="searchDevicesByRTU()">查询
+                    </button>
+                </form>
+
+            </div>
+
+            <hr/>
+            <div ng-show="rtuData != null && rtuData != ''" style="font-size: 16px;">
+                <span style="color: black;">RTU-ID：</span>
+                <span style="margin-right: 30px;color: blue;">{{rtuData.rtu_id}}</span>
+                <span style="color: black;">IP：</span>
+                <span style="margin-right: 30px;color: blue;">{{rtuData.rtu_ip}}</span>
+                <span style="color: black;">所属站点：</span>
+                <span style="margin-right: 30px;color: blue;">{{siteInfo.site_name}}</span>
+                <span style="color: black;">所属区域：</span>
+                <span style="margin-right: 30px;color: blue;">{{siteInfo.site_province}} {{siteInfo.site_city}} {{siteInfo.site_county}}</span>
+                <span style="color: black;">设备数量：</span>
+                <span style="margin-right: 30px;color: blue;">{{spdNum+etcrNum+lightningNum+staticNum+rswsNum+svtNum+hcNum+strayNum+catNum}}</span>
+                <span style="color: black;">连接方式：</span>
+                <span ng-if="rtuData.connect_type == 0" style="margin-right: 30px;color: blue;">UDP</span>
+                <span ng-if="rtuData.connect_type == 1" style="margin-right: 30px;color: blue;">TCP</span>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title">RTU下挂设备</h4>
+                            <hr/>
+                            <div ng-show="rtuId == 0">暂无相关设备</div>
+                            <table ng-show="rtuId != 0" style="height:320px;width: 100%;">
+                                <tbody>
+                                <tr>
+                                    <td rowspan="1" class="tableStyle">数字量</td>
+                                    <td class="tableStyle" ng-repeat="x in spdPort1" ng-style="compareSpd(x)">{{$index+1}}</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1" class="tableStyle">模拟量</td>
+                                    <td class="tableStyle" ng-repeat="x in testPort1" ng-style="compareTestStyle(x)"><a href="javascript:void(0);" ng-click="showTestDevice(x)" style="color: white;">{{compareTest(x)}}</a></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1" class="tableStyle">RS485</td>
+                                    <td class="tableStyle" ng-repeat="x in testRS1" ng-style="compareRSStyle(x)"><a href="javascript:void(0);" ng-click="showRSDevice(x)" style="color: white;">{{compareRS(x)}}</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- end card body-->
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div> <!-- container -->
+
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+
+</div>
+<!-- END wrapper -->
+
+<div ng-include="'rtuShow-show.html'"></div>
+<!-- bundle -->
+<script src="angularjs/jquery-3.2.1.min.js"></script>
+<script src="angularjs/angular.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/macarons.js"></script>
+<script src="angularjs/metisMenu.min.js"></script>
+<script src="js/sweet-alert.js"></script>
+<script src="js/toastr.min.js"></script>
+<script src="js/rtuShow.js"></script>
+<!--<script src="./javascript/demo.dashboard.js"></script>-->
+<script type="text/javascript">
+    xh.load();
+    $(document).ready(function() {
+        $('.splash').css('display', 'none');
+    });
+</script>
+</body>
+
+</html>

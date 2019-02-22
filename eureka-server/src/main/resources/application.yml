@@ -7,6 +7,8 @@ eureka:
     enableSelfPreservation : true
   instance:
     hostname: localhost
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
   client:
     registerWithEureka: false
     fetchRegistry: false

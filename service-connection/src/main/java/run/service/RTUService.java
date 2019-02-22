@@ -49,4 +49,41 @@ public class RTUService {
     public List<Map<String,Object>> selectAllRTUPosition(){
         return rtuMapper.selectAllRTUPosition();
     }
+
+    public int delSpd(int rtu_id){
+        return rtuMapper.delSpd(rtu_id);
+    }
+
+    public int delEtcr(int rtu_id){
+        return rtuMapper.delEtcr(rtu_id);
+    }
+
+    public int delLightning(int rtu_id){
+        return rtuMapper.delLightning(rtu_id);
+    }
+
+    public int delStatic(int rtu_id){
+        return rtuMapper.delStatic(rtu_id);
+    }
+
+    public int delRsws(int rtu_id){
+        return rtuMapper.delRsws(rtu_id);
+    }
+
+    public int delSvt(int rtu_id){
+        return rtuMapper.delSvt(rtu_id);
+    }
+
+    public int delHc(int rtu_id){
+        return rtuMapper.delHc(rtu_id);
+    }
+
+    public int delStray(int rtu_id){
+        return rtuMapper.delStray(rtu_id);
+    }
+
+    public int delCat(int rtu_id){
+        return rtuMapper.delCat(rtu_id);
+    }
+
 }

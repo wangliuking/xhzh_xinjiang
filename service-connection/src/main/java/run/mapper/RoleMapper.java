@@ -36,7 +36,29 @@ public interface RoleMapper {
     @Insert("insert into xhzh.role(name) values(#{name})")
     int insertRole(Role role);
 
-    @Update("update xhzh.role set name=#{name} where id=#{id}")
+    /*@Insert("insert into xhzh.role(name,menu_protect,menu_security,menu_fire," +
+            "menu_weather,menu_culture,menu_manage,menu_protect_conf," +
+            "menu_protect_search,menu_protect_count,menu_protect_alarm," +
+            "menu_protect_maintain,menu_protect_conf_site,menu_protect_conf_rtu," +
+            "menu_protect_conf_device,menu_protect_search_now,menu_protect_search_history," +
+            "menu_protect_search_chart,menu_manage_structure,menu_manage_user," +
+            "menu_manage_group,menu_manage_role,menu_manage_log) " +
+            "values(#{name},#{menu_protect},#{menu_security},#{menu_fire}," +
+            "#{menu_weather},#{menu_culture},#{menu_manage},#{menu_protect_conf}," +
+            "#{menu_protect_search},#{menu_protect_count},#{menu_protect_alarm}," +
+            "#{menu_protect_maintain},#{menu_protect_conf_site},#{menu_protect_conf_rtu}," +
+            "#{menu_protect_conf_device},#{menu_protect_search_now},#{menu_protect_search_history}," +
+            "#{menu_protect_search_chart},#{menu_manage_structure},#{menu_manage_user}," +
+            "#{menu_manage_group},#{menu_manage_role},#{menu_manage_log})")
+    int insertRole(Role role);*/
+
+    @Update("update xhzh.role set menu_protect=#{menu_protect},menu_security=#{menu_security}," +
+            "menu_fire=#{menu_fire},menu_weather=#{menu_weather},menu_culture=#{menu_culture},menu_manage=#{menu_manage}," +
+            "menu_protect_conf=#{menu_protect_conf},menu_protect_search=#{menu_protect_search},menu_protect_count=#{menu_protect_count},menu_protect_alarm=#{menu_protect_alarm}," +
+            "menu_protect_maintain=#{menu_protect_maintain},menu_protect_conf_site=#{menu_protect_conf_site},menu_protect_conf_rtu=#{menu_protect_conf_rtu},menu_protect_conf_device=#{menu_protect_conf_device}," +
+            "menu_protect_search_now=#{menu_protect_search_now},menu_protect_search_history=#{menu_protect_search_history},menu_protect_search_chart=#{menu_protect_search_chart},menu_manage_structure=#{menu_manage_structure}," +
+            "menu_manage_user=#{menu_manage_user},menu_manage_group=#{menu_manage_group},menu_manage_role=#{menu_manage_role},menu_manage_log=#{menu_manage_log}" +
+            " where id=#{id}")
     int updateRole(Role role);
 
     @Delete("delete from xhzh.role where id=#{id}")

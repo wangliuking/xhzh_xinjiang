@@ -104,10 +104,10 @@
                             <option value="">告警状态</option>
                             <option ng-repeat="x in allStatus" ng-value="x.id">{{x.name}}</option>
                         </select>
-                        <input type="text" class="form-control" id="startTime" autocomplete="off"
+                        <input type="text" style="width:15%;" class="form-control" id="startTime" autocomplete="off"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                placeholder="起始时间">
-                        <input type="text" class="form-control" id="endTime" autocomplete="off"
+                        <input type="text" style="width:15%;" class="form-control" id="endTime" autocomplete="off"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                placeholder="结束时间">
                         <button type="button" class="btn btn-success btn-rounded pull-right" ng-click="refresh()">查询
@@ -153,6 +153,7 @@
                                     <td ng-if="x.deviceType == 7">杂散电流</td>
                                     <td ng-if="x.deviceType == 8">阴极保护</td>
                                     <td ng-if="x.deviceType > 8">其他</td>
+                                    <td ng-if="x.deviceType == '' || x.deviceType == null">其他</td>
                                     <td ng-if="x.type == 1">设备离线</td>
                                     <td ng-if="x.type == 2">RTU离线</td>
                                     <td ng-if="x.type == 3">设备异常</td>

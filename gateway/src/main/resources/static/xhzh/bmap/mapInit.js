@@ -158,6 +158,8 @@ xh.load = function() {
                     return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
                 }else if(status == 0 && alarm > 0){
                     return {"background-color" : "#EEAD0E"};
+                }else{
+                    return {"background-color" : "green"};
                 }
             }else{
                 return {"background-color" : "grey"};
@@ -221,7 +223,7 @@ xh.load = function() {
                     if(state == 0){
                         return {"background-color" : "green"};
                     }else{
-                        return {"background-color" : "red"};
+                        return {"background-color" : "#EEAD0E"};
                     }
                 }
             }
@@ -939,14 +941,29 @@ function initChart() {
         async: false,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            console.log("==================");
+            console.log(arr);
+            console.log("==================");
+            var d = 0;
+            var e = 0;
+            var f = 0;
+            for(var i=0;i<arr.length;i++){
+                if(arr[i].rtuOffNum > 0 || arr[i].rtuNum == 0){
+                    f++;
+                }else if(arr[i].rtuWarningNum > 0){
+                    e++;
+                }else{
+                    d++;
+                }
+            }
+            siteForBar(d, e, f);
+            //console.log(data);
             var a = data.rtuNum - data.rtuOffNum - data.rtuWarningNum;
             var b = data.rtuWarningNum;
             var c = data.rtuOffNum;
             var x = data.spdNum + data.etcrNum + data.lightningNum + data.staticNum + data.rswsNum + data.svtNum + data.hcNum + data.strayNum + data.catNum - data.deviceWarningCount - data.deviceOffCount;
             var y = data.deviceWarningCount;
             var z = data.deviceOffCount;
-            siteForBar(a, b, c);
             rtuForBar(a, b, c);
             deviceForBar(x, y, z);
 

@@ -33,16 +33,24 @@ public class RoleController {
         return result;
     }
 
+    @RequestMapping(value = "/selectRoleById",method = RequestMethod.GET)
+    public Map<String,Object> selectRoleById(HttpServletRequest req) {
+        String id = req.getParameter("id");
+        Map<String,Object> result = new HashMap<>();
+        result.put("items",roleService.selectRoleById(Integer.parseInt(id)));
+        return result;
+    }
+
     @RequestMapping(value = "/insertRole",method = RequestMethod.POST)
     public Map<String,Object> insertRole(@RequestBody Role role) {
         int result = roleService.insertRole(role);
         Map<String,Object> map = new HashMap<>();
         if(result>0){
             map.put("success",true);
-            map.put("message","成功添加了用户组");
+            map.put("message","成功添加了角色");
         }else {
             map.put("success",false);
-            map.put("message","添加用户组失败");
+            map.put("message","添加角色失败");
         }
         return map;
     }
@@ -53,10 +61,10 @@ public class RoleController {
         Map<String,Object> map = new HashMap<>();
         if(result>0){
             map.put("success",true);
-            map.put("message","成功更新了用户组");
+            map.put("message","成功更新了菜单权限，请刷新页面");
         }else {
             map.put("success",false);
-            map.put("message","更新用户组失败");
+            map.put("message","保存失败");
         }
         return map;
     }
@@ -67,10 +75,10 @@ public class RoleController {
         Map<String,Object> map = new HashMap<>();
         if(res>0){
             map.put("success",true);
-            map.put("message","成功删除了用户组");
+            map.put("message","成功删除了角色");
         }else {
             map.put("success",false);
-            map.put("message","删除用户组失败");
+            map.put("message","删除角色失败");
         }
         return map;
     }

@@ -26,4 +26,5 @@ public class Conf {
     public static String z2w_Stray_alarm = "z2w-Stray-alarm";
     public static String z2w_Cathode_alarm = "z2w-Cathode-alarm";
     public static String w2z_RtuConf = "w2z-RtuConf";
+    public static String z2w_RTu_alarm = "z2w-RTu-alarm";
 }

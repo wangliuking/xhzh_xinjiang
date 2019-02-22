@@ -7,13 +7,11 @@ if (!("xh" in window)) {
 var appElement = document.querySelector('[ng-controller=menu]');
 xh.load = function() {
 	var app = angular.module("app", []);
-	app.controller("menu", function($scope, $http) {		
-		// 获取登录用户
-		/*$http.get("../../web/loginUserInfo").success(function(response) {
-			$scope.loginUser = response.user;
-			$scope.loginUserVpnId = response.vpnId;
-			$scope.roleId = response.roleId ;			
-		});*/
+	app.controller("menu", function($scope, $http) {
+        $http.get("../../../getLoginUser").success(function(response) {
+            $scope.power = response;
+            console.log($scope.power);
+        });
 
 	});
 };

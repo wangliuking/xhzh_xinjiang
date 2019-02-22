@@ -4713,7 +4713,7 @@ ol.comment-list {
 }
  #mainframe {
 	margin: 50px 0 60px 240px;
-	padding: 0 0 60px 0;
+	padding: 0 0 48px 0;
 	position: fixed;
 	/* width:100%; */
 	width:calc(100% - 240px);

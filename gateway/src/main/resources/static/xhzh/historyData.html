@@ -82,14 +82,14 @@
                                     <option ng-repeat="x in deviceNames" ng-value="x.id">{{x.name}}</option>
                                 </select>
 
-                                <input type="text" class="form-control" id="location" placeholder="请输入设备安装位置"
+                                <input type="text" class="form-control" id="location" placeholder="设备安装位置"
                                        style="width:12%;">
-                                <input type="text" class="form-control" id="deviceId" placeholder="请输入设备的ID"
+                                <input type="text" class="form-control" id="deviceId" placeholder="设备ID"
                                        style="width:12%;">
-                                <input type="text" class="form-control" id="startTime" autocomplete="off"
+                                <input type="text" style="width:12%;" class="form-control" id="startTime" autocomplete="off"
                                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                        placeholder="起始时间">
-                                <input type="text" class="form-control" id="endTime" autocomplete="off"
+                                <input type="text" style="width:12%;" class="form-control" id="endTime" autocomplete="off"
                                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                        placeholder="结束时间">
                                 <button type="button" class="btn btn-success btn-rounded" ng-click="refresh()">查询</button>

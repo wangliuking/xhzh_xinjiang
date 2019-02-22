@@ -32,4 +32,36 @@ public class AlarmInfoService {
             alarmInfoMapper.deleteAlarmNow(alarmInfo);
         }
     }
+
+    public int updateEtcrNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateEtcrNow(alarmInfo);
+    }
+
+    public int updateLightningNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateLightningNow(alarmInfo);
+    }
+
+    public int updateStaticNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateStaticNow(alarmInfo);
+    }
+
+    public int updateRswsNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateRswsNow(alarmInfo);
+    }
+
+    public int updateSvtNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateSvtNow(alarmInfo);
+    }
+
+    public int updateHcNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateHcNow(alarmInfo);
+    }
+
+    public int updateStrayNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateStrayNow(alarmInfo);
+    }
+
+    public int updateCatNow(AlarmInfo alarmInfo){
+        return alarmInfoMapper.updateCatNow(alarmInfo);
+    }
 }
