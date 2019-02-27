@@ -103,4 +103,12 @@ public interface StaticMapper {
             "</if>"+
             "</script>")
     int selectStaticHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("staet_id") int staet_id, @Param("staet_location") String staet_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{staet_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

@@ -58,4 +58,7 @@ public class StrayService {
         return strayMapper.selectStrayByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return strayMapper.deleteRTUAlarmData(param);
+    }
 }

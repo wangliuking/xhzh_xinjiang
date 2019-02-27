@@ -58,4 +58,7 @@ public class LightningService {
         return lightningMapper.selectLightningByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return lightningMapper.deleteRTUAlarmData(param);
+    }
 }

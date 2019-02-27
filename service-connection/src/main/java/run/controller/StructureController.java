@@ -28,7 +28,7 @@ public class StructureController {
     }
 
     @RequestMapping(value = "/selectStructureList")
-    public List<Map<String,Object>> selectStructureList (HttpServletRequest req){
+    public Map<String,Object> selectStructureList (HttpServletRequest req){
         Map<String,Object> param = new HashMap<>();
         String industry = req.getParameter("industry");
         if(industry == null || "".equals(industry)){
@@ -37,7 +37,28 @@ public class StructureController {
             param.put("industry",industry);
         }
         List<Map<String,Object>> nodeList = structureService.selectStructureList(param);
-        return nodeList;
+        List<Map<String,Object>> siteList = structureService.selectSiteListByIndustry(param);
+        List<Map<String,Object>> rtuList = structureService.selectRTUListByIndustry(param);
+        Map<String,Object> finalMap = new HashMap<>();
+        finalMap.put("nodeList",nodeList);
+        finalMap.put("siteList",siteList);
+        finalMap.put("rtuList",rtuList);
+        return finalMap;
+    }
+
+    @RequestMapping(value = "/selectRTUListByCompany")
+    public Map<String,Object> selectRTUListByCompany (HttpServletRequest req){
+        Map<String,Object> param = new HashMap<>();
+        String site_company = req.getParameter("site_company");
+        if(site_company == null || "".equals(site_company)){
+            param.put("site_company","");
+        }else{
+            param.put("site_company",site_company);
+        }
+        List<Map<String,Object>> rtuList = structureService.selectRTUListByCompany(param);
+        Map<String,Object> finalMap = new HashMap<>();
+        finalMap.put("rtuList",rtuList);
+        return finalMap;
     }
 
     @RequestMapping(value = "/insertStructure")

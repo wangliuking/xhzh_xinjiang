@@ -24,6 +24,7 @@
         <module>service-stray</module>
         <module>service-cat</module>
         <module>service-total</module>
+        <module>jdk8Test</module>
     </modules>
 
     <!-- spring cloud 配置 -->

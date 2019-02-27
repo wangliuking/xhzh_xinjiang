@@ -247,6 +247,9 @@ public class StrayController {
             String res = feignForMQ.sendStrayConfForRTU(tempParams);
             Map<String,Object> map = new HashMap<>();
             if("配置成功".equals(res)){
+                //删除rtuAlarmData相关信息
+                strayService.deleteRTUAlarmData(params);
+
                 strayService.deleteStray(params);
                 for(int i=0;i<list.size();i++){
                     Stray temp = list.get(i);

@@ -312,6 +312,18 @@ xh.load = function() {
                             if (data.success) {
                                 toastr.success(data.message, '提示');
                                 $scope.refresh();
+
+                                //记录日志
+                                var type = "删除操作";
+                                var content = "删除了SPD,站点编号"+site_id+",RTU编号"+rtu_id+",SPD路数"+spd_number;
+                                $.ajax({
+                                    url : "../../insertLog?type="+type+"&content="+content,
+                                    contentType : "application/json;charset=utf-8",
+                                    type : 'GET',
+                                    success : function() {
+                                        console.log("记录日志结束");
+                                    }
+                                });
                             } else {
                                 toastr.error(data.message, '提示');
                             }
@@ -347,6 +359,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了地阻,RTU编号"+rtu_id+",设备编号"+rst_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -379,6 +403,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了雷电流,RTU编号"+rtu_id+",设备编号"+ltn_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -411,6 +447,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了静电,RTU编号"+rtu_id+",设备编号"+staet_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -443,6 +491,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了温湿度,RTU编号"+rtu_id+",设备编号"+hmt_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -475,6 +535,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了倾斜度,RTU编号"+rtu_id+",设备编号"+tilt_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -508,6 +580,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了电气安全,RTU编号"+rtu_id+",设备编号"+es_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -540,6 +624,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了杂散电流,RTU编号"+rtu_id+",设备编号"+stret_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -572,6 +668,18 @@ xh.load = function() {
                         async : false,
                         success : function(data) {
                             $scope.refresh();
+
+                            //记录日志
+                            var type = "删除操作";
+                            var content = "删除了阴极保护,RTU编号"+rtu_id+",设备编号"+cathode_id+",RTU串口号"+rtu_port;
+                            $.ajax({
+                                url : "../../insertLog?type="+type+"&content="+content,
+                                contentType : "application/json;charset=utf-8",
+                                type : 'GET',
+                                success : function() {
+                                    console.log("记录日志结束");
+                                }
+                            });
                         },
                         error : function() {
                             $scope.refresh();
@@ -886,6 +994,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了SPD,RTU编号"+f.rtu_id+",站点编号"+f.site_id+",SPD路数"+f.spd_number;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -909,6 +1029,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了地阻,RTU编号"+f.rtu_id+",设备编号"+f.rst_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -933,6 +1065,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了雷电流,RTU编号"+f.rtu_id+",设备编号"+f.ltn_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -957,6 +1101,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了静电,RTU编号"+f.rtu_id+",设备编号"+f.staet_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -981,6 +1137,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了温湿度,RTU编号"+f.rtu_id+",设备编号"+f.hmt_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -1005,6 +1173,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了倾斜度,RTU编号"+f.rtu_id+",设备编号"+f.tilt_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -1029,6 +1209,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了电气安全,RTU编号"+f.rtu_id+",设备编号"+f.es_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -1053,6 +1245,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了杂散电流,RTU编号"+f.rtu_id+",设备编号"+f.stret_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -1077,6 +1281,18 @@ xh.add = function() {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
                     xh.refresh();
+
+                    //记录日志
+                    var type = "新增操作";
+                    var content = "新增了阴极保护,RTU编号"+f.rtu_id+",设备编号"+f.cathode_id+",RTU串口"+f.rtu_port;
+                    $.ajax({
+                        url : "../../insertLog?type="+type+"&content="+content,
+                        contentType : "application/json;charset=utf-8",
+                        type : 'GET',
+                        success : function() {
+                            console.log("记录日志结束");
+                        }
+                    });
                 } else {
                     toastr.error(data.message, '提示');
                     xh.refresh();
@@ -1110,6 +1326,18 @@ xh.editSpd = function() {
                 $('#editSpd').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了SPD,RTU编号"+f.rtu_id+",站点编号"+f.site_id+",SPD路数"+f.spd_number;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1141,6 +1369,18 @@ xh.editEtcr = function() {
                 $('#editEtcr').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了地阻,RTU编号"+f.rtu_id+",设备编号"+f.rst_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1172,6 +1412,18 @@ xh.editLightning = function() {
                 $('#editLightning').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了雷电流,RTU编号"+f.rtu_id+",设备编号"+f.ltn_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1203,6 +1455,18 @@ xh.editStatic = function() {
                 $('#editStatic').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了静电,RTU编号"+f.rtu_id+",设备编号"+f.staet_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1234,6 +1498,18 @@ xh.editRsws = function() {
                 $('#editRsws').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了温湿度,RTU编号"+f.rtu_id+",设备编号"+f.hmt_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1265,6 +1541,18 @@ xh.editSvt = function() {
                 $('#editSvt').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了倾斜度,RTU编号"+f.rtu_id+",设备编号"+f.tilt_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1296,6 +1584,18 @@ xh.editHc = function() {
                 $('#editHc').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了电气安全,RTU编号"+f.rtu_id+",设备编号"+f.es_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1327,6 +1627,18 @@ xh.editStray = function() {
                 $('#editStray').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了杂散电流,RTU编号"+f.rtu_id+",设备编号"+f.stret_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -1358,6 +1670,18 @@ xh.editCat = function() {
                 $('#editCat').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了阴极保护,RTU编号"+f.rtu_id+",设备编号"+f.cathode_id+",RTU串口"+f.rtu_port;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();

@@ -318,7 +318,7 @@ xh.call = function(data) {
     var width=document.documentElement.clientWidth;
     var resizeBarContainer = function() {
         $("#call-bar").width((width/12)*4);
-        $("#call-bar").height(height-460);
+        $("#call-bar").height(height-410);
     };
     resizeBarContainer();
 

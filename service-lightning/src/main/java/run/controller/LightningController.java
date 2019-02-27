@@ -154,6 +154,9 @@ public class LightningController {
         String res = feignForMQ.sendLightningConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            lightningService.deleteRTUAlarmData(params);
+
             lightningService.deleteLightning(params);
             feignForMQ.sendLightningConf(tempParams);
             map.put("success",true);

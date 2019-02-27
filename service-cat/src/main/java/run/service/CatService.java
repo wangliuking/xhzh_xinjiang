@@ -58,4 +58,7 @@ public class CatService {
         return catMapper.selectCatByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return catMapper.deleteRTUAlarmData(param);
+    }
 }

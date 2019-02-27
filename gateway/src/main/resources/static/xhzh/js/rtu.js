@@ -139,6 +139,18 @@ xh.load = function() {
                             if (data.success) {
                                 toastr.success(data.message, '提示');
                                 $scope.refresh();
+
+                                //记录日志
+                                var type = "删除操作";
+                                var content = "删除了RTU"+id;
+                                $.ajax({
+                                    url : "../../insertLog?type="+type+"&content="+content,
+                                    contentType : "application/json;charset=utf-8",
+                                    type : 'GET',
+                                    success : function() {
+                                        console.log("记录日志结束");
+                                    }
+                                });
                             } else {
                                 toastr.error(data.message, '提示');
                             }
@@ -259,6 +271,18 @@ xh.addRTU = function() {
                 $('#addRTU').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "新增操作";
+                var content = "新增了RTU"+f.rtu_id;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();
@@ -290,6 +314,18 @@ xh.edit = function() {
                 $('#edit').modal('hide');
                 toastr.success(data.message, '提示');
                 xh.refresh();
+
+                //记录日志
+                var type = "修改操作";
+                var content = "修改了RTU"+f.rtu_id;
+                $.ajax({
+                    url : "../../insertLog?type="+type+"&content="+content,
+                    contentType : "application/json;charset=utf-8",
+                    type : 'GET',
+                    success : function() {
+                        console.log("记录日志结束");
+                    }
+                });
             } else {
                 toastr.error(data.message, '提示');
                 xh.refresh();

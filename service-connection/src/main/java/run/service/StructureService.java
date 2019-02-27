@@ -21,6 +21,18 @@ public class StructureService {
         return structureMapper.selectStructureList(param);
     }
 
+    public List<Map<String,Object>> selectSiteListByIndustry(Map<String,Object> param){
+        return structureMapper.selectSiteListByIndustry(param);
+    }
+
+    public List<Map<String,Object>> selectRTUListByIndustry(Map<String,Object> param){
+        return structureMapper.selectRTUListByIndustry(param);
+    }
+
+    public List<Map<String,Object>> selectRTUListByCompany(Map<String,Object> param){
+        return structureMapper.selectRTUListByCompany(param);
+    }
+
     public int insert(Node node){
         return structureMapper.insert(node);
     }

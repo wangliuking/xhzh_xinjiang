@@ -37,3 +37,9 @@ security:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  #pattern:
+  #格式化，只能输出日期和内容
+  #console: "%d - %msg%n"
+  path: /usr/logs
+  file: /usr/logs/hc.log

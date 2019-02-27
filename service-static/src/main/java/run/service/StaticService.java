@@ -58,4 +58,7 @@ public class StaticService {
         return StaticMapper.selectStaticByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return StaticMapper.deleteRTUAlarmData(param);
+    }
 }

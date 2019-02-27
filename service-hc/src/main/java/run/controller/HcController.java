@@ -158,7 +158,7 @@ public class HcController {
         Hc Hc = hcService.selectOneLight(params);
         System.out.println("查询后的Hc为 ： "+Hc);
 
-        int i = hcService.deleteHc(params);
+        /*int i = hcService.deleteHc(params);
         Map<String,Object> map = new HashMap<>();
         if(i>0){
             map.put("success",true);
@@ -168,15 +168,18 @@ public class HcController {
             map.put("success",true);
             map.put("message","删除失败");
             return map;
-        }
+        }*/
 
-        /*Map<String,Object> tempParams = new HashMap<>();
+        Map<String,Object> tempParams = new HashMap<>();
         tempParams.put("rtu",rtu);
-        tempParams.put("Hc",Hc);
-        tempParams.put("op",0);
+        tempParams.put("hc",Hc);
+        tempParams.put("op",1);
         String res = feignForMQ.sendHcConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            hcService.deleteRTUAlarmData(params);
+
             hcService.deleteHc(params);
             feignForMQ.sendHcConf(tempParams);
             map.put("success",true);
@@ -186,7 +189,7 @@ public class HcController {
             map.put("success",false);
             map.put("message",res);
             return map;
-        }*/
+        }
     }
 
     @RequestMapping(value = "/deleteHcBySite", method = RequestMethod.GET)

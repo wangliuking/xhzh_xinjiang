@@ -82,12 +82,27 @@ xh.load = function() {
             console.log(x);
             $http.get("../../connect/selectStructureList?industry="+x).
             success(function(response){
-                var data = response;
+                console.log(response);
+                var nodedata = response.nodeList;
                 var companys = [];
-                for(var i=0;i<data.length;i++){
-                    companys.push(data[i].name);
+                for(var i=0;i<nodedata.length;i++){
+                    companys.push(nodedata[i].name);
                 }
                 $scope.companys = companys;
+
+                var siteList = response.siteList;
+                var siteNames = [];
+                for(var i=0;i<siteList.length;i++){
+                    siteNames.push({"id":siteList[i].site_id,"name":siteList[i].site_name});
+                }
+                $scope.siteNames = siteNames;
+
+                var rtuList = response.rtuList;
+                var rtuNames = [];
+                for(var i=0;i<rtuList.length;i++){
+                    rtuNames.push({"rtu_id":rtuList[i].rtu_id,"rtu_name":rtuList[i].rtu_id});
+                }
+                $scope.rtuNames = rtuNames;
             });
         }
 
@@ -101,6 +116,16 @@ xh.load = function() {
                     siteNames.push({"id":data[i].site_id,"name":data[i].site_name});
                 }
                 $scope.siteNames = siteNames;
+            });
+
+            $http.get("../../connect/selectRTUListByCompany?site_company="+x).
+            success(function(response){
+                var data = response.rtuList;
+                var rtuNames = [];
+                for(var i=0;i<data.length;i++){
+                    rtuNames.push({"rtu_id":data[i].rtu_id,"rtu_name":data[i].rtu_id});
+                }
+                $scope.rtuNames = rtuNames;
             });
         }
 
@@ -119,6 +144,10 @@ xh.load = function() {
         //多级联动end
 
         $scope.searchDevicesByRTU = function(){
+            $(".popover").each(function(){
+                $(this).popover('dispose');
+            });
+
             var rtu_id = $("#testRTU").val();
             //console.log("===");
             //console.log(rtu_id);
@@ -280,6 +309,9 @@ xh.load = function() {
         }
 
         $scope.showRSDev = function(event,x){
+            $(".popover").each(function(){
+                $(this).popover('dispose');
+            });
             //将状态设置为485，便于ng-class操作
             $scope.modal485Test = 0;
             var tempList = $scope.rs485List;
@@ -299,14 +331,14 @@ xh.load = function() {
                 }else{
                     color = redColor;
                 }
-                tempHtml += '<div class="tableStyle" style="float: left;margin:2px;'+color+'"><a href="javascript:void(0);" style="color: white;" onclick="popToModel('+x+','+showList[i].deviceId+')">'+showList[i].deviceId+'</a></div>';
+                tempHtml += '<div class="tableStyle" style="float: left;margin:2px;'+color+'"><a href="javascript:void(0);" style="color: white;display : block;" onclick="popToModel('+x+','+showList[i].deviceId+')">'+showList[i].deviceId+'</a></div>';
             }
             $(event.target).popover({
                 placement:'bottom',
                 /*title:'啦啦啦',*/
                 html:true,
                 content:'<div style="height: 70px;">'+tempHtml+'</div>'
-            }).popover('show');
+            }).popover('hide').popover('show');
         }
 
         $scope.showRSDevice = function(x){

@@ -507,7 +507,7 @@ function start() {
                 rippleEffect: {
                     period: 4,
                     brushType: 'fill',
-                    scale: 30
+                    scale: 25
                 },
                 label: {
                     normal: {
@@ -526,13 +526,13 @@ function start() {
                             y: 0.5,
                             r: 0.5,
                             colorStops: [{
-                                offset: 0, color: 'rgba(255,0,0,0.1)'
+                                offset: 0, color: 'rgba(255,0,0,0.3)'
                             }, {
-                                offset: 0.4, color: 'rgba(255,0,0,0.3)'
+                                offset: 0.4, color: 'rgba(255,0,0,6)'
                             }, {
-                                offset: 0.9, color: 'rgba(255,0,0,0.6)'
+                                offset: 0.9, color: 'rgba(255,0,0,9)'
                             }, {
-                                offset: 1, color: 'rgba(255,0,0,0.9)'
+                                offset: 1, color: 'rgba(255,0,0,1)'
                             }],
                             globalCoord: true
                         },
@@ -565,8 +565,17 @@ function start() {
         }
     });
 
-    addMarker();
+    /*map.addEventListener("dragstart", function(evt){
+        option.series[0].data = [];
+        chart.setOption(option);
+    });
 
+    map.addEventListener("dragend", function(evt){
+        option.series[0].data = offArr;
+        chart.setOption(option);
+    });*/
+
+    addMarker();
 
     //监听地图层级
     map.addEventListener("zoomend", function (e) {
@@ -984,6 +993,7 @@ function siteForBar(a,b,c) {
         title : {
             text: '站点统计情况 \n 总数：'+total,
             textStyle: {
+                fontSize: 16,
                 color : 'white'
             },
             //subtext: '总数：'+total,
@@ -1046,6 +1056,7 @@ function rtuForBar(a,b,c) {
         title : {
             text: 'RTU统计情况 \n 总数：'+total,
             textStyle: {
+                fontSize: 16,
                 color : 'white'
             },
             //subtext: '纯属虚构',
@@ -1102,6 +1113,7 @@ function deviceForBar(x,y,z) {
         title : {
             text: '设备统计情况 \n 总数：'+total,
             textStyle: {
+                fontSize: 16,
                 color : 'white'
             },
             //subtext: '纯属虚构',

@@ -58,4 +58,7 @@ public class RswsService {
         return rswsMapper.selectRswsByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return rswsMapper.deleteRTUAlarmData(param);
+    }
 }

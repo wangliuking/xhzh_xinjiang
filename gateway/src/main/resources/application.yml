@@ -113,3 +113,9 @@ security:
   user:
     name: test
     password: test
+logging:
+  #pattern:
+    #格式化，只能输出日期和内容
+    #console: "%d - %msg%n"
+  path: /usr/logs
+  file: /usr/logs/gateway.log

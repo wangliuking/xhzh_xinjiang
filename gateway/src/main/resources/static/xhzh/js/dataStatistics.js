@@ -1,6 +1,6 @@
 
 if (!("xh" in window)) {
-	window.xh = {};
+    window.xh = {};
 };
 
 toastr.options = {
@@ -23,7 +23,7 @@ toastr.options = {
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
 xh.load = function() {
-	var app = angular.module("app", []);
+    var app = angular.module("app", []);
 
     app.filter('upp', function() { //可以注入依赖
         return function(text) {
@@ -33,18 +33,18 @@ xh.load = function() {
                 return parseFloat(text);
         };
     });
-	
-	var pageSize = $("#page-limit").val();
+
+    var pageSize = $("#page-limit").val();
     app.config(['$locationProvider', function ($locationProvider) {
         $locationProvider.html5Mode({
             enabled: true,
             requireBase: false
         });
     }]);
-	app.controller("xhcontroller", function($scope,$http,$location) {
+    app.controller("xhcontroller", function($scope,$http,$location) {
         var pageSize = "";
-		$scope.count = "15";//每页数据显示默认值
-		$scope.businessMenu=true; //菜单变色
+        $scope.count = "15";//每页数据显示默认值
+        $scope.businessMenu=true; //菜单变色
 
         //判断是否登录start
         $.ajax({
@@ -78,24 +78,27 @@ xh.load = function() {
             deviceForType(data);
         });
 
+        $http.get("../../total/deviceTotalByProvince").
+        success(function(data){
+            deviceForNum(data);
+        });
 
-		/* 刷新数据 */
-		$scope.refresh = function() {
-			$scope.search(1);
-		};
+
+        /* 刷新数据 */
+        $scope.refresh = function() {
+            $scope.search(1);
+        };
 
 
-	});
-
-    deviceForNum();
+    });
     deviceForMonth()
 };
 
 // 刷新数据
 xh.refresh = function() {
-	var $scope = angular.element(appElement).scope();
-	// 调用$scope中的方法
-	$scope.refresh();
+    var $scope = angular.element(appElement).scope();
+    // 调用$scope中的方法
+    $scope.refresh();
 };
 
 //站点统计图
@@ -107,7 +110,7 @@ function siteForBar(a,b,c) {
     var total = parseInt(a)+parseInt(b)+parseInt(c);
     // 指定图表的配置项和数据
     var option = {
-        color:['#00CD66', '#FFD700','#DCDCDC'],
+        color:['#00CD66', '#EEAD0E','#DCDCDC'],
         title : {
             text: '站点统计情况 \n 总数：'+total,
             textStyle: {
@@ -169,7 +172,7 @@ function rtuForBar(a,b,c) {
     var total = parseInt(a)+parseInt(b)+parseInt(c);
     // 指定图表的配置项和数据
     var option = {
-        color:['#00CD66', '#FFD700','#DCDCDC'],
+        color:['#00CD66', '#EEAD0E','#DCDCDC'],
         title : {
             text: 'RTU统计情况 \n 总数：'+total,
             textStyle: {
@@ -225,7 +228,7 @@ function deviceForBar(x,y,z) {
     var total = parseInt(x)+parseInt(y)+parseInt(z);
     // 指定图表的配置项和数据
     var option = {
-        color:['#00CD66', '#FFD700','#DCDCDC'],
+        color:['#00CD66', '#EEAD0E','#DCDCDC'],
         title : {
             text: '设备统计情况 \n 总数：'+total,
             textStyle: {
@@ -332,70 +335,44 @@ function deviceForType(data) {
 }
 
 //设备分类调用
-var yearCount = 8;
-var categoryCount = 34;
-
 var xAxisData = ["北京", "广东", "上海", "天津", "重庆", "辽宁", "江苏", "湖北", "四川", "陕西", "河北", "山西", "河南", "吉林", "黑龙江", "内蒙古", "山东", "安徽", "浙江", "福建", "湖南", "广西", "江西", "贵州", "云南", "西藏", "海南", "甘肃", "宁夏", "青海", "新疆", "香港", "澳门", "台湾"];
 var customData = [];
-var legendData = ["","SPD","雷电流","地阻","温湿度","静电","杂散电流","阴极保护","倾斜度"];
+var legendData = ["SPD","接地电阻","雷电流","静电","温湿度","倾斜度","电气安全","杂散电流","阴极保护"];
 var dataList = [];
-
-//legendData.push('trend');
+var tempData = ["spdNum","etcrNum","lightningNum","staticNum","rswsNum","svtNum","hcNum","strayNum","catNum"];
 var encodeY = [];
-for (var i = 0; i < yearCount; i++) {
-    //legendData.push((2010 + i) + '');
-    dataList.push([]);
-    encodeY.push(1 + i);
-}
 
-for (var i = 0; i < categoryCount; i++) {
-    var val = Math.random() * 1000;
-    //xAxisData.push('category' + i);
-    var customVal = [];
-    customData.push(customVal);
-
-    //var data = dataList[0];
-    for (var j = 0; j < dataList.length; j++) {
-        var value = j === 0
-            ? echarts.number.round(val, 2)
-            : echarts.number.round(Math.max(0, dataList[j - 1][i] + (Math.random() - 0.5) * 200), 2);
-        dataList[j].push(value);
-        customVal.push(value);
+//设备数量统计图(根据省份)
+function deviceForNum(data) {
+    console.log("+++++++++++++++++++++++");
+    console.log(data);
+    console.log("+++++++++++++++++++++++");
+    for (var i = 0; i < legendData.length; i++) {
+        dataList.push([]);
+        encodeY.push(i);
     }
-}
-function renderItem(params, api) {
-    var xValue = api.value(0);
-    var currentSeriesIndices = api.currentSeriesIndices();
-    var barLayout = api.barLayout({
-        barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
-    });
+    for (var i = 0; i < xAxisData.length; i++) {
+        var customVal = [];
+        customData.push(customVal);
 
-    var points = [];
-    for (var i = 0; i < currentSeriesIndices.length; i++) {
-        var seriesIndex = currentSeriesIndices[i];
-        if (seriesIndex !== params.seriesIndex) {
-            var point = api.coord([xValue, api.value(seriesIndex)]);
-            point[0] += barLayout[i - 1].offsetCenter;
-            point[1] -= 20;
-            points.push(point);
+        for (var j = 0; j < dataList.length; j++) {
+            var value = 0;
+            for(var d = 0; d < data.length; d++){
+                if(xAxisData[i] == data[d]["province"]){
+                    var tempName = tempData[j];
+                    value = data[d][tempName];
+                    dataList[j].push(value);
+                    customVal.push(value);
+                }
+            }
+
         }
     }
-    var style = api.style({
-        stroke: api.visual('color'),
-        fill: null
-    });
 
-    return {
-        type: 'polyline',
-        shape: {
-            points: points
-        },
-        style: style
-    };
-}
-//设备数量统计图(根据省份)
-function deviceForNum() {
+    console.log("========");
     console.log(customData);
+    console.log(dataList);
+    console.log("========");
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('deviceForNum'));
     // 指定图表的配置项和数据
@@ -426,12 +403,6 @@ function deviceForNum() {
         series: [{
             type: 'custom',
             name: 'SPD',
-            /*renderItem: renderItem,
-            itemStyle: {
-                normal: {
-                    borderWidth: 2
-                }
-            },*/
             encode: {
                 x: 0,
                 y: encodeY
@@ -442,7 +413,7 @@ function deviceForNum() {
             return {
                 type: 'bar',
                 animation: false,
-                name: legendData[index + 1],
+                name: legendData[index],
                 itemStyle: {
                     normal: {
                         opacity: 0.5
@@ -592,19 +563,5 @@ function deviceForMonth() {
             myChart.hideLoading();
         }
     });
-    /*var d = new Date();
-    var xAxisData = [];
-    for (var i = 0; i < 30; i++) {
-        var year = d.getFullYear();
-        var month = d.getMonth()+1;
-        if(month < 10){
-            month = "0"+month;
-        }
-        var day = d.getDate();
-        if(day < 10){
-            day = "0"+day;
-        }
-        xAxisData.push(month+"-"+day);
-        d = new Date(d-24*60*60*1000);
-    }*/
+
 }

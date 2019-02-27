@@ -53,6 +53,14 @@ public class ETCRService {
         return ETCRMapper.deleteETCR(param);
     }
 
+    public int deleteETCRByRelayno(Map<String,Object> param){
+        return ETCRMapper.deleteETCRByRelayno(param);
+    }
+
+    public int deleteETCRNowByRelayno(Map<String,Object> param){
+        return ETCRMapper.deleteETCRNowByRelayno(param);
+    }
+
     public int updateETCR(ETCR ETCR){
         return ETCRMapper.updateETCR(ETCR);
     }
@@ -95,5 +103,9 @@ public class ETCRService {
 
     public List<Map<String,Object>> selectETCRThreeType(int rtu_id){
         return ETCRMapper.selectETCRThreeType(rtu_id);
+    }
+
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return ETCRMapper.deleteRTUAlarmData(param);
     }
 }

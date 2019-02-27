@@ -103,4 +103,12 @@ public interface LightningMapper {
             "</if>"+
             "</script>")
     int selectLightningHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("ltn_id") int ltn_id, @Param("ltn_location") String ltn_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{ltn_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

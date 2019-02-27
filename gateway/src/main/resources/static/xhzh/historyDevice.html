@@ -61,19 +61,19 @@
                         </div>
                         <div>
                             <form id="searchForm" class="form-inline">
-                                <select class="selectForArea" id="siteName" ng-model="x" ng-change="changeSiteName(x)" style="width:15%;">
+                                <select class="selectForArea" id="siteName" ng-model="x" ng-change="changeSiteName(x)" style="width:18%;">
                                     <option value="">请选择站点</option>
                                     <option ng-repeat="x in siteNames" ng-value="x.site_id" ng-selected="goSiteId == x.site_id">{{x.site_name}}</option>
                                 </select>
-                                <select class="selectForArea" id="rtuName" ng-model="y" ng-change="changeRtuName(y)" style="width:12%;">
+                                <select class="selectForArea" id="rtuName" ng-model="y" ng-change="changeRtuName(y)" style="width:18%;">
                                     <option value="">请选择RTU</option>
                                     <option ng-repeat="y in rtuNames" ng-value="y.rtu_id" >{{y.rtu_name}}</option>
                                 </select>
-                                <select class="selectForArea" id="deviceName" ng-model="z" ng-change="changeDeviceName(z)" style="width:12%;">
-                                    <option value="">请选择设备</option>
+                                <select class="selectForArea" id="deviceName" ng-model="z" ng-change="changeDeviceName(z)" style="width:18%;">
+                                    <option value="">请选择设备类型</option>
                                     <option ng-repeat="z in deviceNames" ng-value="z.id">{{z.name}}</option>
                                 </select>
-                                <select class="selectForArea" id="deviceId" style="width:12%;">
+                                <select class="selectForArea" id="deviceId" style="width:18%;">
                                     <option value="">请选择id</option>
                                     <option ng-repeat="a in deviceIds" ng-value="a.id">{{a.id}}</option>
                                 </select>

@@ -36,7 +36,7 @@ public class ExcelUtil {
         //写入List<>中的数据
         int rowNum = 1;
 
-        String[] headers = { "RTU-ID", "设备ID", "RTU端口号", "继电器编号","设备类型","数值","记录时间"};
+        String[] headers = { "行政区域", "机构名称", "站点名称", "RTU-ID","串口号","监测仪ID","型号","名称","安装位置","监测点","记录值","记录时间"};
         //headers表示excel表中第一行的表头
         HSSFRow row = sheet.createRow(0);
         //在excel表中添加表头
@@ -49,13 +49,18 @@ public class ExcelUtil {
         //在表中存放查询到的数据放入对应的列
         for (Map<String,Object> map : excelData) {
             HSSFRow row1 = sheet.createRow(rowNum);
-            row1.createCell(0).setCellValue(map.get("rtu_id")+"");
-            row1.createCell(1).setCellValue(map.get("rst_id")+"");
-            row1.createCell(2).setCellValue(map.get("rtu_channel")+"");
-            row1.createCell(3).setCellValue(map.get("relayno")+"");
-            row1.createCell(4).setCellValue(map.get("rst_type")+"");
-            row1.createCell(5).setCellValue(map.get("rst_value")+"");
-            row1.createCell(6).setCellValue(map.get("write_time")+"");
+            row1.createCell(0).setCellValue(map.get("site_province")+" "+map.get("site_city")+" "+map.get("site_county"));
+            row1.createCell(1).setCellValue(map.get("site_company")+"");
+            row1.createCell(2).setCellValue(map.get("site_name")+"");
+            row1.createCell(3).setCellValue(map.get("rtu_id")+"");
+            row1.createCell(4).setCellValue(map.get("rtu_channel")+"");
+            row1.createCell(5).setCellValue(map.get("rst_id")+"");
+            row1.createCell(6).setCellValue(map.get("rst_model")+"");
+            row1.createCell(7).setCellValue(map.get("rst_name")+"");
+            row1.createCell(8).setCellValue(map.get("rst_location")+"");
+            row1.createCell(9).setCellValue(map.get("relayno")+"");
+            row1.createCell(10).setCellValue(map.get("rst_value")+"");
+            row1.createCell(11).setCellValue(map.get("write_time")+"");
             rowNum++;
         }
 

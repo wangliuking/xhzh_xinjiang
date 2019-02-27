@@ -588,4 +588,112 @@ public class TotalController {
         return resultMap;
     }
 
+    @RequestMapping(value = "/deviceTotalByProvinceTest",method = RequestMethod.GET)
+    public List<Map<String,Object>> deviceTotalByProvinceTest(HttpServletRequest req){
+        List<Map<String,Object>> resultList = new LinkedList<>();
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("rtu_id","");
+        paramMap.put("site_id","");
+        List<Map<String,Object>> siteInfoList = totalService.selectSiteById(paramMap);
+        for(int i=0;i<siteInfoList.size();i++){
+            int site_id = Integer.parseInt(siteInfoList.get(i).get("site_id")+"");
+            Map<String,Object> param = new HashMap<>();
+            param.put("rtu_id","");
+            param.put("site_id",site_id);
+            Map<String,Object> resultMap = new HashMap<>();
+            resultMap.put("province",siteInfoList.get(i).get("site_province"));
+            resultMap.put("spdNum",totalService.selectSPDCount(param).size());
+            resultMap.put("etcrNum",totalService.selectETCRCount(param).size());
+            resultMap.put("lightningNum",totalService.selectLightningCount(param).size());
+            resultMap.put("staticNum",totalService.selectStaticCount(param).size());
+            resultMap.put("rswsNum",totalService.selectRswsCount(param).size());
+            resultMap.put("svtNum",totalService.selectSvtCount(param).size());
+            resultMap.put("hcNum",totalService.selectHcCount(param).size());
+            resultMap.put("strayNum",totalService.selectStrayCount(param).size());
+            resultMap.put("catNum",totalService.selectCatCount(param).size());
+            resultList.add(resultMap);
+        }
+        return resultList;
+    }
+
+    @RequestMapping(value = "/deviceTotalByProvince",method = RequestMethod.GET)
+    public List<Map<String,Object>> deviceTotalByProvince(HttpServletRequest req){
+        List<Map<String,Object>> resultList = new LinkedList<>();
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("rtu_id","");
+        paramMap.put("site_id","");
+        List<Map<String,Object>> siteInfoList = totalService.selectSiteById(paramMap);
+        for(int i=0;i<siteInfoList.size();i++){
+            int site_id = Integer.parseInt(siteInfoList.get(i).get("site_id")+"");
+            Map<String,Object> param = new HashMap<>();
+            param.put("rtu_id","");
+            param.put("site_id",site_id);
+
+            Map<String,Object> resultMap = new HashMap<>();
+            resultMap.put("province",siteInfoList.get(i).get("site_province"));
+            resultMap.put("spdNum",totalService.selectSPDCount(param).size());
+            resultMap.put("etcrNum",totalService.selectETCRCount(param).size());
+            resultMap.put("lightningNum",totalService.selectLightningCount(param).size());
+            resultMap.put("staticNum",totalService.selectStaticCount(param).size());
+            resultMap.put("rswsNum",totalService.selectRswsCount(param).size());
+            resultMap.put("svtNum",totalService.selectSvtCount(param).size());
+            resultMap.put("hcNum",totalService.selectHcCount(param).size());
+            resultMap.put("strayNum",totalService.selectStrayCount(param).size());
+            resultMap.put("catNum",totalService.selectCatCount(param).size());
+
+            resultList.add(resultMap);
+        }
+
+        List<Map<String,Object>> finalList = new LinkedList<>();
+
+        List<String> provinceList = Arrays.asList("北京", "广东", "上海", "天津", "重庆", "辽宁", "江苏", "湖北", "四川", "陕西", "河北", "山西", "河南", "吉林", "黑龙江", "内蒙古", "山东", "安徽", "浙江", "福建", "湖南", "广西", "江西", "贵州", "云南", "西藏", "海南", "甘肃", "宁夏", "青海", "新疆", "香港", "澳门", "台湾");
+        for(int i=0;i<provinceList.size();i++){
+            Map<String,Object> finalMap = new HashMap<>();
+            finalMap.put("province",provinceList.get(i));
+            finalMap.put("spdNum",0);
+            finalMap.put("etcrNum",0);
+            finalMap.put("lightningNum",0);
+            finalMap.put("staticNum",0);
+            finalMap.put("rswsNum",0);
+            finalMap.put("svtNum",0);
+            finalMap.put("hcNum",0);
+            finalMap.put("strayNum",0);
+            finalMap.put("catNum",0);
+            for(int j=0;j<resultList.size();j++){
+                if(provinceList.get(i).equals(resultList.get(j).get("province")+"")){
+                    int spdOld = Integer.parseInt(finalMap.get("spdNum")+"");
+                    int spdAdd = Integer.parseInt(resultList.get(j).get("spdNum")+"");
+                    finalMap.put("spdNum",spdOld+spdAdd);
+                    int etcrOld = Integer.parseInt(finalMap.get("etcrNum")+"");
+                    int etcrAdd = Integer.parseInt(resultList.get(j).get("etcrNum")+"");
+                    finalMap.put("etcrNum",etcrOld+etcrAdd);
+                    int lightningOld = Integer.parseInt(finalMap.get("lightningNum")+"");
+                    int lightningAdd = Integer.parseInt(resultList.get(j).get("lightningNum")+"");
+                    finalMap.put("lightningNum",lightningOld+lightningAdd);
+                    int staticOld = Integer.parseInt(finalMap.get("staticNum")+"");
+                    int staticAdd = Integer.parseInt(resultList.get(j).get("staticNum")+"");
+                    finalMap.put("staticNum",staticOld+staticAdd);
+                    int rswsOld = Integer.parseInt(finalMap.get("rswsNum")+"");
+                    int rswsAdd = Integer.parseInt(resultList.get(j).get("rswsNum")+"");
+                    finalMap.put("rswsNum",rswsOld+rswsAdd);
+                    int svtOld = Integer.parseInt(finalMap.get("svtNum")+"");
+                    int svtAdd = Integer.parseInt(resultList.get(j).get("svtNum")+"");
+                    finalMap.put("svtNum",svtOld+svtAdd);
+                    int hcOld = Integer.parseInt(finalMap.get("hcNum")+"");
+                    int hcAdd = Integer.parseInt(resultList.get(j).get("hcNum")+"");
+                    finalMap.put("hcNum",hcOld+hcAdd);
+                    int strayOld = Integer.parseInt(finalMap.get("strayNum")+"");
+                    int strayAdd = Integer.parseInt(resultList.get(j).get("strayNum")+"");
+                    finalMap.put("strayNum",strayOld+strayAdd);
+                    int catOld = Integer.parseInt(finalMap.get("catNum")+"");
+                    int catAdd = Integer.parseInt(resultList.get(j).get("catNum")+"");
+                    finalMap.put("catNum",catOld+catAdd);
+                }
+            }
+
+            finalList.add(finalMap);
+        }
+        return finalList;
+    }
+
 }

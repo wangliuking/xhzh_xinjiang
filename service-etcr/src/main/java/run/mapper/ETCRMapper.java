@@ -86,6 +86,12 @@ public interface ETCRMapper {
     @Delete("delete from resistance_config where rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_port=#{rtu_port}")
     int deleteETCR(Map<String,Object> param);
 
+    @Delete("delete from resistance_config where rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_port=#{rtu_port} and relayno=#{relayno}")
+    int deleteETCRByRelayno(Map<String,Object> param);
+
+    @Delete("delete from resistance_now_data where rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_channel=#{rtu_port} and relayno=#{relayno}")
+    int deleteETCRNowByRelayno(Map<String,Object> param);
+
     @Update("replace into resistance_config(site_id,rtu_id,rtu_port,rtu_baud_rate,rst_id,rst_name,rst_model,rst_location,rst_threshold,rst_type,relayno,relayno_name,rst_line_long,rst_line_radius,rst_space,rst_ospace,r1,rc) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{rst_id},#{rst_name},#{rst_model},#{rst_location},#{rst_threshold},#{rst_type},#{relayno},#{relayno_name},#{rst_line_long},#{rst_line_radius},#{rst_space},#{rst_ospace},#{r1},#{rc})")
     int updateETCR(ETCR ETCR);
 
@@ -194,4 +200,12 @@ public interface ETCRMapper {
             "</if>"+
             "</script>")
     int selectETCRHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("rst_id") int rst_id, @Param("rst_location") String rst_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{rst_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

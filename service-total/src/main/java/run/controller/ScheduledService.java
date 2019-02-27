@@ -27,6 +27,16 @@ public class ScheduledService {
         ScheduledService.nowDataList = nowDataList;
     }
 
+    public static void main(String[] args) {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("HH");
+        String nowTime = sdf.format(d);
+        String hour = sdf1.format(d);
+        System.out.println("当前时间：" + nowTime);
+        System.out.println("hour：" + ((Integer.parseInt(hour)+1)+""));
+    }
+
     @Scheduled(cron = "0 0/30 * * * ?")
     @Async
     public void scheduled() {

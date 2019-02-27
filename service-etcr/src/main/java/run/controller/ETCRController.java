@@ -318,6 +318,23 @@ public class ETCRController {
                         params.put("etcr", etcr);
                         params.put("op", 0);
                         feignForMQ.sendETCRConf(params);
+                    }else{
+                        Map<String,Object> etcrParam = new HashMap<>();
+                        etcrParam.put("rtu_id",rtu.getRtu_id());
+                        etcrParam.put("rst_id",rst_id);
+                        etcrParam.put("rtu_port",etcr.getRtu_port());
+                        etcrParam.put("relayno",1);
+                        ETCRService.deleteETCRByRelayno(etcrParam);
+                        ETCRService.deleteETCRNowByRelayno(etcrParam);
+                        etcr.setRelayno(etcr.getRelayno1());
+                        etcr.setRelayno_name(etcr.getRelayno_name1());
+                        etcr.setRst_line_long(etcr.getRst_line_long1());
+                        etcr.setRst_line_radius(etcr.getRst_line_radius1());
+                        etcr.setRst_id(rst_id);
+                        params.put("rtu", rtu);
+                        params.put("etcr", etcr);
+                        params.put("op", 1);
+                        feignForMQ.sendETCRConf(params);
                     }
                     if(!"".equals(etcr.getRelayno_name2())){
                         etcr.setRelayno(etcr.getRelayno2());
@@ -329,6 +346,23 @@ public class ETCRController {
                         params.put("rtu", rtu);
                         params.put("etcr", etcr);
                         params.put("op", 0);
+                        feignForMQ.sendETCRConf(params);
+                    }else{
+                        Map<String,Object> etcrParam = new HashMap<>();
+                        etcrParam.put("rtu_id",rtu.getRtu_id());
+                        etcrParam.put("rst_id",rst_id);
+                        etcrParam.put("rtu_port",etcr.getRtu_port());
+                        etcrParam.put("relayno",2);
+                        ETCRService.deleteETCRByRelayno(etcrParam);
+                        ETCRService.deleteETCRNowByRelayno(etcrParam);
+                        etcr.setRelayno(etcr.getRelayno2());
+                        etcr.setRelayno_name(etcr.getRelayno_name2());
+                        etcr.setRst_line_long(etcr.getRst_line_long2());
+                        etcr.setRst_line_radius(etcr.getRst_line_radius2());
+                        etcr.setRst_id(rst_id);
+                        params.put("rtu", rtu);
+                        params.put("etcr", etcr);
+                        params.put("op", 1);
                         feignForMQ.sendETCRConf(params);
                     }
                     if(!"".equals(etcr.getRelayno_name3())){
@@ -342,6 +376,23 @@ public class ETCRController {
                         params.put("etcr", etcr);
                         params.put("op", 0);
                         feignForMQ.sendETCRConf(params);
+                    }else{
+                        Map<String,Object> etcrParam = new HashMap<>();
+                        etcrParam.put("rtu_id",rtu.getRtu_id());
+                        etcrParam.put("rst_id",rst_id);
+                        etcrParam.put("rtu_port",etcr.getRtu_port());
+                        etcrParam.put("relayno",3);
+                        ETCRService.deleteETCRByRelayno(etcrParam);
+                        ETCRService.deleteETCRNowByRelayno(etcrParam);
+                        etcr.setRelayno(etcr.getRelayno3());
+                        etcr.setRelayno_name(etcr.getRelayno_name3());
+                        etcr.setRst_line_long(etcr.getRst_line_long3());
+                        etcr.setRst_line_radius(etcr.getRst_line_radius3());
+                        etcr.setRst_id(rst_id);
+                        params.put("rtu", rtu);
+                        params.put("etcr", etcr);
+                        params.put("op", 1);
+                        feignForMQ.sendETCRConf(params);
                     }
                     if(!"".equals(etcr.getRelayno_name4())){
                         etcr.setRelayno(etcr.getRelayno4());
@@ -353,6 +404,23 @@ public class ETCRController {
                         params.put("rtu", rtu);
                         params.put("etcr", etcr);
                         params.put("op", 0);
+                        feignForMQ.sendETCRConf(params);
+                    }else{
+                        Map<String,Object> etcrParam = new HashMap<>();
+                        etcrParam.put("rtu_id",rtu.getRtu_id());
+                        etcrParam.put("rst_id",rst_id);
+                        etcrParam.put("rtu_port",etcr.getRtu_port());
+                        etcrParam.put("relayno",4);
+                        ETCRService.deleteETCRByRelayno(etcrParam);
+                        ETCRService.deleteETCRNowByRelayno(etcrParam);
+                        etcr.setRelayno(etcr.getRelayno4());
+                        etcr.setRelayno_name(etcr.getRelayno_name4());
+                        etcr.setRst_line_long(etcr.getRst_line_long4());
+                        etcr.setRst_line_radius(etcr.getRst_line_radius4());
+                        etcr.setRst_id(rst_id);
+                        params.put("rtu", rtu);
+                        params.put("etcr", etcr);
+                        params.put("op", 1);
                         feignForMQ.sendETCRConf(params);
                     }
                 }
@@ -444,6 +512,8 @@ public class ETCRController {
                 String res = feignForMQ.sendETCRConfForRTU(tempParams);
                 Map<String,Object> map = new HashMap<>();
                 if("配置成功".equals(res)){
+                    //删除rtuAlarmData相关信息
+                    ETCRService.deleteRTUAlarmData(params);
                     if(rel == 0) {
                         //继电器为零的情况
                         etcr.setRelayno(0);
@@ -483,6 +553,9 @@ public class ETCRController {
                 String res = feignForMQ.sendETCRConfForRTU(tempParams);
                 Map<String,Object> map = new HashMap<>();
                 if("配置成功".equals(res)){
+                    //删除rtuAlarmData相关信息
+                    ETCRService.deleteRTUAlarmData(params);
+
                     ETCRService.deleteETCR(params);
                     Map<String, Object> temp = new HashMap<>();
                     temp.put("rtu", rtu);

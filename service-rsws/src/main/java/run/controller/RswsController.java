@@ -177,6 +177,9 @@ public class RswsController {
         String res = feignForMQ.sendRswsConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            RswsService.deleteRTUAlarmData(params);
+
             RswsService.deleteRsws(params);
             feignForMQ.sendRswsConf(tempParams);
             map.put("success",true);

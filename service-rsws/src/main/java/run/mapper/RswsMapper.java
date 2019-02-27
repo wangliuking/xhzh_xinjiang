@@ -103,4 +103,12 @@ public interface RswsMapper {
             "</if>"+
             "</script>")
     int selectRswsHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("hmt_id") int hmt_id, @Param("hmt_location") String hmt_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{hmt_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

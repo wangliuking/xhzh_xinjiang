@@ -33,7 +33,6 @@ xh.load = function() {
         });
     }]);
 	app.controller("xhcontroller", function($scope,$http,$location) {
-        xh.maskShow();
 	    $scope.count = "15";//每页数据显示默认值
 		$scope.businessMenu=true; //菜单变色
 

@@ -58,4 +58,7 @@ public class HcService {
         return hcMapper.selectHcByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return hcMapper.deleteRTUAlarmData(param);
+    }
 }

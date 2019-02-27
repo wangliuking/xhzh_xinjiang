@@ -103,4 +103,12 @@ public interface HcMapper {
             "</if>"+
             "</script>")
     int selectHcHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("es_id") int es_id, @Param("es_location") String es_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{es_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

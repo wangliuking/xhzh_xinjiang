@@ -58,4 +58,7 @@ public class SvtService {
         return svtMapper.selectSvtByRTU(rtu_id);
     }
 
+    public int deleteRTUAlarmData(Map<String,Object> param){
+        return svtMapper.deleteRTUAlarmData(param);
+    }
 }

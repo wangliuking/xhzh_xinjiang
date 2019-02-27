@@ -177,6 +177,9 @@ public class StaticController {
         String res = feignForMQ.sendStaticConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            StaticService.deleteRTUAlarmData(params);
+
             StaticService.deleteStatic(params);
             feignForMQ.sendStaticConf(tempParams);
             map.put("success",true);

@@ -103,4 +103,12 @@ public interface StrayMapper {
             "</if>"+
             "</script>")
     int selectStrayHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("stret_id") int stret_id, @Param("stret_location") String stret_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 删除设备时同步删除rtu_alarm_data表相关信息
+     * @param
+     * @return
+     */
+    @Delete("delete from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_port} and devieceId=#{stret_id}")
+    int deleteRTUAlarmData(Map<String,Object> param);
 }

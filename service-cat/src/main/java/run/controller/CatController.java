@@ -177,6 +177,9 @@ public class CatController {
         String res = feignForMQ.sendCatConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            catService.deleteRTUAlarmData(params);
+
             catService.deleteCat(params);
             feignForMQ.sendCatConf(tempParams);
             map.put("success",true);

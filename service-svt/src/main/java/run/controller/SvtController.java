@@ -177,6 +177,9 @@ public class SvtController {
         String res = feignForMQ.sendSvtConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){
+            //删除rtuAlarmData相关信息
+            svtService.deleteRTUAlarmData(params);
+
             svtService.deleteSvt(params);
             feignForMQ.sendSvtConf(tempParams);
             map.put("success",true);
