@@ -61,7 +61,7 @@ public interface CatMapper {
     List<Map<String,Object>> selectCatByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.cathode_location,b.cathode_name,b.cathode_model,c.* from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.cathode_location,b.cathode_name,b.cathode_model,c.*,d.name as structureName from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+

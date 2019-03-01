@@ -61,7 +61,7 @@ public interface StrayMapper {
     List<Map<String,Object>> selectStrayByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.* from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.*,d.name as structureName from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+

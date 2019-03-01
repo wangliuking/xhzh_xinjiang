@@ -17,6 +17,8 @@ import java.util.*;
 public class TotalController {
     @Autowired
     private TotalService totalService;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectSiteAllStatus",method = RequestMethod.GET)
     public Map<String,Object> selectSiteAllStatus(HttpServletRequest req){
@@ -30,14 +32,16 @@ public class TotalController {
             param.put("rtu_id","");
             param.put("site_id","");
         }
-        System.out.println("param : "+param);
-        //List<Map<String,Object>> siteInfo = totalService.selectSiteById(param);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
         List<Map<String,Object>> rtuOffNum = totalService.selectRTUOff(param);
         List<Map<String,Object>> rtuWarningNum = totalService.selectRTUWarning(param);
+        List<Integer> rtuStatusList = totalService.selectRTUStatusBySiteId(param);
         int rtuNum = totalService.selectRTUNumBySiteId(param);
         Map<String,Object> resultMap = new HashMap<>();
-        //resultMap.put("siteInfo",siteInfo);
-        //System.out.println(" siteInfo : "+siteInfo);
+        resultMap.put("rtuStatusList",rtuStatusList.size());
         resultMap.put("rtuOffNum",rtuOffNum.size());
         resultMap.put("rtuWarningNum",rtuWarningNum.size());
         resultMap.put("rtuNum",rtuNum);
@@ -61,7 +65,11 @@ public class TotalController {
             param.put("rtu_id","");
             param.put("site_id","");
         }
-        System.out.println("param : "+param);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
+
         List<Map<String,Object>> siteInfo = totalService.selectSiteById(param);
         List<Map<String,Object>> deviceOff = totalService.selectDeviceOff(param);
         List<Map<String,Object>> deviceWarning = totalService.selectDeviceWarning(param);
@@ -405,6 +413,9 @@ public class TotalController {
     public Map<String,Object> selectForFeignMQ(HttpServletRequest req){
         String rtuId = req.getParameter("rtu_id");
         String siteId = req.getParameter("site_id");
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
         Map<String,Object> param = new HashMap<>();
         if(rtuId != null && !"".equals(rtuId)){
             int rtu_id = Integer.parseInt(rtuId);
@@ -418,6 +429,7 @@ public class TotalController {
             param.put("rtu_id","");
             param.put("site_id","");
         }
+        param.put("strList",strList);
         System.out.println("param : "+param);
         //List<Map<String,Object>> deviceOff = totalService.selectDeviceOff(param);
         List<Map<String,Object>> deviceWarning = totalService.selectDeviceWarning(param);
@@ -433,7 +445,9 @@ public class TotalController {
         List<Map<String,Object>> hcNum = totalService.selectHcCount(param);
         List<Map<String,Object>> strayNum = totalService.selectStrayCount(param);
         List<Map<String,Object>> catNum = totalService.selectCatCount(param);
+        List<Integer> rtuStatusList = totalService.selectRTUStatusBySiteId(param);
         Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("rtuStatusList",rtuStatusList);
         resultMap.put("deviceWarningCount",deviceWarning.size());
         resultMap.put("rtuNum",rtuNum);
         resultMap.put("rtuOffNum",rtuOffNum.size());
@@ -553,8 +567,12 @@ public class TotalController {
         Map<String,Object> param = new HashMap<>();
         param.put("rtu_id","");
         param.put("site_id","");
-        int siteNum = totalService.selectSiteTotal();
-        int rtuNum = totalService.selectRTUTotal();
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
+        int siteNum = totalService.selectSiteTotal(param);
+        int rtuNum = totalService.selectRTUTotal(param);
         int spdNum = totalService.selectSPDTotal(param);
         int etcrNum = totalService.selectETCRTotal(param);
         int lightningNum = totalService.selectLightningTotal(param);
@@ -566,9 +584,6 @@ public class TotalController {
         int catNum = totalService.selectCatTotal(param);
         int deviceTotalNum = spdNum+etcrNum+lightningNum+staticNum+rswsNum+svtNum+hcNum+strayNum+catNum;
 
-        List<Map<String,Object>> deviceOff = totalService.selectDeviceOff(param);
-        List<Map<String,Object>> deviceWarning = totalService.selectDeviceWarning(param);
-        List<Map<String,Object>> rtuOffNum = totalService.selectRTUOff(param);
         List<Map<String,Object>> rtuWarningNum = totalService.selectRTUWarning(param);
         List<Map<String,Object>> siteWarningTop5 = totalService.selectSiteWarningTotal(param);
         List<Map<String,Object>> siteDeviceOffTop5 = totalService.selectSiteDeviceOffTotal(param);
@@ -577,12 +592,9 @@ public class TotalController {
         resultMap.put("siteWarningTop5",siteWarningTop5);
         resultMap.put("siteDeviceOffTop5",siteDeviceOffTop5);
         resultMap.put("siteOff",siteOff);
-        //resultMap.put("deviceOffCount",deviceOff.size());
-        //resultMap.put("deviceWarningCount",deviceWarning.size());
         resultMap.put("siteNum",siteNum);
         resultMap.put("rtuNum",rtuNum);
         resultMap.put("deviceTotalNum",deviceTotalNum);
-        //resultMap.put("rtuOffNum",rtuOffNum.size());
         resultMap.put("rtuWarningNum",rtuWarningNum.size());
         resultMap.put("num",ScheduledService.getNowDataList());
         return resultMap;

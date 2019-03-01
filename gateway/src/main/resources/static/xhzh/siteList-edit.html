@@ -21,14 +21,18 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group col-md-12">
-								<label>站点所属行业</label>&nbsp;<span class="text-danger">[*]</span> <input
-									type="text" ng-value="editData.site_industry" class="form-control" name="site_industry">
+								<label>站点所属行业</label>&nbsp;<span class="text-danger">[*]</span>
+								<select class="selectForArea" id="testIndustrys" style="width:100%;" name="site_industry">
+									<option ng-repeat="x in industrys" ng-value="x" ng-selected="x == editData.site_industry">{{x}}</option>
+								</select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group col-md-12">
-								<label>机构组织名称</label>&nbsp;<span class="text-danger">[*]</span> <input
-									type="text" ng-value="editData.site_company" class="form-control" name="site_company" style="border: 1px solid black;">
+								<label>机构组织名称</label>&nbsp;<span class="text-danger">[*]</span>
+								<select class="selectForArea" id="structure" style="width:100%;" name="site_company">
+									<option ng-repeat="y in structureList" ng-value="y.id" ng-selected="editData.site_company == y.id">{{y.name}}</option>
+								</select>
 							</div>
 						</div>
 					</div>

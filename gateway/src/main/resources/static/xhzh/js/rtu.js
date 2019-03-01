@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -47,11 +48,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -75,7 +76,7 @@ xh.load = function() {
         $scope.count = "15";//每页数据显示默认值
 		$scope.businessMenu=true; //菜单变色
 
-        $http.get("../../connect/selectAllSite").
+        $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;
             var siteNames = [];

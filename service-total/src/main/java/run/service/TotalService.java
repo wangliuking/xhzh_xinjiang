@@ -239,12 +239,12 @@ public class TotalService {
         return totalMapper.selectCatTotal(param);
     }
 
-    public int selectSiteTotal(){
-        return totalMapper.selectSiteTotal();
+    public int selectSiteTotal(Map<String,Object> param){
+        return totalMapper.selectSiteTotal(param);
     }
 
-    public int selectRTUTotal(){
-        return totalMapper.selectRTUTotal();
+    public int selectRTUTotal(Map<String,Object> param){
+        return totalMapper.selectRTUTotal(param);
     }
 
     public List<Map<String,Object>> selectSiteWarningTotal(Map<String,Object> param){
@@ -259,4 +259,7 @@ public class TotalService {
         return totalMapper.selectSiteOffTotal(param);
     }
 
+    public List<Integer> selectRTUStatusBySiteId(Map<String,Object> param){
+        return totalMapper.selectRTUStatusBySiteId(param);
+    }
 }

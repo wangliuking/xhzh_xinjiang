@@ -28,6 +28,8 @@ public class SiteController {
     private FeignForETCR feignForETCR;
     @Autowired
     private FeignForTotal feignForTotal;
+    @Autowired
+    private StructureController structureController;
 
     //确认是否登录
     @RequestMapping("/ensure")
@@ -57,7 +59,11 @@ public class SiteController {
         String site_county = req.getParameter("site_county");
         String site_company = req.getParameter("site_company");
         String status = req.getParameter("status");
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
         Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
         param.put("site_name",site_name);
         param.put("site_industry",site_industry);
         param.put("site_province",site_province);
@@ -75,12 +81,17 @@ public class SiteController {
             if(siteList.size()>0){
                 for(int i=0;i<siteList.size();i++){
                     Map<String,Object> map = siteList.get(i);
-                    Map<String,Object> resultMap = feignForTotal.selectForFeignMQ(map.get("site_id")+"");
+                    Map<String,Object> resultMap = feignForTotal.selectForFeignMQ(map.get("site_id")+"",structure);
                     System.out.println("resultMap : "+resultMap);
+                    List<Integer> rtuStatusList = (List<Integer>)resultMap.get("rtuStatusList");
+                    System.out.println("rtuStatusList : "+rtuStatusList);
                     int rtuNum = Integer.parseInt(resultMap.get("rtuNum")+"");
                     int rtuOffNum = Integer.parseInt(resultMap.get("rtuOffNum")+"");
                     int deviceWarningCount = Integer.parseInt(resultMap.get("deviceWarningCount")+"");
                     if(rtuNum == 0 || rtuOffNum > 0){
+                        //离线
+                        map.put("status",1);
+                    }else if(rtuStatusList == null || rtuStatusList.size() == 0){
                         //离线
                         map.put("status",1);
                     }else if(deviceWarningCount > 0){

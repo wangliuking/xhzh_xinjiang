@@ -61,7 +61,7 @@ public interface SvtMapper {
     List<Map<String,Object>> selectSvtByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.tilt_location,b.tilt_name,b.tilt_model,c.* from tilt_old_data as a left join tilt_config as b on a.rtu_id=b.rtu_id and a.tilt_id=b.tilt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.tilt_location,b.tilt_name,b.tilt_model,c.*,d.name as structureName from tilt_old_data as a left join tilt_config as b on a.rtu_id=b.rtu_id and a.tilt_id=b.tilt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+

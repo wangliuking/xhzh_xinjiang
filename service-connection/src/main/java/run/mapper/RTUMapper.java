@@ -55,8 +55,13 @@ public interface RTUMapper {
     @Update("update rtu_config set site_id=#{site_id},rtu_ip=#{rtu_ip},rtu_netmask=#{rtu_netmask},rtu_gateway=#{rtu_gateway},center_ip=#{center_ip},center_port=#{center_port},connect_type=#{connect_type} where rtu_id=#{rtu_id}")
     int updateRTU(RTU rtu);
 
-    @Select("select a.*,b.site_name,b.site_lat,b.site_lng from rtu_config as a left join site_config as b on a.site_id=b.site_id")
-    List<Map<String,Object>> selectAllRTUPosition();
+    @Select("<script>" +
+            "select a.*,b.site_name,b.site_lat,b.site_lng from rtu_config a left join site_config b on a.site_id=b.site_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "</script>")
+    List<Map<String,Object>> selectAllRTUPosition(Map<String,Object> param);
 
     @Delete("delete from spd_config where rtu_id = #{rtu_id}")
     int delSpd(int rtu_id);

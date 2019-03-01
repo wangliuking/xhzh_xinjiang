@@ -61,7 +61,7 @@ public interface RswsMapper {
     List<Map<String,Object>> selectRswsByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.hmt_location,b.hmt_name,b.hmt_model,c.* from humiture_old_data as a left join humiture_config as b on a.rtu_id=b.rtu_id and a.hmt_id=b.hmt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.hmt_location,b.hmt_name,b.hmt_model,c.*,d.name as structureName from humiture_old_data as a left join humiture_config as b on a.rtu_id=b.rtu_id and a.hmt_id=b.hmt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+

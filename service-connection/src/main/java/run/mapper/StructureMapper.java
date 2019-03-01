@@ -10,6 +10,8 @@ import java.util.Map;
 
 @Repository
 public interface StructureMapper {
+    @Select("select id,pId from structure")
+    List<Map<String,Integer>> foreachIdAndPId();
 
     @Select("select * from structure")
     List<Node> selectAll();

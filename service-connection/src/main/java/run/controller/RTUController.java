@@ -40,6 +40,8 @@ public class RTUController {
     FeignForMQ feignForMQ;
     @Autowired
     AsyncController asyncController;
+    @Autowired
+    private StructureController structureController;
 
     @RequestMapping(value = "/selectAllRTU",method = RequestMethod.GET)
     public Map<String,Object> selectAllRTU (HttpServletRequest req, HttpServletResponse resp) {
@@ -142,8 +144,13 @@ public class RTUController {
     }
 
     @RequestMapping(value = "/selectAllRTUPosition",method = RequestMethod.GET)
-    public List<Map<String,Object>> selectAllRTUPosition (){
-        return rtuService.selectAllRTUPosition();
+    public List<Map<String,Object>> selectAllRTUPosition (HttpServletRequest req){
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        return rtuService.selectAllRTUPosition(param);
     }
 
     @RequestMapping(value = "/insertRTU", method = RequestMethod.POST)

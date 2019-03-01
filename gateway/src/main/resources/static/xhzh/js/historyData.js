@@ -132,6 +132,9 @@ xh.load = function() {
 
         /*导出测试*/
         $scope.test = function(){
+            var deviceName = $("#deviceName").val();
+            $scope.changeDeviceTypeShow = deviceName;
+
             var site_id = $("#siteName").val();
             var rtu_id = $("#rtuName").val();
             var location = $("#location").val();
@@ -141,7 +144,20 @@ xh.load = function() {
 
             console.log(deviceName+" "+site_id+" "+rtu_id+" "+location+" "+deviceId);
 
-            window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime;
+            $.ajax({
+                type: 'GET',
+                url: "../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime,
+                async: false,
+                dataType: 'json',
+                success: function(response){
+                    var dataCount = response.totals;
+                    if(dataCount > 50000){
+                        alert("查询数据量过多，请调整查询条件");
+                    }else{
+                        window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime;
+                    }
+                }
+            });
         }
 		
 		/* 刷新数据 */

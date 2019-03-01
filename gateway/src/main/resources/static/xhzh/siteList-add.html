@@ -29,8 +29,10 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group col-md-12">
-								<label>机构组织名称</label>&nbsp;<span class="text-danger">[*]</span> <input
-									type="text" value="" class="form-control" name="site_company" style="border: 1px solid black;">
+								<label>机构组织名称</label>&nbsp;<span class="text-danger">[*]</span>
+								<select class="selectForArea" id="structure" style="width:100%;" name="site_company">
+									<option ng-repeat="y in structureList" ng-value="y.id">{{y.name}}</option>
+								</select>
 							</div>
 						</div>
 					</div>

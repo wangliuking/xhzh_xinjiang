@@ -109,6 +109,7 @@
                                     <th>序号</th>
                                     <th>角色ID</th>
                                     <th>角色名称</th>
+                                    <th>组织结构</th>
                                     <th>创建时间</th>
                                     <th>操作</th>
                                 </tr>
@@ -120,7 +121,8 @@
                                     <td>{{$index+1}}</td>
                                     <td>{{x.id}}</td>
                                     <td>{{x.name}}</td>
-                                    <td>{{x.createTime}}</td>
+                                    <td>{{x.structureName}}</td>
+                                    <td>{{x.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td>
                                         <a href="#" ng-click="showEdit($index)">修改</a>
                                         |

@@ -11,7 +11,10 @@ import java.util.Map;
 public interface SiteMapper {
 
     @Select("<script>" +
-            "select * from site_config where 1=1" +
+            "select a.*,b.name structureName from site_config a left join structure b on a.site_company=b.id where a.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_name != null and site_name != '' and site_name != 'null'\">" +
             "and site_name =#{site_name}"+
             "</if>"+

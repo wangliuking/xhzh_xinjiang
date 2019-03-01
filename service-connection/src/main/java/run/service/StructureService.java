@@ -44,4 +44,8 @@ public class StructureService {
     public int update(Map<String,Object> param){
         return structureMapper.update(param);
     }
+
+    public List<Map<String,Integer>> foreachIdAndPId(){
+        return structureMapper.foreachIdAndPId();
+    }
 }

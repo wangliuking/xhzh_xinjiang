@@ -59,6 +59,12 @@ xh.load = function() {
             xh.pagging(1, parseInt($scope.totals), $scope);
         });
 
+        $http.get("../../connect/selectStructureList").
+        success(function(response){
+            //console.log(response);
+            $scope.structureList = response.nodeList;
+        });
+
         $scope.goPower = function(id,name) {
             window.location.href = '/xhzh/power.html?id='+id+"&name="+name;
         };
@@ -211,7 +217,7 @@ xh.edit = function() {
     });
     var str = JSON.stringify(f);
     $.ajax({
-        url : '../../connect/updateRole',
+        url : '../../connect/updateRoleName',
         contentType : "application/json;charset=utf-8",
         type : 'POST',
         dataType : "json",

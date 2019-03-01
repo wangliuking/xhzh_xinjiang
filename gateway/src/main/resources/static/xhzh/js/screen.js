@@ -12,17 +12,18 @@ require.config({
 var alarmbs=true;
 var alarmji=true;
 var appElement = document.querySelector('[ng-controller=screen]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 	app.controller("screen", function($scope, $http) {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -38,9 +39,9 @@ xh.load = function() {
 };
 
 xh.initTotal = function(){
-	console.log("aaa");
+    console.log(structure);
     $.ajax({
-        url : '../../total/selectIndexData',
+        url : '../../total/selectIndexData?structure='+structure,
         type : 'GET',
         dataType : "json",
         async : false,

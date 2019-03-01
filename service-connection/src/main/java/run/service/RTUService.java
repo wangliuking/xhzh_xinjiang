@@ -46,8 +46,8 @@ public class RTUService {
         return rtuMapper.updateRTU(rtu);
     }
 
-    public List<Map<String,Object>> selectAllRTUPosition(){
-        return rtuMapper.selectAllRTUPosition();
+    public List<Map<String,Object>> selectAllRTUPosition(Map<String,Object> param){
+        return rtuMapper.selectAllRTUPosition(param);
     }
 
     public int delSpd(int rtu_id){

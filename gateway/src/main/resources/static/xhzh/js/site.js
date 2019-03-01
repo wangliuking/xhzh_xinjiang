@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -43,14 +44,14 @@ xh.load = function() {
     }]);
 	app.controller("xhcontroller", function($scope,$http,$location) {
 
-	    //判断是否登录start
+        //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -73,7 +74,7 @@ xh.load = function() {
 		$scope.count = "15";//每页数据显示默认值
 		$scope.businessMenu=true; //菜单变色
 
-        $http.get("../../connect/selectAllSite?start=0&limit=" + pageSize).
+        $http.get("../../connect/selectAllSite?start=0&limit=" + pageSize+"&structure="+structure).
         success(function(response){
         	var data = response.items;
         	var siteNames = [];
@@ -89,6 +90,12 @@ xh.load = function() {
 
             $scope.connectType = [{"id":2,"name":"全部模式"},{"id":1,"name":"TCP"},{"id":0,"name":"UDP"}];
             xh.pagging(1, parseInt($scope.totals), $scope);
+        });
+
+        $http.get("../../connect/selectStructureList").
+        success(function(response){
+            //console.log(response);
+            $scope.structureList = response.nodeList;
         });
 
         /* 显示添加框 */
@@ -215,7 +222,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectAllSite?start=0&limit=" + limit+"&site_name="+site_name+"&site_industry="+site_industry+"&site_province="+site_province+"&site_city="+site_city+"&site_county="+site_county+"&status="+status).
+			$http.get("../../connect/selectAllSite?start=0&limit=" + limit+"&site_name="+site_name+"&site_industry="+site_industry+"&site_province="+site_province+"&site_city="+site_city+"&site_county="+site_county+"&status="+status+"&structure="+structure).
 			success(function(response){
 				console.log(response);
 				$scope.data = response.items;
@@ -266,7 +273,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectAllSite?start="+start+"&limit=" + limit+"&site_name="+site_name+"&site_industry="+site_industry+"&site_province="+site_province+"&site_city="+site_city+"&site_county="+site_county+"&status="+status).
+			$http.get("../../connect/selectAllSite?start="+start+"&limit=" + limit+"&site_name="+site_name+"&site_industry="+site_industry+"&site_province="+site_province+"&site_city="+site_city+"&site_county="+site_county+"&status="+status+"&structure="+structure).
 			success(function(response){
 				xh.maskHide();
 				$scope.start = (page - 1) * pageSize + 1;

@@ -19,6 +19,14 @@
 									type="text" ng-value="editData.name" class="form-control" name="name">
 							</div>
 						</div>
+						<div class="col-md-4">
+							<div class="form-group col-md-12">
+								<label>组织结构</label>&nbsp;<span class="text-danger">[*]</span>
+								<select class="selectForArea" id="structure" style="width:100%;" name="structure">
+									<option ng-repeat="y in structureList" ng-value="y.id" ng-selected="editData.structure == y.id">{{y.name}}</option>
+								</select>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>

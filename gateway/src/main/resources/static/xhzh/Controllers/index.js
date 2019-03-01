@@ -18,11 +18,14 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                console.log("======");
+                console.log(response);
+                console.log("======");
+                $scope.power = response;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -31,13 +34,6 @@ xh.load = function() {
             }
         });
         //判断是否登录end
-
-		$http.get("../../getLoginUser").success(function(response) {
-			console.log("======");
-			console.log(response);
-            console.log("======");
-            $scope.power = response;
-		});
 	});
 };
 /* 获取cookie */

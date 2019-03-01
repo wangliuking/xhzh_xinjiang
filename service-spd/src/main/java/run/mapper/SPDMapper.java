@@ -72,7 +72,7 @@ public interface SPDMapper {
     int updateSPDByRTU(Map<String,Object> params);
 
     @Select("<script>" +
-            "select a.*,b.spd_location,b.spd_model,b.spd_name,c.* from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.spd_location,b.spd_model,b.spd_name,c.*,d.name as structureName from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+

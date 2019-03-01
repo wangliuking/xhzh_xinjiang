@@ -17,7 +17,7 @@ public class RoleService {
         return roleMapper.selectRoleById(id);
     }
 
-    public List<Role> selectRoleList(Map<String,Object> param){
+    public List<Map<String,Object>> selectRoleList(Map<String,Object> param){
         return roleMapper.selectRoleList(param);
     }
 
@@ -31,6 +31,10 @@ public class RoleService {
 
     public int updateRole(Role role){
         return roleMapper.updateRole(role);
+    }
+
+    public int updateRoleName(Role role){
+        return roleMapper.updateRoleName(role);
     }
 
     public int deleteRole(int id){

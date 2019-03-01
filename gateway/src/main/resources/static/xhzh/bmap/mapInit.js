@@ -18,6 +18,7 @@ if (!("xh" in window)) {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
     var app = angular.module("app", []);
 
@@ -38,11 +39,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -56,12 +57,6 @@ xh.load = function() {
             window.location.href = '/xhzh/dataStatistic.html?id='+id;
             //$location.path('/xhzh/deviceList.html');
         };
-
-        /*$http.get("../../connect/selectAllRTUPosition").
-        success(function(response){
-            console.log("rtu");
-            console.log(response);
-        });*/
 
         $("#myModal").on("hide.bs.modal",function(){
             //console.log("模态框消失了！！！");
@@ -427,7 +422,7 @@ xh.pagging = function(currentPage, totals, $scope) {
 };
 
 function initMap() {
-    var url = "../../connect/selectAllSite";
+    var url = "../../connect/selectAllSite?structure="+structure;
     $.ajax({
         type: 'GET',
         url: url,
@@ -439,7 +434,7 @@ function initMap() {
     });
     $.ajax({
         type: 'GET',
-        url: "../../connect/selectAllRTUPosition",
+        url: "../../connect/selectAllRTUPosition?structure="+structure,
         async: false,
         success: function (rtuData) {
             rtuArr = rtuData;
@@ -610,15 +605,17 @@ function addMarker() {  // 创建图标对象
     for (var i = 0; i < arrNem.length; i++) {
         $.ajax({
             type: 'GET',
-            url: "../../total/selectSiteAllStatus?site_id=" + arrNem[i].site_id,
+            url: "../../total/selectSiteAllStatus?site_id=" + arrNem[i].site_id+"&structure="+structure,
             async: false,
             dataType: 'json',
             success: function (data) {
                 console.log(data);
                 var industry = arrNem[i].site_industry;
+                var rtuStatusList = data.rtuStatusList;
                 var rtuWarningNum = data.rtuWarningNum;
                 var rtuOffNum = data.rtuOffNum;
                 var rtuNum = data.rtuNum;
+                arrNem[i]["rtuStatusList"] = data.rtuStatusList;
                 arrNem[i]["rtuWarningNum"] = data.rtuWarningNum;
                 arrNem[i]["rtuOffNum"] = data.rtuOffNum;
                 arrNem[i]["rtuNum"] = data.rtuNum;
@@ -628,7 +625,7 @@ function addMarker() {  // 创建图标对象
                 }
                 var iconImg;
                 if ("医疗" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/6-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/6-2.png";
@@ -636,7 +633,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/6-3.png";
                     }
                 } else if ("气象" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/7-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/7-2.png";
@@ -644,7 +641,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/7-3.png";
                     }
                 } else if ("新能源" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/3-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/3-2.png";
@@ -652,7 +649,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/3-3.png";
                     }
                 } else if ("轨道交通" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/4-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/4-2.png";
@@ -660,7 +657,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/4-3.png";
                     }
                 } else if ("石油化工" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/5-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/5-2.png";
@@ -668,7 +665,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/5-3.png";
                     }
                 } else if ("国防军工" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/8-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/8-2.png";
@@ -676,7 +673,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/8-3.png";
                     }
                 } else if ("电力" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/1-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/1-2.png";
@@ -684,7 +681,7 @@ function addMarker() {  // 创建图标对象
                         iconImg = "../iconfont/1-3.png";
                     }
                 } else if ("通讯" == industry) {
-                    if (rtuNum == 0 || rtuOffNum > 0) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                         iconImg = "../iconfont/2-1.png";
                     } else if (rtuWarningNum > 0) {
                         iconImg = "../iconfont/2-2.png";
@@ -721,9 +718,7 @@ function addMarker() {  // 创建图标对象
                     offset: new BMap.Size(15, -25)
                 });
                 var backgroundColor;
-                if (rtuNum == 0) {
-                    backgroundColor = "#bfbfbf";
-                } else if (rtuOffNum > 0) {
+                if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
                     backgroundColor = "#bfbfbf";
                 } else if (rtuWarningNum > 0) {
                     backgroundColor = "#EEAD0E";
@@ -946,7 +941,7 @@ function showText(){
 function initChart() {
     $.ajax({
         type: 'GET',
-        url: "../../total/selectSiteAllInfo",
+        url: "../../total/selectSiteAllInfo?structure="+structure,
         async: false,
         dataType: 'json',
         success: function (data) {

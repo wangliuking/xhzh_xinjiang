@@ -55,6 +55,20 @@ public class RoleController {
         return map;
     }
 
+    @RequestMapping(value = "/updateRoleName",method = RequestMethod.POST)
+    public Map<String,Object> updateRoleName(@RequestBody Role role) {
+        int result = roleService.updateRoleName(role);
+        Map<String,Object> map = new HashMap<>();
+        if(result>0){
+            map.put("success",true);
+            map.put("message","更新成功");
+        }else {
+            map.put("success",false);
+            map.put("message","更新失败");
+        }
+        return map;
+    }
+
     @RequestMapping(value = "/updateRole",method = RequestMethod.POST)
     public Map<String,Object> updateRole(@RequestBody Role role) {
         int result = roleService.updateRole(role);

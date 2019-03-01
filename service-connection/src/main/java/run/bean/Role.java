@@ -4,6 +4,7 @@ public class Role {
     private int id;
     private String name;
     private String createTime;
+    private String structure;
     private int menu_protect;
     private int menu_security;
     private int menu_fire;
@@ -227,12 +228,21 @@ public class Role {
         this.menu_manage_log = menu_manage_log;
     }
 
+    public String getStructure() {
+        return structure;
+    }
+
+    public void setStructure(String structure) {
+        this.structure = structure;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createTime='" + createTime + '\'' +
+                ", structure='" + structure + '\'' +
                 ", menu_protect=" + menu_protect +
                 ", menu_security=" + menu_security +
                 ", menu_fire=" + menu_fire +

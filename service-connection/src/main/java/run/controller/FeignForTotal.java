@@ -12,8 +12,8 @@ import java.util.Map;
 @FeignClient(name="service-total",configuration= FeignConf.class)
 public interface FeignForTotal {
 
-    @RequestLine("GET /selectForFeignMQ?site_id={site_id}")
+    @RequestLine("GET /selectForFeignMQ?site_id={site_id}&structure={structure}")
     @Headers("Content-Type: application/json")
-    public Map<String,Object> selectForFeignMQ(@Param("site_id") String site_id);
+    public Map<String,Object> selectForFeignMQ(@Param("site_id") String site_id,@Param("structure") String structure);
 
 }

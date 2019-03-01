@@ -7,10 +7,7 @@ import run.service.StructureService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class StructureController {
@@ -109,5 +106,65 @@ public class StructureController {
             map.put("message","更新该单位失败");
         }
         return map;
+    }
+
+    @RequestMapping(value = "/foreachIdAndPId")
+    public List<Integer> foreachIdAndPId (HttpServletRequest req){
+        List<Map<String,Integer>> list = structureService.foreachIdAndPId();
+        int id = Integer.parseInt(req.getParameter("id"));
+        List<Integer> finalList = new LinkedList<>();
+        List<Integer> tempList = new LinkedList<>();
+        tempList.add(id);
+        while(tempList.size()>0){
+            List<Integer> otherList = new LinkedList<>();
+            for(int i=0;i<tempList.size();i++){
+                finalList.add(tempList.get(i));
+                List<Integer> tList = getChildId(tempList.get(i),list);
+                if(tList.size()>0){
+                    for(int j=0;j<tList.size();j++){
+                        otherList.add(tList.get(j));
+                    }
+                }
+            }
+            tempList.clear();
+            for(int i=0;i<otherList.size();i++){
+                tempList.add(otherList.get(i));
+            }
+        }
+        return finalList;
+    }
+
+    public List<Integer> foreachIdAndPIdForConnection (int id){
+        List<Map<String,Integer>> list = structureService.foreachIdAndPId();
+        List<Integer> finalList = new LinkedList<>();
+        List<Integer> tempList = new LinkedList<>();
+        tempList.add(id);
+        while(tempList.size()>0){
+            List<Integer> otherList = new LinkedList<>();
+            for(int i=0;i<tempList.size();i++){
+                finalList.add(tempList.get(i));
+                List<Integer> tList = getChildId(tempList.get(i),list);
+                if(tList.size()>0){
+                    for(int j=0;j<tList.size();j++){
+                        otherList.add(tList.get(j));
+                    }
+                }
+            }
+            tempList.clear();
+            for(int i=0;i<otherList.size();i++){
+                tempList.add(otherList.get(i));
+            }
+        }
+        return finalList;
+    }
+
+    public List<Integer> getChildId(int id,List<Map<String,Integer>> list){
+        List<Integer> returnlist = new LinkedList<>();
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).get("pId") == id){
+                returnlist.add(list.get(i).get("id"));
+            }
+        }
+        return returnlist;
     }
 }

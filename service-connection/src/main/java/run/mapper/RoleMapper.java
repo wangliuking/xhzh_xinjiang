@@ -17,13 +17,13 @@ public interface RoleMapper {
     Role selectRoleById(int id);
 
     @Select("<script>" +
-            "select * from xhzh.role where 1=1 " +
+            "select a.*,b.name as structureName from xhzh.role as a left join structure as b on a.structure=b.id where 1=1 " +
             "<if test=\"param != null and param != ''\">" +
             "and name like concat('%',#{param},'%')" +
             "</if>" +
             "limit #{start},#{limit}"+
             "</script>")
-    List<Role> selectRoleList(Map<String, Object> param);
+    List<Map<String,Object>> selectRoleList(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from xhzh.role where 1=1 " +
@@ -33,8 +33,11 @@ public interface RoleMapper {
             "</script>")
     int selectRoleListCount(Map<String, Object> param);
 
-    @Insert("insert into xhzh.role(name) values(#{name})")
+    @Insert("insert into xhzh.role(name,structure) values(#{name},#{structure})")
     int insertRole(Role role);
+
+    @Update("update xhzh.role set name=#{name},structure=#{structure} where id=#{id}")
+    int updateRoleName(Role role);
 
     /*@Insert("insert into xhzh.role(name,menu_protect,menu_security,menu_fire," +
             "menu_weather,menu_culture,menu_manage,menu_protect_conf," +

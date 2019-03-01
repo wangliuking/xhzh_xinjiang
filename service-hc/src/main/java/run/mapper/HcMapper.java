@@ -61,7 +61,7 @@ public interface HcMapper {
     List<Map<String,Object>> selectHcByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.es_location,b.es_name,b.es_model,c.* from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.es_location,b.es_name,b.es_model,c.*,d.name as structureName from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
