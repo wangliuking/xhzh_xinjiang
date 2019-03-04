@@ -26,6 +26,8 @@ public class ETCRController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllETCR",method = RequestMethod.GET)
     public Map<String,Object> selectAllETCR (HttpServletRequest req, HttpServletResponse resp){
@@ -53,10 +55,19 @@ public class ETCRController {
         }else {
             rtu_id = -1;
         }
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
 
         System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> ETCRList = ETCRService.selectAllETCR(start,limit,site_id,rtu_id);
-        int count = ETCRService.selectAllETCRCount(start,limit,site_id,rtu_id);
+        List<Map<String,Object>> ETCRList = ETCRService.selectAllETCR(param);
+        int count = ETCRService.selectAllETCRCount(param);
         Map<String,Object> ETCRListMap = new HashMap<>();
         ETCRListMap.put("items",ETCRList);
         ETCRListMap.put("totals",count);
@@ -689,9 +700,23 @@ public class ETCRController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("rst_id",rst_id);
+        param.put("rst_location",rst_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> etcrList = ETCRService.selectETCRHistory(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
-        int count = ETCRService.selectETCRHistoryCount(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+        List<Map<String,Object>> etcrList = ETCRService.selectETCRHistory(param);
+        int count = ETCRService.selectETCRHistoryCount(param);
         Map<String,Object> etcrListMap = new HashMap<>();
         etcrListMap.put("items",etcrList);
         etcrListMap.put("totals",count);
@@ -722,7 +747,18 @@ public class ETCRController {
         String rst_location = req.getParameter("location");
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
-        List<Map<String,Object>> etcrList = ETCRService.exportAllETCRHistoryExcel(site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("rst_id",rst_id);
+        param.put("rst_location",rst_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+        List<Map<String,Object>> etcrList = ETCRService.exportAllETCRHistoryExcel(param);
 
         String sheetName = "测试";
         String fileName = "ExcelTest.xls";

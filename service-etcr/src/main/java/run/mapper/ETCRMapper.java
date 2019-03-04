@@ -12,7 +12,10 @@ import java.util.Map;
 public interface ETCRMapper {
 
     @Select("<script>" +
-            "select a.*,b.rst_state from resistance_config as a left join resistance_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno where 1=1 " +
+            "select a.*,b.rst_state from resistance_config as a left join resistance_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -24,7 +27,7 @@ public interface ETCRMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllETCR(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllETCR(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -36,9 +39,12 @@ public interface ETCRMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,rst_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllETCRCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllETCRCount(Map<String,Object> param);
 
     @Select("<script>" +
             "select * from resistance_config where 1=1 " +
@@ -137,7 +143,10 @@ public interface ETCRMapper {
     List<ETCR> selectETCRByRTUID4RSTID(Map<String,Object> param);
 
     @Select("<script>" +
-            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.*,d.name as structureName from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.*,d.name as structureName from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -158,10 +167,13 @@ public interface ETCRMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectETCRHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("rst_id") int rst_id, @Param("rst_location") String rst_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectETCRHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.* from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.* from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -179,10 +191,13 @@ public interface ETCRMapper {
             "</if>"+
             "order by write_time desc"+
             "</script>")
-    List<Map<String,Object>> exportAllETCRHistoryExcel(@Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("rst_id") int rst_id, @Param("rst_location") String rst_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> exportAllETCRHistoryExcel(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -199,7 +214,7 @@ public interface ETCRMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectETCRHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("rst_id") int rst_id, @Param("rst_location") String rst_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectETCRHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

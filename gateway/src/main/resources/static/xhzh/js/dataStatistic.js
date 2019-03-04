@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -46,11 +47,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -60,7 +61,7 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../total/selectDeviceNum?site_id="+$location.search().id).
+        $http.get("../../total/selectDeviceNum?site_id="+$location.search().id+"&structure="+structure).
         success(function(response){
             $scope.siteInfo = response.siteInfo;
             $scope.deviceOffCount = response.deviceOffCount;
@@ -160,7 +161,7 @@ function deviceForMonth(site_id) {
 
     $.ajax({
         type: 'GET',
-        url: "../../total/selectAlarmByMonth?site_id="+site_id,
+        url: "../../total/selectAlarmByMonth?site_id="+site_id+"&structure="+structure,
         async: false,
         dataType: 'json',
         success: function(data){

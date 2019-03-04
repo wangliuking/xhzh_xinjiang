@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -65,11 +66,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -79,7 +80,7 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../connect/selectAllSite").
+        $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;
             var siteNames = [];
@@ -96,7 +97,7 @@ xh.load = function() {
             $scope.siteNamesEdit = siteNames;
         });
 
-        $http.get("../../connect/selectAllRTU").
+        $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
             var data = response.items;
             var rtuNames = [];
@@ -120,7 +121,7 @@ xh.load = function() {
             goSiteId = "";
         }
 
-        $http.get("../../spd/selectAllSPDHistory?start=0&limit="+pageSize+"&site_id="+goSiteId).
+        $http.get("../../spd/selectAllSPDHistory?start=0&limit="+pageSize+"&site_id="+goSiteId+"&structure="+structure).
         success(function(response){
             $scope.changeDeviceTypeShow = 1;
             $scope.data = response.items;
@@ -146,7 +147,7 @@ xh.load = function() {
 
             $.ajax({
                 type: 'GET',
-                url: "../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime,
+                url: "../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
                 async: false,
                 dataType: 'json',
                 success: function(response){
@@ -154,7 +155,7 @@ xh.load = function() {
                     if(dataCount > 50000){
                         alert("查询数据量过多，请调整查询条件");
                     }else{
-                        window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime;
+                        window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
                     }
                 }
             });
@@ -190,7 +191,7 @@ xh.load = function() {
 			}
 
 			if(deviceName == 1){
-                $http.get("../../spd/selectAllSPDHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&spd_number="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../spd/selectAllSPDHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&spd_number="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -198,7 +199,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 2){
-                $http.get("../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -206,7 +207,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 3){
-                $http.get("../../lightning/selectAllLightningHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../lightning/selectAllLightningHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -214,7 +215,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 4){
-                $http.get("../../static/selectAllStaticHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../static/selectAllStaticHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -222,7 +223,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 5){
-                $http.get("../../rsws/selectAllRswsHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../rsws/selectAllRswsHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -230,7 +231,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 6){
-                $http.get("../../svt/selectAllSvtHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../svt/selectAllSvtHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -238,7 +239,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 7){
-                $http.get("../../hc/selectAllHcHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../hc/selectAllHcHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -246,7 +247,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 8){
-                $http.get("../../stray/selectAllStrayHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../stray/selectAllStrayHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -254,7 +255,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if(deviceName == 9){
-                $http.get("../../cat/selectAllCatHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../cat/selectAllCatHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -287,7 +288,7 @@ xh.load = function() {
 			}
 
             if(deviceName == 1){
-                $http.get("../../spd/selectAllSPDHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&spd_number="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../spd/selectAllSPDHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&spd_number="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -304,7 +305,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 2){
-                $http.get("../../etcr/selectAllETCRHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../etcr/selectAllETCRHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -321,7 +322,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 3){
-                $http.get("../../lightning/selectAllLightningHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../lightning/selectAllLightningHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -338,7 +339,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 4){
-                $http.get("../../static/selectAllStaticHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../static/selectAllStaticHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -355,7 +356,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 5){
-                $http.get("../../rsws/selectAllRswsHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../rsws/selectAllRswsHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -372,7 +373,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 6){
-                $http.get("../../svt/selectAllSvtHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../svt/selectAllSvtHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -389,7 +390,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 7){
-                $http.get("../../hc/selectAllHcHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../hc/selectAllHcHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -406,7 +407,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 8){
-                $http.get("../../stray/selectAllStrayHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../stray/selectAllStrayHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;
@@ -423,7 +424,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if(deviceName == 9){
-                $http.get("../../cat/selectAllCatHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime).
+                $http.get("../../cat/selectAllCatHistory?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
                 success(function(response){
                     //xh.maskHide();
                     $scope.start = (page - 1) * pageSize + 1;

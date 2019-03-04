@@ -23,6 +23,8 @@ public class HcController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllHc",method = RequestMethod.GET)
     public Map<String,Object> selectAllHc (HttpServletRequest req, HttpServletResponse resp){
@@ -51,9 +53,18 @@ public class HcController {
             rtu_id = -1;
         }
 
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> HcList = hcService.selectAllHc(start,limit,site_id,rtu_id);
-        int count = hcService.selectAllHcCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+
+        List<Map<String,Object>> HcList = hcService.selectAllHc(param);
+        int count = hcService.selectAllHcCount(param);
         Map<String,Object> HcListMap = new HashMap<>();
         HcListMap.put("items",HcList);
         HcListMap.put("totals",count);
@@ -241,9 +252,23 @@ public class HcController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("es_id",es_id);
+        param.put("es_location",es_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> HcList = hcService.selectHcHistory(start,limit,site_id,rtu_id,es_id,es_location,startTime,endTime);
-        int count = hcService.selectHcHistoryCount(start,limit,site_id,rtu_id,es_id,es_location,startTime,endTime);
+        List<Map<String,Object>> HcList = hcService.selectHcHistory(param);
+        int count = hcService.selectHcHistoryCount(param);
         Map<String,Object> HcListMap = new HashMap<>();
         HcListMap.put("items",HcList);
         HcListMap.put("totals",count);

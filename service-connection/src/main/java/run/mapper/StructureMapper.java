@@ -17,7 +17,10 @@ public interface StructureMapper {
     List<Node> selectAll();
 
     @Select("<script>" +
-            "select * from structure where level!=0" +
+            "select * from structure where level!=0 and id in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"industry != null and industry != '' and industry != 'null'\">" +
             "and industry =#{industry}"+
             "</if>"+
@@ -26,7 +29,10 @@ public interface StructureMapper {
     List<Map<String,Object>> selectStructureList(Map<String,Object> param);
 
     @Select("<script>" +
-            "select site_id,site_name from site_config where 1=1 " +
+            "select site_id,site_name from site_config c where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"industry != null and industry != '' and industry != 'null'\">" +
             "and site_industry =#{industry}"+
             "</if>"+
@@ -35,7 +41,10 @@ public interface StructureMapper {
     List<Map<String,Object>> selectSiteListByIndustry(Map<String,Object> param);
 
     @Select("<script>" +
-            "select rtu_id from rtu_config as a left join site_config as b on a.site_id=b.site_id where 1=1 " +
+            "select rtu_id from rtu_config as a left join site_config as b on a.site_id=b.site_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"industry != null and industry != '' and industry != 'null'\">" +
             "and site_industry =#{industry}"+
             "</if>"+
@@ -44,7 +53,10 @@ public interface StructureMapper {
     List<Map<String,Object>> selectRTUListByIndustry(Map<String,Object> param);
 
     @Select("<script>" +
-            "select rtu_id from rtu_config as a left join site_config as b on a.site_id=b.site_id where 1=1 " +
+            "select rtu_id from rtu_config as a left join site_config as b on a.site_id=b.site_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_company != null and site_company != '' and site_company != 'null'\">" +
             "and site_company =#{site_company}"+
             "</if>"+

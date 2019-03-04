@@ -507,12 +507,15 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=1 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id left join site_config as c on b.site_id=c.site_id where type=1 and c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and a.rtu_id =#{rtu_id}"+
             "</if>"+
             "<if test=\"site_id != null and site_id != ''\">" +
-            "and site_id =#{site_id}"+
+            "and b.site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+
@@ -521,12 +524,15 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=3 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id left join site_config as c on b.site_id=c.site_id where type=3 and c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and a.rtu_id =#{rtu_id}"+
             "</if>"+
             "<if test=\"site_id != null and site_id != ''\">" +
-            "and site_id =#{site_id}"+
+            "and b.site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+
@@ -535,12 +541,15 @@ public interface TotalMapper {
 
     @Select("<script>" +
             "select tempDate,count(tempDate) as num from " +
-            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id where type=2 " +
+            "(select udpateTime,date_format(udpateTime,'%Y-%m-%d') as tempDate from rtu_alarm_history as a left join rtu_config as b on a.rtu_id=b.rtu_id left join site_config as c on b.site_id=c.site_id where type=2 and c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and a.rtu_id =#{rtu_id}"+
             "</if>"+
             "<if test=\"site_id != null and site_id != ''\">" +
-            "and site_id =#{site_id}"+
+            "and b.site_id =#{site_id}"+
             "</if>"+
             "and udpateTime between #{startTime} and #{endTime}) " +
             "as t group by tempDate"+

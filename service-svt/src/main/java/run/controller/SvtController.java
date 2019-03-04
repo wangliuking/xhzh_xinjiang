@@ -23,6 +23,8 @@ public class SvtController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllSvt",method = RequestMethod.GET)
     public Map<String,Object> selectAllSvt (HttpServletRequest req, HttpServletResponse resp){
@@ -51,9 +53,17 @@ public class SvtController {
             rtu_id = -1;
         }
 
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> SvtList = svtService.selectAllSvt(start,limit,site_id,rtu_id);
-        int count = svtService.selectAllSvtCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        List<Map<String,Object>> SvtList = svtService.selectAllSvt(param);
+        int count = svtService.selectAllSvtCount(param);
         Map<String,Object> SvtListMap = new HashMap<>();
         SvtListMap.put("items",SvtList);
         SvtListMap.put("totals",count);
@@ -241,9 +251,23 @@ public class SvtController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("tilt_id",tilt_id);
+        param.put("tilt_location",tilt_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> SvtList = svtService.selectSvtHistory(start,limit,site_id,rtu_id,tilt_id,tilt_location,startTime,endTime);
-        int count = svtService.selectSvtHistoryCount(start,limit,site_id,rtu_id,tilt_id,tilt_location,startTime,endTime);
+        List<Map<String,Object>> SvtList = svtService.selectSvtHistory(param);
+        int count = svtService.selectSvtHistoryCount(param);
         Map<String,Object> SvtListMap = new HashMap<>();
         SvtListMap.put("items",SvtList);
         SvtListMap.put("totals",count);

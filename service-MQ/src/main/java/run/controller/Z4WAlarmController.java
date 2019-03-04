@@ -20,6 +20,8 @@ import java.util.Map;
 public class Z4WAlarmController {
     @Autowired
     AlarmInfoService alarmInfoService;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllAlarmInfo",method = RequestMethod.GET)
     public Map<String,Object> selectAllAlarmInfo (HttpServletRequest req, HttpServletResponse resp){
@@ -58,6 +60,11 @@ public class Z4WAlarmController {
         params.put("alarmStatus",alarmStatus);
         params.put("startTime",startTime);
         params.put("endTime",endTime);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        params.put("strList",strList);
 
         List<Map<String,Object>> list = alarmInfoService.selectAllAlarmInfo(params);
         int count = alarmInfoService.selectAllAlarmInfoCount(params);

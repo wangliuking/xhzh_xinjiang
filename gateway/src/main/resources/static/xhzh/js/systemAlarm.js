@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
     var pageSize = $("#page-limit").val();
@@ -48,11 +49,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -62,7 +63,7 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../connect/selectAllSite").
+        $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;
             var siteNames = [];
@@ -77,7 +78,7 @@ xh.load = function() {
             $scope.siteNamesEdit = siteNames;
         });
 
-        $http.get("../../connect/selectAllRTU").
+        $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
             var data = response.items;
             var rtuNames = [];
@@ -98,7 +99,7 @@ xh.load = function() {
             $scope.allStatus = allStatus;
         });
 
-        $http.get("../../mq/selectAllAlarmInfo?start=0&limit="+pageSize).
+        $http.get("../../mq/selectAllAlarmInfo?start=0&limit="+pageSize+"&structure="+structure).
         success(function(response){
             $scope.data = response.items;
             $scope.totals = response.totals;
@@ -131,7 +132,7 @@ xh.load = function() {
             } else {
                 start = (page - 1) * pageSize;
             }
-            $http.get("../../mq/selectAllAlarmInfo?start=0&limit="+limit+"&site_id="+site_id+"&rtuId="+rtu_id+"&type="+description+"&alarmStatus="+status+"&startTime="+startTime+"&endTime="+endTime).
+            $http.get("../../mq/selectAllAlarmInfo?start=0&limit="+limit+"&site_id="+site_id+"&rtuId="+rtu_id+"&type="+description+"&alarmStatus="+status+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
             success(function(response){
                 console.log(response);
                 $scope.data = response.items;
@@ -158,7 +159,7 @@ xh.load = function() {
                 start = (page - 1) * pageSize;
             }
 
-            $http.get("../../mq/selectAllAlarmInfo?start="+start+"&limit="+limit+"&site_id="+site_id+"&rtuId="+rtu_id+"&type="+description+"&alarmStatus="+status+"&startTime="+startTime+"&endTime="+endTime).
+            $http.get("../../mq/selectAllAlarmInfo?start="+start+"&limit="+limit+"&site_id="+site_id+"&rtuId="+rtu_id+"&type="+description+"&alarmStatus="+status+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure).
             success(function(response){
                 /*xh.maskHide();*/
                 $scope.start = (page - 1) * pageSize + 1;
@@ -197,7 +198,7 @@ function deviceForMonth() {
 
     $.ajax({
         type: 'GET',
-        url: "../../total/selectAlarmByMonth",
+        url: "../../total/selectAlarmByMonth?structure="+structure,
         async: false,
         dataType: 'json',
         success: function(data){

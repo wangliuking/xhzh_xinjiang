@@ -23,6 +23,8 @@ public class StrayController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllStray",method = RequestMethod.GET)
     public Map<String,Object> selectAllStray (HttpServletRequest req, HttpServletResponse resp){
@@ -51,9 +53,18 @@ public class StrayController {
             rtu_id = -1;
         }
 
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> StrayList = strayService.selectAllStray(start,limit,site_id,rtu_id);
-        int count = strayService.selectAllStrayCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+
+        List<Map<String,Object>> StrayList = strayService.selectAllStray(param);
+        int count = strayService.selectAllStrayCount(param);
         Map<String,Object> StrayListMap = new HashMap<>();
         StrayListMap.put("items",StrayList);
         StrayListMap.put("totals",count);
@@ -386,9 +397,23 @@ public class StrayController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("stret_id",stret_id);
+        param.put("stret_location",stret_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> StrayList = strayService.selectStrayHistory(start,limit,site_id,rtu_id,stret_id,stret_location,startTime,endTime);
-        int count = strayService.selectStrayHistoryCount(start,limit,site_id,rtu_id,stret_id,stret_location,startTime,endTime);
+        List<Map<String,Object>> StrayList = strayService.selectStrayHistory(param);
+        int count = strayService.selectStrayHistoryCount(param);
         Map<String,Object> StrayListMap = new HashMap<>();
         StrayListMap.put("items",StrayList);
         StrayListMap.put("totals",count);

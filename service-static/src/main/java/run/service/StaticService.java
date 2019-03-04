@@ -13,12 +13,12 @@ public class StaticService {
     @Autowired
     StaticMapper StaticMapper;
 
-    public List<Map<String,Object>> selectAllStatic(int start, int limit, int site_id, int rtu_id){
-        return StaticMapper.selectAllStatic(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllStatic(Map<String,Object> param){
+        return StaticMapper.selectAllStatic(param);
     }
 
-    public int selectAllStaticCount(int start,int limit,int site_id,int rtu_id){
-        return StaticMapper.selectAllStaticCount(start,limit,site_id,rtu_id);
+    public int selectAllStaticCount(Map<String,Object> param){
+        return StaticMapper.selectAllStaticCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class StaticService {
         return StaticMapper.deleteStatic(param);
     }
 
-    public List<Map<String,Object>> selectStaticHistory(int start, int limit, int site_id, int rtu_id, int staet_id, String staet_location,String startTime,String endTime){
-        return StaticMapper.selectStaticHistory(start,limit,site_id,rtu_id,staet_id,staet_location,startTime,endTime);
+    public List<Map<String,Object>> selectStaticHistory(Map<String,Object> param){
+        return StaticMapper.selectStaticHistory(param);
     }
 
-    public int selectStaticHistoryCount(int start, int limit, int site_id, int rtu_id, int staet_id, String staet_location,String startTime,String endTime){
-        return StaticMapper.selectStaticHistoryCount(start,limit,site_id,rtu_id,staet_id,staet_location,startTime,endTime);
+    public int selectStaticHistoryCount(Map<String,Object> param){
+        return StaticMapper.selectStaticHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectStaticByRTU(int rtu_id){

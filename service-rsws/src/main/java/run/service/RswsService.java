@@ -13,12 +13,12 @@ public class RswsService {
     @Autowired
     RswsMapper rswsMapper;
 
-    public List<Map<String,Object>> selectAllRsws(int start, int limit, int site_id, int rtu_id){
-        return rswsMapper.selectAllRsws(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllRsws(Map<String,Object> param){
+        return rswsMapper.selectAllRsws(param);
     }
 
-    public int selectAllRswsCount(int start,int limit,int site_id,int rtu_id){
-        return rswsMapper.selectAllRswsCount(start,limit,site_id,rtu_id);
+    public int selectAllRswsCount(Map<String,Object> param){
+        return rswsMapper.selectAllRswsCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class RswsService {
         return rswsMapper.deleteRsws(param);
     }
 
-    public List<Map<String,Object>> selectRswsHistory(int start, int limit, int site_id, int rtu_id, int hmt_id, String hmt_location,String startTime,String endTime){
-        return rswsMapper.selectRswsHistory(start,limit,site_id,rtu_id,hmt_id,hmt_location,startTime,endTime);
+    public List<Map<String,Object>> selectRswsHistory(Map<String,Object> param){
+        return rswsMapper.selectRswsHistory(param);
     }
 
-    public int selectRswsHistoryCount(int start, int limit, int site_id, int rtu_id, int hmt_id, String hmt_location,String startTime,String endTime){
-        return rswsMapper.selectRswsHistoryCount(start,limit,site_id,rtu_id,hmt_id,hmt_location,startTime,endTime);
+    public int selectRswsHistoryCount(Map<String,Object> param){
+        return rswsMapper.selectRswsHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectRswsByRTU(int rtu_id){

@@ -13,12 +13,12 @@ public class SPDService {
     @Autowired
     SPDMapper spdMapper;
 
-    public List<Map<String,Object>> selectAllSPD(int start, int limit, int site_id, int rtu_id){
-        return spdMapper.selectAllSPD(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllSPD(Map<String,Object> param){
+        return spdMapper.selectAllSPD(param);
     }
 
-    public int selectAllSPDCount(int start,int limit,int site_id,int rtu_id){
-        return spdMapper.selectAllSPDCount(start,limit,site_id,rtu_id);
+    public int selectAllSPDCount(Map<String,Object> param){
+        return spdMapper.selectAllSPDCount(param);
     }
 
     public int insertSPD(SPD spd){
@@ -61,12 +61,12 @@ public class SPDService {
         return spdMapper.updateSPDByRTU(params);
     }
 
-    public List<Map<String,Object>> selectSPDHistory(int start, int limit, int site_id, int rtu_id, int spd_number, String spd_location,String startTime,String endTime){
-        return spdMapper.selectSPDHistory(start,limit,site_id,rtu_id,spd_number,spd_location,startTime,endTime);
+    public List<Map<String,Object>> selectSPDHistory(Map<String,Object> param){
+        return spdMapper.selectSPDHistory(param);
     }
 
-    public int selectSPDHistoryCount(int start, int limit, int site_id, int rtu_id, int spd_number, String spd_location,String startTime,String endTime){
-        return spdMapper.selectSPDHistoryCount(start,limit,site_id,rtu_id,spd_number,spd_location,startTime,endTime);
+    public int selectSPDHistoryCount(Map<String,Object> param){
+        return spdMapper.selectSPDHistoryCount(param);
     }
 
     public int selectSPDNumByRTU(int rtu_id){

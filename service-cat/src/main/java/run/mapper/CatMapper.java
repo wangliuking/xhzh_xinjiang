@@ -11,7 +11,10 @@ import java.util.Map;
 public interface CatMapper {
 
     @Select("<script>" +
-            "select a.*,b.cathode_state from cathode_config as a left join cathode_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.cathode_id=b.cathode_id where 1=1 " +
+            "select a.*,b.cathode_state from cathode_config as a left join cathode_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.cathode_id=b.cathode_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -23,7 +26,7 @@ public interface CatMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllCat(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllCat(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -35,9 +38,12 @@ public interface CatMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,cathode_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllCatCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllCatCount(Map<String,Object> param);
 
     @Insert("insert into cathode_config(site_id,rtu_id,rtu_port,rtu_baud_rate,cathode_id,cathode_name,cathode_model,cathode_location,cathode_paramter,cathode_threshold1,cathode_threshold2,fullscale,calvalue,factor,computeType,cathode_space,cathode_ospace) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{cathode_id},#{cathode_name},#{cathode_model},#{cathode_location},#{cathode_paramter},#{cathode_threshold1},#{cathode_threshold2},#{fullscale},#{calvalue},#{factor},#{computeType},#{cathode_space},#{cathode_ospace})")
     int insertCat(Cat Cat);
@@ -61,7 +67,10 @@ public interface CatMapper {
     List<Map<String,Object>> selectCatByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.cathode_location,b.cathode_name,b.cathode_model,c.*,d.name as structureName from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.cathode_location,b.cathode_name,b.cathode_model,c.*,d.name as structureName from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -82,10 +91,13 @@ public interface CatMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectCatHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("cathode_id") int cathode_id, @Param("cathode_location") String cathode_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectCatHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from cathode_old_data as a left join cathode_config as b on a.rtu_id=b.rtu_id and a.cathode_id=b.cathode_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -102,7 +114,7 @@ public interface CatMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectCatHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("cathode_id") int cathode_id, @Param("cathode_location") String cathode_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectCatHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

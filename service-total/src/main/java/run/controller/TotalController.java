@@ -124,6 +124,12 @@ public class TotalController {
             param.put("rtu_id","");
             param.put("site_id","");
         }
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
+
         Map<String,Object> siteInfo = totalService.selectSiteById(param).get(0);
         List<Map<String,Object>> deviceOff = totalService.selectDeviceOff(param);
         List<Map<String,Object>> deviceWarning = totalService.selectDeviceWarning(param);
@@ -322,6 +328,11 @@ public class TotalController {
         String rtu_id = req.getParameter("rtu_id");
         param.put("site_id",site_id);
         param.put("rtu_id",rtu_id);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
 
         List<Map<String,Object>> deviceOffTemp = totalService.selectDeviceOffByMonth(param);
         List<Integer> deviceOffList = new LinkedList<>();
@@ -606,12 +617,19 @@ public class TotalController {
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("rtu_id","");
         paramMap.put("site_id","");
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        paramMap.put("strList","strList");
+
         List<Map<String,Object>> siteInfoList = totalService.selectSiteById(paramMap);
         for(int i=0;i<siteInfoList.size();i++){
             int site_id = Integer.parseInt(siteInfoList.get(i).get("site_id")+"");
             Map<String,Object> param = new HashMap<>();
             param.put("rtu_id","");
             param.put("site_id",site_id);
+            param.put("strList",strList);
             Map<String,Object> resultMap = new HashMap<>();
             resultMap.put("province",siteInfoList.get(i).get("site_province"));
             resultMap.put("spdNum",totalService.selectSPDCount(param).size());
@@ -634,12 +652,19 @@ public class TotalController {
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("rtu_id","");
         paramMap.put("site_id","");
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        paramMap.put("strList",strList);
+
         List<Map<String,Object>> siteInfoList = totalService.selectSiteById(paramMap);
         for(int i=0;i<siteInfoList.size();i++){
             int site_id = Integer.parseInt(siteInfoList.get(i).get("site_id")+"");
             Map<String,Object> param = new HashMap<>();
             param.put("rtu_id","");
             param.put("site_id",site_id);
+            param.put("strList",strList);
 
             Map<String,Object> resultMap = new HashMap<>();
             resultMap.put("province",siteInfoList.get(i).get("site_province"));

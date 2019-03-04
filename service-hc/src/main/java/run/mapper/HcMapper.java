@@ -11,7 +11,10 @@ import java.util.Map;
 public interface HcMapper {
 
     @Select("<script>" +
-            "select a.*,b.es_state from electrical_safety_config as a left join electrical_safety_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.es_id=b.es_id where 1=1 " +
+            "select a.*,b.es_state from electrical_safety_config as a left join electrical_safety_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.es_id=b.es_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -23,7 +26,7 @@ public interface HcMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllHc(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllHc(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -35,9 +38,12 @@ public interface HcMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,es_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllHcCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllHcCount(Map<String,Object> param);
 
     @Insert("insert into electrical_safety_config(site_id,rtu_id,rtu_port,rtu_baud_rate,es_id,es_name,es_model,es_location,es_i_threshold,es_temp_threshold,es_cur_threshold,es_vol_threshold,es_space,es_ospace) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{es_id},#{es_name},#{es_model},#{es_location},#{es_i_threshold},#{es_temp_threshold},#{es_cur_threshold},#{es_vol_threshold},#{es_space},#{es_ospace})")
     int insertHc(Hc Hc);
@@ -61,7 +67,10 @@ public interface HcMapper {
     List<Map<String,Object>> selectHcByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.es_location,b.es_name,b.es_model,c.*,d.name as structureName from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.es_location,b.es_name,b.es_model,c.*,d.name as structureName from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -82,10 +91,13 @@ public interface HcMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectHcHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("es_id") int es_id, @Param("es_location") String es_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectHcHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -102,7 +114,7 @@ public interface HcMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectHcHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("es_id") int es_id, @Param("es_location") String es_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectHcHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

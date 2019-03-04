@@ -23,6 +23,8 @@ public class CatController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllCat",method = RequestMethod.GET)
     public Map<String,Object> selectAllCat (HttpServletRequest req, HttpServletResponse resp){
@@ -51,9 +53,18 @@ public class CatController {
             rtu_id = -1;
         }
 
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> CatList = catService.selectAllCat(start,limit,site_id,rtu_id);
-        int count = catService.selectAllCatCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+
+        List<Map<String,Object>> CatList = catService.selectAllCat(param);
+        int count = catService.selectAllCatCount(param);
         Map<String,Object> CatListMap = new HashMap<>();
         CatListMap.put("items",CatList);
         CatListMap.put("totals",count);
@@ -241,9 +252,23 @@ public class CatController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("cathode_id",cathode_id);
+        param.put("cathode_location",cathode_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> CatList = catService.selectCatHistory(start,limit,site_id,rtu_id,cathode_id,cathode_location,startTime,endTime);
-        int count = catService.selectCatHistoryCount(start,limit,site_id,rtu_id,cathode_id,cathode_location,startTime,endTime);
+        List<Map<String,Object>> CatList = catService.selectCatHistory(param);
+        int count = catService.selectCatHistoryCount(param);
         Map<String,Object> CatListMap = new HashMap<>();
         CatListMap.put("items",CatList);
         CatListMap.put("totals",count);

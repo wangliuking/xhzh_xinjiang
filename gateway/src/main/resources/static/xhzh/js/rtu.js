@@ -89,7 +89,7 @@ xh.load = function() {
 			$scope.connectType = [{"id":2,"name":"全部模式"},{"id":1,"name":"TCP"},{"id":0,"name":"UDP"}];
         });
 
-        $http.get("../../connect/selectAllRTU?start=0&limit=" + pageSize).
+        $http.get("../../connect/selectAllRTU?start=0&limit=" + pageSize+"&structure="+structure).
         success(function(response){
         	var data = response.items;
 
@@ -199,7 +199,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectAllRTU?start=0&limit=" + limit+"&site_id="+site_id+"&connect_type="+connect_type+"&rtu_ip="+rtu_ip+"&rtu_netmask="+rtu_netmask+"&rtu_gateway="+rtu_gateway+"&status="+status).
+			$http.get("../../connect/selectAllRTU?start=0&limit=" + limit+"&site_id="+site_id+"&connect_type="+connect_type+"&rtu_ip="+rtu_ip+"&rtu_netmask="+rtu_netmask+"&rtu_gateway="+rtu_gateway+"&status="+status+"&structure="+structure).
 			success(function(response){
 				console.log(response);
 				$scope.data = response.items;
@@ -231,7 +231,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectAllRTU?start="+start+"&limit=" + limit+"&site_id="+site_id+"&connect_type="+connect_type+"&rtu_ip="+rtu_ip+"&rtu_netmask="+rtu_netmask+"&rtu_gateway="+rtu_gateway+"&status="+status).
+			$http.get("../../connect/selectAllRTU?start="+start+"&limit=" + limit+"&site_id="+site_id+"&connect_type="+connect_type+"&rtu_ip="+rtu_ip+"&rtu_netmask="+rtu_netmask+"&rtu_gateway="+rtu_gateway+"&status="+status+"&structure="+structure).
 			success(function(response){
 				/*xh.maskHide();*/
 				$scope.start = (page - 1) * pageSize + 1;

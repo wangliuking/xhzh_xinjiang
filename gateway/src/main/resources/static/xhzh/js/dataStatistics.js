@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
     var app = angular.module("app", []);
 
@@ -49,11 +50,31 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
+                structure = response.structure;
+                deviceForMonth();
+                $http.get("../../total/selectSiteAllInfo?structure="+structure).
+                success(function(data){
+                    console.log(data);
+                    var a = data.rtuNum-data.rtuOffNum-data.rtuWarningNum;
+                    var b = data.rtuWarningNum;
+                    var c = data.rtuOffNum;
+                    var x = data.spdNum+data.etcrNum+data.lightningNum+data.staticNum+data.rswsNum+data.svtNum+data.hcNum+data.strayNum+data.catNum-data.deviceWarningCount-data.deviceOffCount;
+                    var y = data.deviceWarningCount;
+                    var z = data.deviceOffCount;
+                    siteForBar(a,b,c);
+                    rtuForBar(a,b,c);
+                    deviceForBar(x,y,z);
+                    deviceForType(data);
+                });
 
+                $http.get("../../total/deviceTotalByProvince?structure="+structure).
+                success(function(data){
+                    deviceForNum(data);
+                });
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -63,26 +84,6 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../total/selectSiteAllInfo").
-        success(function(data){
-            console.log(data);
-            var a = data.rtuNum-data.rtuOffNum-data.rtuWarningNum;
-            var b = data.rtuWarningNum;
-            var c = data.rtuOffNum;
-            var x = data.spdNum+data.etcrNum+data.lightningNum+data.staticNum+data.rswsNum+data.svtNum+data.hcNum+data.strayNum+data.catNum-data.deviceWarningCount-data.deviceOffCount;
-            var y = data.deviceWarningCount;
-            var z = data.deviceOffCount;
-            siteForBar(a,b,c);
-            rtuForBar(a,b,c);
-            deviceForBar(x,y,z);
-            deviceForType(data);
-        });
-
-        $http.get("../../total/deviceTotalByProvince").
-        success(function(data){
-            deviceForNum(data);
-        });
-
 
         /* 刷新数据 */
         $scope.refresh = function() {
@@ -91,7 +92,7 @@ xh.load = function() {
 
 
     });
-    deviceForMonth()
+
 };
 
 // 刷新数据
@@ -436,7 +437,7 @@ function deviceForMonth() {
 
     $.ajax({
         type: 'GET',
-        url: "../../total/selectAlarmByMonth",
+        url: "../../total/selectAlarmByMonth?structure="+structure,
         async: false,
         dataType: 'json',
         success: function(data){

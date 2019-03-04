@@ -92,7 +92,7 @@ xh.load = function() {
             xh.pagging(1, parseInt($scope.totals), $scope);
         });
 
-        $http.get("../../connect/selectStructureList").
+        $http.get("../../connect/selectStructureList?structure="+structure).
         success(function(response){
             //console.log(response);
             $scope.structureList = response.nodeList;
@@ -275,7 +275,6 @@ xh.load = function() {
 			
 			$http.get("../../connect/selectAllSite?start="+start+"&limit=" + limit+"&site_name="+site_name+"&site_industry="+site_industry+"&site_province="+site_province+"&site_city="+site_city+"&site_county="+site_county+"&status="+status+"&structure="+structure).
 			success(function(response){
-				xh.maskHide();
 				$scope.start = (page - 1) * pageSize + 1;
 				$scope.lastIndex = page * pageSize;
 				if (page == totalPages) {

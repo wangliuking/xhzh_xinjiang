@@ -11,7 +11,10 @@ import java.util.Map;
 public interface LightningMapper {
 
     @Select("<script>" +
-            "select a.*,b.ltn_state from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id where 1=1 " +
+            "select a.*,b.ltn_state from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -23,7 +26,7 @@ public interface LightningMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllLightning(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllLightning(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -35,9 +38,12 @@ public interface LightningMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,ltn_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllLightningCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllLightningCount(Map<String,Object> param);
 
     @Insert("insert into lightning_config(site_id,rtu_id,rtu_port,rtu_baud_rate,ltn_id,ltn_name,ltn_model,ltn_location,ltn_threshold1,ltn_threshold2,ltn_times,ltn_space,ltn_ospace) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{ltn_id},#{ltn_name},#{ltn_model},#{ltn_location},#{ltn_threshold1},#{ltn_threshold2},#{ltn_times},#{ltn_space},#{ltn_ospace})")
     int insertLightning(Lightning lightning);
@@ -61,7 +67,10 @@ public interface LightningMapper {
     List<Map<String,Object>> selectLightningByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.ltn_location,b.ltn_name,b.ltn_model,c.*,d.name as structureName from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.ltn_location,b.ltn_name,b.ltn_model,c.*,d.name as structureName from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -82,10 +91,13 @@ public interface LightningMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectLightningHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("ltn_id") int ltn_id, @Param("ltn_location") String ltn_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectLightningHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from lightning_old_data as a left join lightning_config as b on a.rtu_id=b.rtu_id and a.ltn_id=b.ltn_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -102,7 +114,7 @@ public interface LightningMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectLightningHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("ltn_id") int ltn_id, @Param("ltn_location") String ltn_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectLightningHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

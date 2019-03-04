@@ -33,6 +33,11 @@ public class StructureController {
         }else{
             param.put("industry",industry);
         }
+        String structure = req.getParameter("structure");
+        List<Integer> strList = foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
+
         List<Map<String,Object>> nodeList = structureService.selectStructureList(param);
         List<Map<String,Object>> siteList = structureService.selectSiteListByIndustry(param);
         List<Map<String,Object>> rtuList = structureService.selectRTUListByIndustry(param);
@@ -52,6 +57,11 @@ public class StructureController {
         }else{
             param.put("site_company",site_company);
         }
+        String structure = req.getParameter("structure");
+        List<Integer> strList = foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList",strList);
+
         List<Map<String,Object>> rtuList = structureService.selectRTUListByCompany(param);
         Map<String,Object> finalMap = new HashMap<>();
         finalMap.put("rtuList",rtuList);

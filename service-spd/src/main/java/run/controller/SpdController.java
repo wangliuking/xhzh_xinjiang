@@ -24,6 +24,8 @@ public class SpdController {
     private SPDService spdService;
     @Autowired
     private FeignForMQ feignForMQ;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllSPD",method = RequestMethod.GET)
     public Map<String,Object> selectAllSPD (HttpServletRequest req, HttpServletResponse resp){
@@ -54,10 +56,17 @@ public class SpdController {
         }else {
             rtu_id = -1;
         }
-
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> spdList = spdService.selectAllSPD(start,limit,site_id,rtu_id);
-        int count = spdService.selectAllSPDCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        List<Map<String,Object>> spdList = spdService.selectAllSPD(param);
+        int count = spdService.selectAllSPDCount(param);
         Map<String,Object> spdListMap = new HashMap<>();
         spdListMap.put("items",spdList);
         spdListMap.put("totals",count);
@@ -280,10 +289,23 @@ public class SpdController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("spd_number",spd_number);
+        param.put("spd_location",spd_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> spdList = spdService.selectSPDHistory(start,limit,site_id,rtu_id,spd_number,spd_location,startTime,endTime);
+        List<Map<String,Object>> spdList = spdService.selectSPDHistory(param);
         System.out.println("spdList : "+spdList);
-        int count = spdService.selectSPDHistoryCount(start,limit,site_id,rtu_id,spd_number,spd_location,startTime,endTime);
+        int count = spdService.selectSPDHistoryCount(param);
         Map<String,Object> spdListMap = new HashMap<>();
         spdListMap.put("items",spdList);
         spdListMap.put("totals",count);

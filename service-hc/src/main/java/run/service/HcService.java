@@ -13,12 +13,12 @@ public class HcService {
     @Autowired
     HcMapper hcMapper;
 
-    public List<Map<String,Object>> selectAllHc(int start, int limit, int site_id, int rtu_id){
-        return hcMapper.selectAllHc(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllHc(Map<String,Object> param){
+        return hcMapper.selectAllHc(param);
     }
 
-    public int selectAllHcCount(int start,int limit,int site_id,int rtu_id){
-        return hcMapper.selectAllHcCount(start,limit,site_id,rtu_id);
+    public int selectAllHcCount(Map<String,Object> param){
+        return hcMapper.selectAllHcCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class HcService {
         return hcMapper.deleteHc(param);
     }
 
-    public List<Map<String,Object>> selectHcHistory(int start, int limit, int site_id, int rtu_id, int es_id, String es_location,String startTime,String endTime){
-        return hcMapper.selectHcHistory(start,limit,site_id,rtu_id,es_id,es_location,startTime,endTime);
+    public List<Map<String,Object>> selectHcHistory(Map<String,Object> param){
+        return hcMapper.selectHcHistory(param);
     }
 
-    public int selectHcHistoryCount(int start, int limit, int site_id, int rtu_id, int es_id, String es_location,String startTime,String endTime){
-        return hcMapper.selectHcHistoryCount(start,limit,site_id,rtu_id,es_id,es_location,startTime,endTime);
+    public int selectHcHistoryCount(Map<String,Object> param){
+        return hcMapper.selectHcHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectHcByRTU(int rtu_id){

@@ -13,12 +13,12 @@ public class ETCRService {
     @Autowired
     ETCRMapper ETCRMapper;
 
-    public List<Map<String,Object>> selectAllETCR(int start, int limit, int site_id, int rtu_id){
-        return ETCRMapper.selectAllETCR(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllETCR(Map<String,Object> param){
+        return ETCRMapper.selectAllETCR(param);
     }
 
-    public int selectAllETCRCount(int start,int limit,int site_id,int rtu_id){
-        return ETCRMapper.selectAllETCRCount(start,limit,site_id,rtu_id);
+    public int selectAllETCRCount(Map<String,Object> param){
+        return ETCRMapper.selectAllETCRCount(param);
     }
 
     public List<Map<String,Object>> selectAllRelayno(int start, int limit, int site_id, int rtu_id){
@@ -77,16 +77,16 @@ public class ETCRService {
         return ETCRMapper.selectETCRByRTUID4RSTID(param);
     }
 
-    public List<Map<String,Object>> selectETCRHistory(int start, int limit, int site_id, int rtu_id, int rst_id, String rst_location,String startTime,String endTime){
-        return ETCRMapper.selectETCRHistory(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+    public List<Map<String,Object>> selectETCRHistory(Map<String,Object> param){
+        return ETCRMapper.selectETCRHistory(param);
     }
 
-    public List<Map<String,Object>> exportAllETCRHistoryExcel(int site_id, int rtu_id, int rst_id, String rst_location,String startTime,String endTime){
-        return ETCRMapper.exportAllETCRHistoryExcel(site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+    public List<Map<String,Object>> exportAllETCRHistoryExcel(Map<String,Object> param){
+        return ETCRMapper.exportAllETCRHistoryExcel(param);
     }
 
-    public int selectETCRHistoryCount(int start, int limit, int site_id, int rtu_id, int rst_id, String rst_location,String startTime,String endTime){
-        return ETCRMapper.selectETCRHistoryCount(start,limit,site_id,rtu_id,rst_id,rst_location,startTime,endTime);
+    public int selectETCRHistoryCount(Map<String,Object> param){
+        return ETCRMapper.selectETCRHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectETCROneTypeCount(int rtu_id){

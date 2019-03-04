@@ -13,12 +13,12 @@ public class CatService {
     @Autowired
     CatMapper catMapper;
 
-    public List<Map<String,Object>> selectAllCat(int start, int limit, int site_id, int rtu_id){
-        return catMapper.selectAllCat(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllCat(Map<String,Object> param){
+        return catMapper.selectAllCat(param);
     }
 
-    public int selectAllCatCount(int start,int limit,int site_id,int rtu_id){
-        return catMapper.selectAllCatCount(start,limit,site_id,rtu_id);
+    public int selectAllCatCount(Map<String,Object> param){
+        return catMapper.selectAllCatCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class CatService {
         return catMapper.deleteCat(param);
     }
 
-    public List<Map<String,Object>> selectCatHistory(int start, int limit, int site_id, int rtu_id, int cathode_id, String cathode_location,String startTime,String endTime){
-        return catMapper.selectCatHistory(start,limit,site_id,rtu_id,cathode_id,cathode_location,startTime,endTime);
+    public List<Map<String,Object>> selectCatHistory(Map<String,Object> param){
+        return catMapper.selectCatHistory(param);
     }
 
-    public int selectCatHistoryCount(int start, int limit, int site_id, int rtu_id, int cathode_id, String cathode_location,String startTime,String endTime){
-        return catMapper.selectCatHistoryCount(start,limit,site_id,rtu_id,cathode_id,cathode_location,startTime,endTime);
+    public int selectCatHistoryCount(Map<String,Object> param){
+        return catMapper.selectCatHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectCatByRTU(int rtu_id){

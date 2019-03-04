@@ -13,12 +13,12 @@ public class StrayService {
     @Autowired
     StrayMapper strayMapper;
 
-    public List<Map<String,Object>> selectAllStray(int start, int limit, int site_id, int rtu_id){
-        return strayMapper.selectAllStray(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllStray(Map<String,Object> param){
+        return strayMapper.selectAllStray(param);
     }
 
-    public int selectAllStrayCount(int start,int limit,int site_id,int rtu_id){
-        return strayMapper.selectAllStrayCount(start,limit,site_id,rtu_id);
+    public int selectAllStrayCount(Map<String,Object> param){
+        return strayMapper.selectAllStrayCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class StrayService {
         return strayMapper.deleteStray(param);
     }
 
-    public List<Map<String,Object>> selectStrayHistory(int start, int limit, int site_id, int rtu_id, int stret_id, String stret_location,String startTime,String endTime){
-        return strayMapper.selectStrayHistory(start,limit,site_id,rtu_id,stret_id,stret_location,startTime,endTime);
+    public List<Map<String,Object>> selectStrayHistory(Map<String,Object> param){
+        return strayMapper.selectStrayHistory(param);
     }
 
-    public int selectStrayHistoryCount(int start, int limit, int site_id, int rtu_id, int stret_id, String stret_location,String startTime,String endTime){
-        return strayMapper.selectStrayHistoryCount(start,limit,site_id,rtu_id,stret_id,stret_location,startTime,endTime);
+    public int selectStrayHistoryCount(Map<String,Object> param){
+        return strayMapper.selectStrayHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectStrayByRTU(int rtu_id){

@@ -70,6 +70,8 @@ public class SiteController {
         param.put("site_city",site_city);
         param.put("site_county",site_county);
         param.put("site_company",site_company);
+        param.put("start",start);
+        param.put("limit",limit);
         List<Map<String,Object>> siteList = siteService.selectAllSite(param);
         Map<String,Object> siteListMap = new HashMap<>();
         if(start == -1 || limit == -1){
@@ -112,20 +114,43 @@ public class SiteController {
                 int count = 0;
                 for(int i=start;i<siteList.size();i++){
                     Map<String,Object> map = siteList.get(i);
+                    if(count == limit){
+                        break;
+                    }
                     int s = Integer.parseInt(map.get("status")+"");
                     if(s == temp){
                         finalList.add(map);
                         count++;
                     }
-                    if(count > limit){
-                        break;
+
+                }
+                int size = 0;
+                for(int i=start;i<siteList.size();i++){
+                    Map<String,Object> map = siteList.get(i);
+                    int s = Integer.parseInt(map.get("status")+"");
+                    if(s == temp){
+                        size++;
                     }
+
                 }
                 siteListMap.put("items",finalList);
-                siteListMap.put("totals",finalList.size());
+                siteListMap.put("totals",size);
                 return siteListMap;
             }else{
-                siteListMap.put("items",siteList);
+
+                List<Map<String,Object>> finalList = new LinkedList<>();
+                int count = 0;
+                for(int i=start;i<siteList.size();i++){
+                    Map<String,Object> map = siteList.get(i);
+                    if(count == limit){
+                        break;
+                    }
+                    finalList.add(map);
+                    count++;
+
+                }
+
+                siteListMap.put("items",finalList);
                 siteListMap.put("totals",siteList.size());
                 return siteListMap;
             }

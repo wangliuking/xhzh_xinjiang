@@ -23,6 +23,8 @@ public class StaticController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllStatic",method = RequestMethod.GET)
     public Map<String,Object> selectAllStatic (HttpServletRequest req, HttpServletResponse resp){
@@ -51,9 +53,18 @@ public class StaticController {
             rtu_id = -1;
         }
 
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> StaticList = StaticService.selectAllStatic(start,limit,site_id,rtu_id);
-        int count = StaticService.selectAllStaticCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+
+        List<Map<String,Object>> StaticList = StaticService.selectAllStatic(param);
+        int count = StaticService.selectAllStaticCount(param);
         Map<String,Object> StaticListMap = new HashMap<>();
         StaticListMap.put("items",StaticList);
         StaticListMap.put("totals",count);
@@ -241,9 +252,23 @@ public class StaticController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("staet_id",staet_id);
+        param.put("staet_location",staet_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> StaticList = StaticService.selectStaticHistory(start,limit,site_id,rtu_id,staet_id,staet_location,startTime,endTime);
-        int count = StaticService.selectStaticHistoryCount(start,limit,site_id,rtu_id,staet_id,staet_location,startTime,endTime);
+        List<Map<String,Object>> StaticList = StaticService.selectStaticHistory(param);
+        int count = StaticService.selectStaticHistoryCount(param);
         Map<String,Object> StaticListMap = new HashMap<>();
         StaticListMap.put("items",StaticList);
         StaticListMap.put("totals",count);

@@ -13,12 +13,12 @@ public class SvtService {
     @Autowired
     SvtMapper svtMapper;
 
-    public List<Map<String,Object>> selectAllSvt(int start, int limit, int site_id, int rtu_id){
-        return svtMapper.selectAllSvt(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllSvt(Map<String,Object> param){
+        return svtMapper.selectAllSvt(param);
     }
 
-    public int selectAllSvtCount(int start,int limit,int site_id,int rtu_id){
-        return svtMapper.selectAllSvtCount(start,limit,site_id,rtu_id);
+    public int selectAllSvtCount(Map<String,Object> param){
+        return svtMapper.selectAllSvtCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class SvtService {
         return svtMapper.deleteSvt(param);
     }
 
-    public List<Map<String,Object>> selectSvtHistory(int start, int limit, int site_id, int rtu_id, int tilt_id, String tilt_location,String startTime,String endTime){
-        return svtMapper.selectSvtHistory(start,limit,site_id,rtu_id,tilt_id,tilt_location,startTime,endTime);
+    public List<Map<String,Object>> selectSvtHistory(Map<String,Object> param){
+        return svtMapper.selectSvtHistory(param);
     }
 
-    public int selectSvtHistoryCount(int start, int limit, int site_id, int rtu_id, int tilt_id, String tilt_location,String startTime,String endTime){
-        return svtMapper.selectSvtHistoryCount(start,limit,site_id,rtu_id,tilt_id,tilt_location,startTime,endTime);
+    public int selectSvtHistoryCount(Map<String,Object> param){
+        return svtMapper.selectSvtHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectSvtByRTU(int rtu_id){

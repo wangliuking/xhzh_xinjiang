@@ -24,6 +24,8 @@ public class LightningController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllLightning",method = RequestMethod.GET)
     public Map<String,Object> selectAllLightning (HttpServletRequest req, HttpServletResponse resp){
@@ -51,10 +53,19 @@ public class LightningController {
         }else {
             rtu_id = -1;
         }
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
 
         System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> LightningList = lightningService.selectAllLightning(start,limit,site_id,rtu_id);
-        int count = lightningService.selectAllLightningCount(start,limit,site_id,rtu_id);
+        List<Map<String,Object>> LightningList = lightningService.selectAllLightning(param);
+        int count = lightningService.selectAllLightningCount(param);
         Map<String,Object> LightningListMap = new HashMap<>();
         LightningListMap.put("items",LightningList);
         LightningListMap.put("totals",count);
@@ -218,9 +229,23 @@ public class LightningController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("ltn_id",ltn_id);
+        param.put("ltn_location",ltn_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> LightningList = lightningService.selectLightningHistory(start,limit,site_id,rtu_id,ltn_id,ltn_location,startTime,endTime);
-        int count = lightningService.selectLightningHistoryCount(start,limit,site_id,rtu_id,ltn_id,ltn_location,startTime,endTime);
+        List<Map<String,Object>> LightningList = lightningService.selectLightningHistory(param);
+        int count = lightningService.selectLightningHistoryCount(param);
         Map<String,Object> LightningListMap = new HashMap<>();
         LightningListMap.put("items",LightningList);
         LightningListMap.put("totals",count);

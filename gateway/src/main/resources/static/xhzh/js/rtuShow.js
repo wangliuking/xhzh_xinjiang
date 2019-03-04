@@ -25,6 +25,7 @@ var deviceTypeForName = {"接地电阻":1,"雷电流":3,"静电":4,"温湿度":5
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -53,11 +54,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -66,7 +67,7 @@ xh.load = function() {
             }
         });
         //判断是否登录end
-        $http.get("../../connect/selectAllRTU").
+        $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
             var data = response.items;
             var rtuNames = [];
@@ -80,7 +81,7 @@ xh.load = function() {
         //多级联动start
         $scope.changeIndustry = function(x){
             console.log(x);
-            $http.get("../../connect/selectStructureList?industry="+x).
+            $http.get("../../connect/selectStructureList?industry="+x+"&structure="+structure).
             success(function(response){
                 console.log(response);
                 var nodedata = response.nodeList;
@@ -108,7 +109,7 @@ xh.load = function() {
 
         $scope.changeCompany = function(x){
             console.log(x);
-            $http.get("../../connect/selectAllSite?site_company="+x).
+            $http.get("../../connect/selectAllSite?site_company="+x+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var siteNames = [];
@@ -118,7 +119,7 @@ xh.load = function() {
                 $scope.siteNames = siteNames;
             });
 
-            $http.get("../../connect/selectRTUListByCompany?site_company="+x).
+            $http.get("../../connect/selectRTUListByCompany?site_company="+x+"&structure="+structure).
             success(function(response){
                 var data = response.rtuList;
                 var rtuNames = [];
@@ -131,7 +132,7 @@ xh.load = function() {
 
         $scope.changeSite = function(x){
             console.log(x);
-            $http.get("../../connect/selectAllRTU?site_id="+x).
+            $http.get("../../connect/selectAllRTU?site_id="+x+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var rtuNames = [];
@@ -161,7 +162,7 @@ xh.load = function() {
                 $scope.rtuData = response;
             });
 
-            $http.get("../../total/selectDeviceNum?rtu_id="+rtu_id).
+            $http.get("../../total/selectDeviceNum?rtu_id="+rtu_id+"&structure="+structure).
             success(function(response){
                 $scope.siteInfo = response.siteInfo;
                 $scope.deviceOffCount = response.deviceOffCount;

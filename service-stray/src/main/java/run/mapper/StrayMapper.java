@@ -11,7 +11,10 @@ import java.util.Map;
 public interface StrayMapper {
 
     @Select("<script>" +
-            "select a.*,b.stret_state from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id where 1=1 " +
+            "select a.*,b.stret_state from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -23,7 +26,7 @@ public interface StrayMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllStray(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllStray(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -35,9 +38,12 @@ public interface StrayMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,stret_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllStrayCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllStrayCount(Map<String,Object> param);
 
     @Insert("insert into stray_electricity_config(site_id,rtu_id,rtu_port,rtu_baud_rate,stret_id,portId,equipType,stret_name,stret_model,stret_location,stret_threshold1,stret_threshold2,fullscale,calvalue,factor,computeType,stret_space,stret_ospace,portName) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{stret_id},#{portId},#{equipType},#{stret_name},#{stret_model},#{stret_location},#{stret_threshold1},#{stret_threshold2},#{fullscale},#{calvalue},#{factor},#{computeType},#{stret_space},#{stret_ospace},#{portName})")
     int insertStray(Stray Stray);
@@ -61,7 +67,10 @@ public interface StrayMapper {
     List<Map<String,Object>> selectStrayByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.*,d.name as structureName from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.*,d.name as structureName from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -82,10 +91,13 @@ public interface StrayMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectStrayHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("stret_id") int stret_id, @Param("stret_location") String stret_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectStrayHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -102,7 +114,7 @@ public interface StrayMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectStrayHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("stret_id") int stret_id, @Param("stret_location") String stret_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectStrayHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

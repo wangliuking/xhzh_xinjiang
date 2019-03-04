@@ -15,7 +15,10 @@ public interface RTUMapper {
      * @return
      */
     @Select("<script>" +
-            "select b.site_name,a.*,c.rtu_state from rtu_config as a left join site_config as b on a.site_id=b.site_id left join rtu_now_data as c on a.rtu_id=c.rtu_id where 1=1 " +
+            "select b.site_name,a.*,c.rtu_state from rtu_config as a left join site_config as b on a.site_id=b.site_id left join rtu_now_data as c on a.rtu_id=c.rtu_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+

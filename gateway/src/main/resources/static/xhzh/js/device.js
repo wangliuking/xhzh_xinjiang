@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -47,11 +48,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -71,7 +72,7 @@ xh.load = function() {
 		$scope.count = "15";//每页数据显示默认值
 		$scope.businessMenu=true; //菜单变色
 
-        $http.get("../../connect/selectAllSite").
+        $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;
             var siteNames = [];
@@ -86,7 +87,7 @@ xh.load = function() {
             $scope.siteNamesEdit = siteNames;
         });
 
-        $http.get("../../connect/selectAllRTU").
+        $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
             var data = response.items;
             var rtuNames = [];
@@ -112,7 +113,7 @@ xh.load = function() {
             $scope.strayParams = strayParams;
         });
 
-        $http.get("../../spd/selectAllSPD?start=0&limit=" + pageSize).
+        $http.get("../../spd/selectAllSPD?start=0&limit=" + pageSize+"&structure="+structure).
         success(function(response){
 
         	var data = response.items;
@@ -150,7 +151,7 @@ xh.load = function() {
         /* 变更rtu 列表 */
         $scope.changeRtuList = function(){
         	var site_id = $("#siteName").val();
-            $http.get("../../connect/selectAllRTU?site_id="+site_id).
+            $http.get("../../connect/selectAllRTU?site_id="+site_id+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var rtuNames = [];
@@ -164,7 +165,7 @@ xh.load = function() {
         /* 变更rtu 列表(添加页面) */
         $scope.changeRtuListAdd = function(){
             var site_id = $("#siteNameAdd").val();
-            $http.get("../../connect/selectAllRTU?site_id="+site_id).
+            $http.get("../../connect/selectAllRTU?site_id="+site_id+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var rtuNames = [];
@@ -180,7 +181,7 @@ xh.load = function() {
 
             var site_id = $("#siteNameEdit").val();
             console.log(site_id);
-            $http.get("../../connect/selectAllRTU?site_id="+site_id).
+            $http.get("../../connect/selectAllRTU?site_id="+site_id+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var rtuNames = [];
@@ -708,7 +709,7 @@ xh.load = function() {
             var deviceVal = $("#deviceName").val();
             $scope.changeDeviceTypeShow = deviceVal;
 			if($scope.changeDeviceTypeShow == 1){
-                $http.get("../../spd/selectAllSPD?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../spd/selectAllSPD?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -716,7 +717,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 2){
-                $http.get("../../etcr/selectAllETCR?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../etcr/selectAllETCR?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -724,7 +725,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 3){
-                $http.get("../../lightning/selectAllLightning?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../lightning/selectAllLightning?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -732,7 +733,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 4){
-                $http.get("../../static/selectAllStatic?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../static/selectAllStatic?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -740,7 +741,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 5){
-                $http.get("../../rsws/selectAllRsws?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../rsws/selectAllRsws?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -748,7 +749,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 6){
-                $http.get("../../svt/selectAllSvt?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../svt/selectAllSvt?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -756,7 +757,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 7){
-                $http.get("../../hc/selectAllHc?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../hc/selectAllHc?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -764,7 +765,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 8){
-                $http.get("../../stray/selectAllStray?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../stray/selectAllStray?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -772,7 +773,7 @@ xh.load = function() {
                     xh.pagging(page, parseInt($scope.totals), $scope);
                 });
             }else if($scope.changeDeviceTypeShow == 9){
-                $http.get("../../cat/selectAllCat?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../cat/selectAllCat?start=0&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     $scope.data = response.items;
@@ -811,7 +812,7 @@ xh.load = function() {
 			}
 
             if($scope.changeDeviceTypeShow == 1){
-                $http.get("../../spd/selectAllSPD?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../spd/selectAllSPD?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -828,7 +829,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 2){
-                $http.get("../../etcr/selectAllETCR?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../etcr/selectAllETCR?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -845,7 +846,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 3){
-                $http.get("../../lightning/selectAllLightning?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../lightning/selectAllLightning?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -862,7 +863,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 4){
-                $http.get("../../static/selectAllStatic?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../static/selectAllStatic?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -879,7 +880,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 5){
-                $http.get("../../rsws/selectAllRsws?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../rsws/selectAllRsws?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -896,7 +897,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 6){
-                $http.get("../../svt/selectAllSvt?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../svt/selectAllSvt?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -913,7 +914,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 7){
-                $http.get("../../hc/selectAllHc?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../hc/selectAllHc?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -930,7 +931,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 8){
-                $http.get("../../stray/selectAllStray?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../stray/selectAllStray?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;
@@ -947,7 +948,7 @@ xh.load = function() {
                     $scope.totals = response.totals;
                 });
             }else if($scope.changeDeviceTypeShow == 9){
-                $http.get("../../cat/selectAllCat?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status).
+                $http.get("../../cat/selectAllCat?start="+start+"&limit=" + limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&status="+status+"&structure="+structure).
                 success(function(response){
                     /*xh.maskHide();*/
                     $scope.start = (page - 1) * pageSize + 1;

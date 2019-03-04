@@ -13,12 +13,12 @@ public class LightningService {
     @Autowired
     LightningMapper lightningMapper;
 
-    public List<Map<String,Object>> selectAllLightning(int start, int limit, int site_id, int rtu_id){
-        return lightningMapper.selectAllLightning(start,limit,site_id,rtu_id);
+    public List<Map<String,Object>> selectAllLightning(Map<String,Object> param){
+        return lightningMapper.selectAllLightning(param);
     }
 
-    public int selectAllLightningCount(int start,int limit,int site_id,int rtu_id){
-        return lightningMapper.selectAllLightningCount(start,limit,site_id,rtu_id);
+    public int selectAllLightningCount(Map<String,Object> param){
+        return lightningMapper.selectAllLightningCount(param);
     }
 
 
@@ -46,12 +46,12 @@ public class LightningService {
         return lightningMapper.deleteLightning(param);
     }
 
-    public List<Map<String,Object>> selectLightningHistory(int start, int limit, int site_id, int rtu_id, int ltn_id, String ltn_location,String startTime,String endTime){
-        return lightningMapper.selectLightningHistory(start,limit,site_id,rtu_id,ltn_id,ltn_location,startTime,endTime);
+    public List<Map<String,Object>> selectLightningHistory(Map<String,Object> param){
+        return lightningMapper.selectLightningHistory(param);
     }
 
-    public int selectLightningHistoryCount(int start, int limit, int site_id, int rtu_id, int ltn_id, String ltn_location,String startTime,String endTime){
-        return lightningMapper.selectLightningHistoryCount(start,limit,site_id,rtu_id,ltn_id,ltn_location,startTime,endTime);
+    public int selectLightningHistoryCount(Map<String,Object> param){
+        return lightningMapper.selectLightningHistoryCount(param);
     }
 
     public List<Map<String,Object>> selectLightningByRTU(int rtu_id){

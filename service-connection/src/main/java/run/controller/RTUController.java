@@ -45,6 +45,9 @@ public class RTUController {
 
     @RequestMapping(value = "/selectAllRTU",method = RequestMethod.GET)
     public Map<String,Object> selectAllRTU (HttpServletRequest req, HttpServletResponse resp) {
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
         int start;
         if (req.getParameter("start") != null) {
             start = Integer.parseInt(req.getParameter("start"));
@@ -84,7 +87,11 @@ public class RTUController {
         param.put("rtu_ip", rtu_ip);
         param.put("rtu_netmask", rtu_netmask);
         param.put("rtu_gateway", rtu_gateway);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("strList",strList);
         List<Map<String, Object>> rtuList = rtuService.selectAllRTU(param);
+
         Map<String, Object> rtuListMap = new HashMap<>();
 
         if (start == -1 || limit == -1) {
@@ -118,20 +125,44 @@ public class RTUController {
                 int count = 0;
                 for (int i = start; i < rtuList.size(); i++) {
                     Map<String, Object> map = rtuList.get(i);
+                    if (count == limit) {
+                        break;
+                    }
                     int s = Integer.parseInt(map.get("status") + "");
                     if (s == temp) {
                         finalList.add(map);
                         count++;
                     }
-                    if (count > limit) {
-                        break;
+
+                }
+
+                int size = 0;
+                for (int i = start; i < rtuList.size(); i++) {
+                    Map<String, Object> map = rtuList.get(i);
+                    int s = Integer.parseInt(map.get("status") + "");
+                    if (s == temp) {
+                        size++;
                     }
+
                 }
                 rtuListMap.put("items", finalList);
-                rtuListMap.put("totals", finalList.size());
+                rtuListMap.put("totals", size);
                 return rtuListMap;
             } else {
-                rtuListMap.put("items", rtuList);
+
+                List<Map<String, Object>> finalList = new LinkedList<>();
+                int count = 0;
+                for (int i = start; i < rtuList.size(); i++) {
+                    Map<String, Object> map = rtuList.get(i);
+                    if (count == limit) {
+                        break;
+                    }
+                    finalList.add(map);
+                    count++;
+
+                }
+
+                rtuListMap.put("items", finalList);
                 rtuListMap.put("totals", rtuList.size());
                 return rtuListMap;
             }

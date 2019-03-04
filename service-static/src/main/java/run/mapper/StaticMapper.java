@@ -11,7 +11,10 @@ import java.util.Map;
 public interface StaticMapper {
 
     @Select("<script>" +
-            "select a.*,b.staet_state from static_electricity_config as a left join static_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.staet_id=b.staet_id where 1=1 " +
+            "select a.*,b.staet_state from static_electricity_config as a left join static_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.staet_id=b.staet_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -23,7 +26,7 @@ public interface StaticMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllStatic(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllStatic(Map<String,Object> param);
 
     @Select("<script>" +
             "select count(*) from ("+
@@ -35,9 +38,12 @@ public interface StaticMapper {
             "and rtu_id =#{rtu_id}"+
             "</if>"+
             "group by rtu_id,rtu_port,staet_id"+
-            ") as t"+
+            ") as a left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "</script>")
-    int selectAllStaticCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllStaticCount(Map<String,Object> param);
 
     @Insert("insert into static_electricity_config(site_id,rtu_id,rtu_port,rtu_baud_rate,staet_id,staet_name,staet_model,staet_location,staet_threshold1,staet_threshold2,staet_k,staet_v0,staet_space,staet_ospace) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{staet_id},#{staet_name},#{staet_model},#{staet_location},#{staet_threshold1},#{staet_threshold2},#{staet_k},#{staet_v0},#{staet_space},#{staet_ospace})")
     int insertStatic(Static Static);
@@ -61,7 +67,10 @@ public interface StaticMapper {
     List<Map<String,Object>> selectStaticByRTU(int rtu_id);
 
     @Select("<script>" +
-            "select a.*,b.staet_location,b.staet_name,b.staet_model,c.*,d.name as structureName from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.staet_location,b.staet_name,b.staet_model,c.*,d.name as structureName from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -82,10 +91,13 @@ public interface StaticMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectStaticHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("staet_id") int staet_id, @Param("staet_location") String staet_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectStaticHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select count(*) from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -102,7 +114,7 @@ public interface StaticMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectStaticHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("staet_id") int staet_id, @Param("staet_location") String staet_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectStaticHistoryCount(Map<String,Object> param);
 
     /**
      * 删除设备时同步删除rtu_alarm_data表相关信息

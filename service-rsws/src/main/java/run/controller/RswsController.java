@@ -23,6 +23,8 @@ public class RswsController {
     private FeignForMQ feignForMQ;
     @Autowired
     private FeignForRTU feignForRTU;
+    @Autowired
+    private FeignForStructure feignForStructure;
 
     @RequestMapping(value = "/selectAllRsws",method = RequestMethod.GET)
     public Map<String,Object> selectAllRsws (HttpServletRequest req, HttpServletResponse resp){
@@ -50,10 +52,17 @@ public class RswsController {
         }else {
             rtu_id = -1;
         }
-
-        System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id);
-        List<Map<String,Object>> RswsList = RswsService.selectAllRsws(start,limit,site_id,rtu_id);
-        int count = RswsService.selectAllRswsCount(start,limit,site_id,rtu_id);
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        List<Map<String,Object>> RswsList = RswsService.selectAllRsws(param);
+        int count = RswsService.selectAllRswsCount(param);
         Map<String,Object> RswsListMap = new HashMap<>();
         RswsListMap.put("items",RswsList);
         RswsListMap.put("totals",count);
@@ -241,9 +250,23 @@ public class RswsController {
         String startTime = req.getParameter("startTime");
         String endTime = req.getParameter("endTime");
 
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("hmt_id",hmt_id);
+        param.put("hmt_location",hmt_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
         //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
-        List<Map<String,Object>> RswsList = RswsService.selectRswsHistory(start,limit,site_id,rtu_id,hmt_id,hmt_location,startTime,endTime);
-        int count = RswsService.selectRswsHistoryCount(start,limit,site_id,rtu_id,hmt_id,hmt_location,startTime,endTime);
+        List<Map<String,Object>> RswsList = RswsService.selectRswsHistory(param);
+        int count = RswsService.selectRswsHistoryCount(param);
         Map<String,Object> RswsListMap = new HashMap<>();
         RswsListMap.put("items",RswsList);
         RswsListMap.put("totals",count);

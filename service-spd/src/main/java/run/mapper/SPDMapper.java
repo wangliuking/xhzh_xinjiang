@@ -11,9 +11,12 @@ import java.util.Map;
 public interface SPDMapper {
 
     @Select("<script>" +
-            "select a.*,b.spd_state from spd_config as a left join spd_now_data as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 " +
+            "select a.*,b.spd_state from spd_config a left join spd_now_data b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
-            "and site_id =#{site_id}"+
+            "and a.site_id =#{site_id}"+
             "</if>"+
             "<if test=\"rtu_id != null and rtu_id != -1\">" +
             "and a.rtu_id =#{rtu_id}"+
@@ -22,12 +25,15 @@ public interface SPDMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectAllSPD(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    List<Map<String,Object>> selectAllSPD(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from spd_config as a left join spd_now_data as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 " +
+            "select count(*) from spd_config a left join spd_now_data b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
-            "and site_id =#{site_id}"+
+            "and a.site_id =#{site_id}"+
             "</if>"+
             "<if test=\"rtu_id != null and rtu_id != -1\">" +
             "and a.rtu_id =#{rtu_id}"+
@@ -36,7 +42,7 @@ public interface SPDMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    int selectAllSPDCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
+    int selectAllSPDCount(Map<String,Object> param);
 
     @Insert("insert into spd_config(site_id,rtu_id,spd_number,spd_name,spd_model,spd_location,spd_level,spd_space) values(#{site_id},#{rtu_id},#{spd_number},#{spd_name},#{spd_model},#{spd_location},#{spd_level},#{spd_space})")
     int insertSPD(SPD spd);
@@ -72,7 +78,10 @@ public interface SPDMapper {
     int updateSPDByRTU(Map<String,Object> params);
 
     @Select("<script>" +
-            "select a.*,b.spd_location,b.spd_model,b.spd_name,c.*,d.name as structureName from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where 1=1 " +
+            "select a.*,b.spd_location,b.spd_model,b.spd_name,c.*,d.name as structureName from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -93,10 +102,13 @@ public interface SPDMapper {
             "limit #{start},#{limit}"+
             "</if>"+
             "</script>")
-    List<Map<String,Object>> selectSPDHistory(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("spd_number") int spd_number, @Param("spd_location") String spd_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map<String,Object>> selectSPDHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select count(*) from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 " +
+            "select count(*) from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -113,5 +125,5 @@ public interface SPDMapper {
             "and write_time between #{startTime} and #{endTime}"+
             "</if>"+
             "</script>")
-    int selectSPDHistoryCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id, @Param("spd_number") int spd_number, @Param("spd_location") String spd_location, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    int selectSPDHistoryCount(Map<String,Object> param);
 }
