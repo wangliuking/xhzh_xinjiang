@@ -15,11 +15,16 @@ public class StructureController {
     private StructureService structureService;
 
     @RequestMapping(value = "/selectAllStructure")
-    public List<Node> selectAllStructure (){
+    public List<Node> selectAllStructure (HttpServletRequest req){
+        String structure = req.getParameter("structure");
+        List<Integer> strList = foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
 
-        List<Node> nodeList = structureService.selectAll();
+        List<Node> nodeList = structureService.selectAll(param);
         TreeUtil treeUtil = new TreeUtil();
-        List<Node> resultList = treeUtil.getInfiniteLevelTree(nodeList);
+        List<Node> resultList = treeUtil.getInfiniteLevelTree(nodeList,Integer.parseInt(structure));
         return resultList;
 
     }

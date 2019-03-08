@@ -745,16 +745,16 @@ public class SendController {
         Date a = new Date();
         while(true){
             for (String key : map.keySet()) {
-                //System.out.println("Key = " + key);
+                //log.info("Key = " + key);
                 if(serialNumber.equals(key)){
                     JSONObject jsonObject = map.get(serialNumber);
-                    System.out.println("已查询到该条消息 ： "+jsonObject);
+                    log.info("已查询到该条消息 ： "+jsonObject);
                     String str = jsonObject.get("RespResult")+"";
                     if(Integer.parseInt(str) == 1){
                         SendController.removeMap(serialNumber);
                     }
                     if(Integer.parseInt(str) == 2){
-                        System.out.println("已查询到该条DBInfo");
+                        log.info("已查询到该条DBInfo");
                         SendController.removeMap(serialNumber);
                         return jsonObject.get("DBInfo")+"";
                     }
@@ -773,7 +773,7 @@ public class SendController {
         try {
             Thread.sleep(2000);
             Date b = new Date();
-            System.out.println(b.getTime()-a.getTime());
+            //log.info((b.getTime()-a.getTime())+"");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -782,7 +782,7 @@ public class SendController {
 
 
     public String search(JSONObject rtuConfJson){
-        System.out.println("已进入扫描函数！！！");
+        log.info("已进入扫描函数！！！");
         Map<String,Class> classMap = new HashMap<>();
         classMap.put("RS485InfoList", RS485Info.class);
         classMap.put("DAInfoList", DAInfo.class);
@@ -791,27 +791,27 @@ public class SendController {
         String serialNumber = r.getCallId();
         Date a = new Date();
         while(true){
-            //System.out.println("循环中！！！");
-            System.out.println("map = " + map);
+            //log.info("循环中！！！");
+            log.info("map = " + map);
             if(map != null && map.size()>0){
-                System.out.println("map不为空，进来了！！！");
+                log.info("map不为空，进来了！！！");
                 for (String key : map.keySet()) {
-                    System.out.println("map.keySet() = " + map.keySet());
+                    log.info("map.keySet() = " + map.keySet());
                     if(serialNumber.equals(key)){
                         JSONObject jsonObject = map.get(serialNumber);
-                        System.out.println("已查询到该条消息 ： "+jsonObject);
+                        log.info("已查询到该条消息 ： "+jsonObject);
                         String temp = jsonObject.get("RespResult").toString();
                         int RespResult = Integer.parseInt(temp);
                         if(RespResult == 1){
-                            System.out.println("流水号为 ： "+serialNumber+" 的该条信息返回成功");
+                            log.info("流水号为 ： "+serialNumber+" 的该条信息返回成功");
                             SendController.removeMap(serialNumber);
                             return "配置成功";
                         }else if(RespResult == 0) {
-                            System.out.println("流水号为 ： "+serialNumber+" 的该条信息发送设备无响应");
+                            log.info("流水号为 ： "+serialNumber+" 的该条信息发送设备无响应");
                             SendController.removeMap(serialNumber);
                             return "设备无响应";
                         }else if(RespResult == 3) {
-                            System.out.println("流水号为 ： "+serialNumber+" 的该条信息请求格式错误");
+                            log.info("流水号为 ： "+serialNumber+" 的该条信息请求格式错误");
                             SendController.removeMap(serialNumber);
                             return "请求格式错误";
                         }
@@ -820,7 +820,7 @@ public class SendController {
                 }
             }
             Date b = new Date();
-            System.out.println("b.getTime() - a.getTime() : "+(b.getTime()-a.getTime()));
+            log.info("b.getTime() - a.getTime() : "+(b.getTime()-a.getTime()));
             if((b.getTime() - a.getTime()) > 30000){
                 return "请求超时";
             }

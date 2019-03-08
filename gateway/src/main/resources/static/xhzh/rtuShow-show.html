@@ -60,24 +60,28 @@
 
 										<div class="row">
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name1 == 0" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
+												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
 												<button ng-if="x.relayno_name1 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅰ</span> </button>
 												<button ng-if="x.relayno_name1 != 1 && x.relayno_name1 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅰ</span> </button>
+												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name2 == 0" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="2">  <span>Ⅱ</span> </button>
+												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="2">  <span>Ⅱ</span> </button>
 												<button ng-if="x.relayno_name2 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅱ</span> </button>
 												<button ng-if="x.relayno_name2 != 1 && x.relayno_name2 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅱ</span> </button>
+												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="2"> <span>Ⅱ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name3 == 0" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="3">  <span>Ⅲ</span> </button>
+												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="3">  <span>Ⅲ</span> </button>
 												<button ng-if="x.relayno_name3 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅲ</span> </button>
 												<button ng-if="x.relayno_name3 != 1 && x.relayno_name3 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅲ</span> </button>
+												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="3"><span>Ⅲ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name4 == 0" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="4">  <span>Ⅳ</span> </button>
+												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="4">  <span>Ⅳ</span> </button>
 												<button ng-if="x.relayno_name4 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅳ</span> </button>
 												<button ng-if="x.relayno_name4 != 1 && x.relayno_name4 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅳ</span> </button>
+												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="4"><span>Ⅳ</span> </button>
 											</div>
 										</div>
 									</div>

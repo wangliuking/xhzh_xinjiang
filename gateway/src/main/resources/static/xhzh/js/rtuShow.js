@@ -66,6 +66,7 @@ xh.load = function() {
                 window.parent.location.href = "../login.html";
             }
         });
+
         //判断是否登录end
         $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
@@ -87,7 +88,7 @@ xh.load = function() {
                 var nodedata = response.nodeList;
                 var companys = [];
                 for(var i=0;i<nodedata.length;i++){
-                    companys.push(nodedata[i].name);
+                    companys.push({"id":nodedata[i].id,"name":nodedata[i].name});
                 }
                 $scope.companys = companys;
 
@@ -192,6 +193,17 @@ xh.load = function() {
 
             });
         }
+
+        var tempRTUId = $location.search().id;
+        console.log("!!!!!!!!!!!!!");
+        console.log(tempRTUId);
+        console.log("!!!!!!!!!!!!!");
+        $scope.rtuChooseId = tempRTUId;
+        /*if(!isNaN(tempRTUId)){
+            console.log("为数字，进来了！！！");
+            $("#testRTU").val(tempRTUId);
+            $scope.searchDevicesByRTU();
+        }*/
 
         $scope.changeRSTabClass = function(x){
             var type = $scope.deviceTypeChoosed;

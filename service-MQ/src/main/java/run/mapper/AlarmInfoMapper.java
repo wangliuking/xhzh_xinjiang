@@ -12,6 +12,50 @@ import java.util.Map;
 public interface AlarmInfoMapper {
 
     @Select("<script>" +
+            "select a.*,c.site_id,c.site_name from rtu_alarm_data as a left join rtu_config as b on a.rtu_Id=b.rtu_id left join site_config as c on b.site_id=c.site_id where a.alarmStatus=1 and c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and c.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtuId != null and rtuId != -1\">" +
+            "and a.rtu_Id =#{rtuId}"+
+            "</if>"+
+            "<if test=\"type != null and type != -1\">" +
+            "and type =#{type}"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != '' and startTime != 'null'\">" +
+            "and udpateTime between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by udpateTime desc"+
+            "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>"+
+            "</script>")
+    List<Map<String,Object>> selectAllAlarmInfoNow(Map<String,Object> params);
+
+    @Select("<script>" +
+            "select count(*) from rtu_alarm_data as a left join rtu_config as b on a.rtu_Id=b.rtu_id left join site_config as c on b.site_id=c.site_id where a.alarmStatus=1 and c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and c.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtuId != null and rtuId != -1\">" +
+            "and a.rtu_Id =#{rtuId}"+
+            "</if>"+
+            "<if test=\"type != null and type != -1\">" +
+            "and type =#{type}"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != '' and startTime != 'null'\">" +
+            "and udpateTime between #{startTime} and #{endTime}"+
+            "</if>"+
+            "</script>")
+    int selectAllAlarmInfoNowCount(Map<String,Object> params);
+
+    @Select("<script>" +
             "select a.*,c.site_id,c.site_name from rtu_alarm_history as a left join rtu_config as b on a.rtu_Id=b.rtu_id left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

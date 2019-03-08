@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -49,11 +50,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -63,14 +64,15 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../connect/selectAllStructure").
+        $http.get("../../connect/selectAllStructure?structure="+structure).
         success(function(data){
+            $scope.industrys = ["医疗","气象","新能源","轨道交通","石油化工","国防军工","电力","通讯"]
             startTree(data);
             createEcharts(data);
         });
 
         $scope.createBegin = function () {
-            $http.get("../../connect/selectAllStructure").
+            $http.get("../../connect/selectAllStructure?structure="+structure).
             success(function(data){
                 startTree(data);
                 createEcharts(data);
@@ -315,10 +317,10 @@ xh.add = function() {
                 $scope.createBegin();
                 $('#add').modal('hide');
                 toastr.success(data.message, '提示');
-                xh.refresh();
+                //xh.refresh();
             } else {
                 toastr.error(data.message, '提示');
-                xh.refresh();
+                //xh.refresh();
             }
         },
         error : function() {

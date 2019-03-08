@@ -65,10 +65,28 @@ xh.load = function() {
                     var x = data.spdNum+data.etcrNum+data.lightningNum+data.staticNum+data.rswsNum+data.svtNum+data.hcNum+data.strayNum+data.catNum-data.deviceWarningCount-data.deviceOffCount;
                     var y = data.deviceWarningCount;
                     var z = data.deviceOffCount;
-                    siteForBar(a,b,c);
                     rtuForBar(a,b,c);
                     deviceForBar(x,y,z);
                     deviceForType(data);
+                });
+
+                $http.get("../../connect/selectAllSite?structure="+structure).
+                success(function(param){
+                    console.log(param.items);
+                    var arr = param.items;
+                    var a = 0;
+                    var b = 0;
+                    var c = 0;
+                    for(var i = 0; i < arr.length; i++){
+                        if(arr[i].status == 0){
+                            a++;
+                        }else if(arr[i].status == 2){
+                            b++;
+                        }else if(arr[i].status == 1){
+                            c++;
+                        }
+                    }
+                    siteForBar(a,b,c);
                 });
 
                 $http.get("../../total/deviceTotalByProvince?structure="+structure).

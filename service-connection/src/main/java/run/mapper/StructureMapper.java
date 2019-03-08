@@ -13,8 +13,13 @@ public interface StructureMapper {
     @Select("select id,pId from structure")
     List<Map<String,Integer>> foreachIdAndPId();
 
-    @Select("select * from structure")
-    List<Node> selectAll();
+    @Select("<script>"+
+            "select * from structure where id in "+
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "</script>")
+    List<Node> selectAll(Map<String,Object> param);
 
     @Select("<script>" +
             "select * from structure where level!=0 and id in " +
@@ -64,7 +69,7 @@ public interface StructureMapper {
             "</script>")
     List<Map<String,Object>> selectRTUListByCompany(Map<String,Object> param);
 
-    @Insert("insert into structure(pId,level,name) values(#{id},#{level}+1,#{name})")
+    @Insert("insert into structure(pId,level,name,industry) values(#{id},#{level}+1,#{name},#{industry})")
     int insert(Node node);
 
     @Delete("delete from structure where id = #{id} or pId = #{id}")

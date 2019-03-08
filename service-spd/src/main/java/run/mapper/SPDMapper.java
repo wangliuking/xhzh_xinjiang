@@ -11,7 +11,7 @@ import java.util.Map;
 public interface SPDMapper {
 
     @Select("<script>" +
-            "select a.*,b.spd_state from spd_config a left join spd_now_data b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "select a.*,b.spd_state,count(b.spd_state) num from spd_config a left join spd_now_data b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+
@@ -21,6 +21,7 @@ public interface SPDMapper {
             "<if test=\"rtu_id != null and rtu_id != -1\">" +
             "and a.rtu_id =#{rtu_id}"+
             "</if>"+
+            "group by a.rtu_id,a.site_id,a.spd_number"+
             "<if test=\"start !=null and limit != null and start != -1 and limit != -1\">" +
             "limit #{start},#{limit}"+
             "</if>"+

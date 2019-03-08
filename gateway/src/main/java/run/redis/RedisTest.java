@@ -5,7 +5,7 @@ import redis.clients.jedis.Jedis;
 import java.util.Set;
 
 public class RedisTest {
-    private static String ip = "39.104.240.180";
+    private static String ip = "localhost";
 
     public static void main(String[] args) {
         //连接本地的 Redis 服务
@@ -57,7 +57,7 @@ public class RedisTest {
         jedis.auth("XinHong12345");
         jedis.select(0);
         jedis.set(sessionId,userId);
-        jedis.expire(sessionId,7200);
+        jedis.expire(sessionId,3600*5);
         jedis.close();
     }
 

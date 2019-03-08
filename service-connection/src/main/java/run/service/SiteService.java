@@ -17,6 +17,14 @@ public class SiteService {
         return siteMapper.selectAllSite(param);
     }
 
+    public int selectAllSiteCount(Map<String,Object> param){
+        return siteMapper.selectAllSiteCount(param);
+    }
+
+    /*public List<Map<String,Object>> selectAllSite(Map<String,Object> param){
+        return siteMapper.selectAllSite(param);
+    }*/
+
     public Site selectSiteById(int id){
         return siteMapper.selectSiteById(id);
     }

@@ -11,7 +11,7 @@ import java.util.Map;
 public interface StrayMapper {
 
     @Select("<script>" +
-            "select a.*,b.stret_state from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "select a.*,sum(b.stret_state) stret_state,sum(b.alarm) alarm,count(b.stret_state) num from stray_electricity_config as a left join stray_electricity_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.stret_id=b.stret_id and a.portId=b.portId left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+

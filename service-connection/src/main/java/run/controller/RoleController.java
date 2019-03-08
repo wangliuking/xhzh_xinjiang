@@ -10,12 +10,15 @@ import run.service.RoleService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 public class RoleController {
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private StructureController structureController;
 
     @RequestMapping(value = "/selectRoleList",method = RequestMethod.GET)
     public Map<String,Object> selectRoleList(HttpServletRequest req) {
@@ -28,6 +31,12 @@ public class RoleController {
         params.put("param",param);
         params.put("start",start);
         params.put("limit",limit);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        params.put("strList",strList);
+
         result.put("items",roleService.selectRoleList(params));
         result.put("totals",roleService.selectRoleListCount(params));
         return result;

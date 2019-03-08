@@ -607,133 +607,149 @@ function addMarker() {  // 创建图标对象
     //console.log(arrNem);
     //闪烁效果数组清空
     offArr = [];
-    console.log(arrNem);
     for (var i = 0; i < arrNem.length; i++) {
-        var industry = arrNem[i].site_industry;
-        //闪烁效果数组
-        if(arrNem[i].status == 1){
-            offArr.push([arrNem[i].site_lng,arrNem[i].site_lat,1]);
-        }
-        var iconImg;
-        if ("医疗" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/6-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/6-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/6-3.png";
+        $.ajax({
+            type: 'GET',
+            url: "../../total/selectSiteAllStatus?site_id=" + arrNem[i].site_id+"&structure="+structure,
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var industry = arrNem[i].site_industry;
+                var rtuStatusList = data.rtuStatusList;
+                var rtuWarningNum = data.rtuWarningNum;
+                var rtuOffNum = data.rtuOffNum;
+                var rtuNum = data.rtuNum;
+                arrNem[i]["rtuStatusList"] = data.rtuStatusList;
+                arrNem[i]["rtuWarningNum"] = data.rtuWarningNum;
+                arrNem[i]["rtuOffNum"] = data.rtuOffNum;
+                arrNem[i]["rtuNum"] = data.rtuNum;
+                //闪烁效果数组
+                if(rtuNum == 0 || rtuOffNum > 0){
+                    offArr.push([arrNem[i].site_lng,arrNem[i].site_lat,1]);
+                }
+                var iconImg;
+                if ("医疗" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/6-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/6-2.png";
+                    } else {
+                        iconImg = "../iconfont/6-3.png";
+                    }
+                } else if ("气象" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/7-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/7-2.png";
+                    } else {
+                        iconImg = "../iconfont/7-3.png";
+                    }
+                } else if ("新能源" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/3-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/3-2.png";
+                    } else {
+                        iconImg = "../iconfont/3-3.png";
+                    }
+                } else if ("轨道交通" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/4-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/4-2.png";
+                    } else {
+                        iconImg = "../iconfont/4-3.png";
+                    }
+                } else if ("石油化工" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/5-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/5-2.png";
+                    } else {
+                        iconImg = "../iconfont/5-3.png";
+                    }
+                } else if ("国防军工" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/8-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/8-2.png";
+                    } else {
+                        iconImg = "../iconfont/8-3.png";
+                    }
+                } else if ("电力" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/1-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/1-2.png";
+                    } else {
+                        iconImg = "../iconfont/1-3.png";
+                    }
+                } else if ("通讯" == industry) {
+                    if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                        iconImg = "../iconfont/2-1.png";
+                    } else if (rtuWarningNum > 0) {
+                        iconImg = "../iconfont/2-2.png";
+                    } else {
+                        iconImg = "../iconfont/2-3.png";
+                    }
+                }
+                var zoom = map.getZoom();
+                var x;
+                var y;
+                if (zoom >= 5 && zoom <= 7) {
+                    x = 16;
+                    y = 20;
+                } else if (zoom >= 8 && zoom <= 9) {
+                    x = 48;
+                    y = 56;
+                }
+                var myIcon = new BMap.Icon(iconImg, new BMap.Size(x, y), {
+                    // 指定定位位置。
+                    // 当标注显示在地图上时，其所指向的地理位置距离图标左上
+                    // 角各偏移10像素和25像素。您可以看到在本例中该位置即是
+                    // 图标中央下端的尖角位置。
+                    //anchor: new BMap.Size(10, 25)
+                    // 设置图片偏移。
+                    // 当您需要从一幅较大的图片中截取某部分作为标注图标时，您
+                    // 需要指定大图的偏移位置，此做法与css sprites技术类似。
+                    //imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移
+                    imageSize: new BMap.Size(x, y)
+                });
+                // 创建标注对象并添加到地图
+                var point = new BMap.Point(arrNem[i].site_lng, arrNem[i].site_lat);
+                var marker = new BMap.Marker(point, {icon: myIcon});
+                var label = new BMap.Label(arrNem[i].site_name, {
+                    offset: new BMap.Size(15, -25)
+                });
+                var backgroundColor;
+                if (rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == 0) {
+                    backgroundColor = "#bfbfbf";
+                } else if (rtuWarningNum > 0) {
+                    backgroundColor = "#EEAD0E";
+                } else {
+                    backgroundColor = "green";
+                }
+                label.setStyle({
+                    width: "auto",
+                    color: '#fff',
+                    background: backgroundColor,
+                    border: '1px solid "#00CD66"',
+                    borderRadius: "5px",
+                    textAlign: "center",
+                    height: "24px",
+                    lineHeight: "24px",
+                    fontSize: "15px",
+                    fontWeight: "bold"
+                });
+                marker.setLabel(label); //为标注添加一个标签
+                createInfoWindow(marker,arrNem[i].site_id);
+                map.addOverlay(marker);
+                var json = {};
+                json[arrNem[i].site_id] = marker;
+                markers.push(json);
             }
-        } else if ("气象" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/7-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/7-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/7-3.png";
-            }
-        } else if ("新能源" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/3-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/3-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/3-3.png";
-            }
-        } else if ("轨道交通" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/4-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/4-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/4-3.png";
-            }
-        } else if ("石油化工" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/5-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/5-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/5-3.png";
-            }
-        } else if ("国防军工" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/8-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/8-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/8-3.png";
-            }
-        } else if ("电力" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/1-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/1-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/1-3.png";
-            }
-        } else if ("通讯" == industry) {
-            if (arrNem[i].status == 1) {
-                iconImg = "../iconfont/2-1.png";
-            } else if (arrNem[i].status == 2) {
-                iconImg = "../iconfont/2-2.png";
-            } else if (arrNem[i].status == 0) {
-                iconImg = "../iconfont/2-3.png";
-            }
-        }
-        var zoom = map.getZoom();
-        var x;
-        var y;
-        if (zoom >= 5 && zoom <= 7) {
-            x = 16;
-            y = 20;
-        } else if (zoom >= 8 && zoom <= 9) {
-            x = 48;
-            y = 56;
-        }
-        var myIcon = new BMap.Icon(iconImg, new BMap.Size(x, y), {
-            // 指定定位位置。
-            // 当标注显示在地图上时，其所指向的地理位置距离图标左上
-            // 角各偏移10像素和25像素。您可以看到在本例中该位置即是
-            // 图标中央下端的尖角位置。
-            //anchor: new BMap.Size(10, 25)
-            // 设置图片偏移。
-            // 当您需要从一幅较大的图片中截取某部分作为标注图标时，您
-            // 需要指定大图的偏移位置，此做法与css sprites技术类似。
-            //imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移
-            imageSize: new BMap.Size(x, y)
         });
-        // 创建标注对象并添加到地图
-        var point = new BMap.Point(arrNem[i].site_lng, arrNem[i].site_lat);
-        var marker = new BMap.Marker(point, {icon: myIcon});
-        var label = new BMap.Label(arrNem[i].site_name, {
-            offset: new BMap.Size(15, -25)
-        });
-        var backgroundColor;
-        if (arrNem[i].status == 1) {
-            backgroundColor = "#bfbfbf";
-        } else if (arrNem[i].status == 2) {
-            backgroundColor = "#EEAD0E";
-        } else if (arrNem[i].status == 0) {
-            backgroundColor = "green";
-        }
-        label.setStyle({
-            width: "auto",
-            color: '#fff',
-            background: backgroundColor,
-            border: '1px solid "#00CD66"',
-            borderRadius: "5px",
-            textAlign: "center",
-            height: "24px",
-            lineHeight: "24px",
-            fontSize: "15px",
-            fontWeight: "bold"
-        });
-        marker.setLabel(label); //为标注添加一个标签
-        createInfoWindow(marker,arrNem[i].site_id);
-        map.addOverlay(marker);
-        var json = {};
-        json[arrNem[i].site_id] = marker;
-        markers.push(json);
     }
     console.log("offArr:");
     console.log(offArr);
@@ -941,11 +957,11 @@ function initChart() {
             var e = 0;
             var f = 0;
             for(var i=0;i<arr.length;i++){
-                if(arr[i].status == 1){
+                if(arr[i].rtuOffNum > 0 || arr[i].rtuNum == 0 || arr[i].rtuStatusList == 0){
                     f++;
-                }else if(arr[i].status == 2){
+                }else if(arr[i].rtuWarningNum > 0){
                     e++;
-                }else if(arr[i].status == 0){
+                }else{
                     d++;
                 }
             }

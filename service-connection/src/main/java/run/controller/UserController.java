@@ -11,12 +11,15 @@ import run.util.EncryptUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private StructureController structureController;
 
     @RequestMapping(value = "/selectUserList",method = RequestMethod.GET)
     public Map<String,Object> selectUserList(HttpServletRequest req) {
@@ -29,6 +32,12 @@ public class UserController {
         params.put("param",param);
         params.put("start",start);
         params.put("limit",limit);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        params.put("strList",strList);
+
         result.put("items",userService.selectUserList(params));
         result.put("totals",userService.selectUserListCount(params));
         return result;

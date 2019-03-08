@@ -18,6 +18,11 @@ public interface TotalMapper {
     List<Map<String,Object>> selectRTUOff(Map<String, Object> param);*/
 
     @Select("<script>" +
+            "select * from site_config"+
+            "</script>")
+    List<Map<String,Object>> selectSite();
+
+    @Select("<script>" +
             "select count(*) from site_config where site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
@@ -34,16 +39,24 @@ public interface TotalMapper {
     int selectRTUTotal(Map<String,Object> param);
 
     @Select("<script>" +
-            "select a.*,b.site_id from rtu_now_data a left join rtu_config b on a.rtu_id = b.rtu_id left join site_config c on b.site_id=c.site_id where rtu_state = 1 and c.site_company in "+
+            "select t.* from (select a.*,b.rtu_state from rtu_config a left join rtu_now_data b on a.rtu_id=b.rtu_id where rtu_state=1 or rtu_state is null) t left join site_config s on t.site_id=s.site_id where s.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+
             "<if test=\"site_id != null and site_id != ''\">" +
-            "and b.site_id =#{site_id}"+
+            "and s.site_id =#{site_id}"+
             "</if>"+
-            "group by a.rtu_id"+
             "</script>")
     List<Map<String,Object>> selectRTUOff(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select a.* from rtu_config a left join rtu_now_data b on a.rtu_id=b.rtu_id where rtu_state=1 or rtu_state is null) t where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and t.site_id =#{site_id}"+
+            "</if>"+
+            "</script>")
+    int selectRTUOffCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select a.*,b.site_id from rtu_alarm_data a left join rtu_config b on a.rtu_id = b.rtu_id left join site_config c on b.site_id=c.site_id where type=3 and alarmStatus=1 and c.site_company in "+
@@ -56,6 +69,16 @@ public interface TotalMapper {
             "group by a.rtu_id"+
             "</script>")
     List<Map<String,Object>> selectRTUWarning(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select a.* from rtu_alarm_data a left join rtu_config b on a.rtu_id = b.rtu_id left join site_config c on b.site_id=c.site_id where type=3 and alarmStatus=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "group by a.rtu_id) t"+
+            "</script>")
+    int selectRTUWarningCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select site_name as name,count(site_id) as value from (select b.site_id,c.site_name,a.* from rtu_alarm_data as a left join rtu_config as b on a.rtu_id = b.rtu_id left join site_config as c on b.site_id=c.site_id where type=3 and alarmStatus=1 and c.site_company in " +
@@ -96,6 +119,16 @@ public interface TotalMapper {
             "group by a.rtu_id,rtu_channel,devieceId"+
             "</script>")
     List<Map<String,Object>> selectDeviceWarning(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select a.* from rtu_alarm_data a left join rtu_config b on a.rtu_id=b.rtu_id left join site_config c on b.site_id=c.site_id where type=3 and alarmStatus=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "group by a.rtu_id,rtu_channel,devieceId) t"+
+            "</script>")
+    int selectDeviceWarningCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select a.* from rtu_alarm_data a left join rtu_config b on a.rtu_id=b.rtu_id left join site_config c on b.site_id=c.site_id where type=1 and alarmStatus=1 and c.site_company in "+
@@ -140,6 +173,14 @@ public interface TotalMapper {
     int selectRTUNumBySiteId(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from rtu_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "</script>")
+    int selectRTUNumBySiteIdCountSchedule(Map<String, Object> param);
+
+    @Select("<script>" +
             "select * from spd_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
@@ -152,6 +193,14 @@ public interface TotalMapper {
             "</if>"+
             "</script>")
     List<Map<String,Object>> selectSPDCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from spd_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "</script>")
+    int selectSPDCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from spd_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -189,6 +238,16 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,rst_id"+
             "</script>")
     List<Map<String,Object>> selectETCRCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select * from resistance_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,rst_id) t"+
+            "</script>")
+    int selectETCRCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from (select a.* from resistance_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -230,6 +289,16 @@ public interface TotalMapper {
     List<Map<String,Object>> selectLightningCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from "+
+            "(select * from lightning_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,ltn_id) t"+
+            "</script>")
+    int selectLightningCountSchedule(Map<String, Object> param);
+
+    @Select("<script>" +
             "select count(*) from (select a.* from lightning_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
@@ -267,6 +336,16 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,staet_id"+
             "</script>")
     List<Map<String,Object>> selectStaticCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select * from static_electricity_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,staet_id) t"+
+            "</script>")
+    int selectStaticCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from (select a.* from static_electricity_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -308,6 +387,16 @@ public interface TotalMapper {
     List<Map<String,Object>> selectRswsCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from "+
+            "(select * from humiture_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,hmt_id) t"+
+            "</script>")
+    int selectRswsCountSchedule(Map<String, Object> param);
+
+    @Select("<script>" +
             "select count(*) from (select a.* from humiture_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
@@ -345,6 +434,16 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,tilt_id"+
             "</script>")
     List<Map<String,Object>> selectSvtCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select * from tilt_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,tilt_id) t"+
+            "</script>")
+    int selectSvtCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from (select a.* from tilt_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -386,6 +485,16 @@ public interface TotalMapper {
     List<Map<String,Object>> selectHcCount(Map<String, Object> param);
 
     @Select("<script>" +
+            "select count(*) from "+
+            "(select * from electrical_safety_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,es_id) t"+
+            "</script>")
+    int selectHcCountSchedule(Map<String, Object> param);
+
+    @Select("<script>" +
             "select count(*) from (select a.* from electrical_safety_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
@@ -423,6 +532,16 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,stret_id"+
             "</script>")
     List<Map<String,Object>> selectStrayCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select * from stray_electricity_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,stret_id) t"+
+            "</script>")
+    int selectStrayCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from (select a.* from stray_electricity_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -471,6 +590,16 @@ public interface TotalMapper {
             "group by rtu_id,rtu_port,cathode_id"+
             "</script>")
     List<Map<String,Object>> selectCatCount(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from "+
+            "(select * from cathode_config where 1=1 "+
+            "<if test=\"site_id != null and site_id != ''\">" +
+            "and site_id =#{site_id}"+
+            "</if>"+
+            "group by rtu_id,rtu_port,cathode_id) t"+
+            "</script>")
+    int selectCatCountSchedule(Map<String, Object> param);
 
     @Select("<script>" +
             "select count(*) from (select a.* from cathode_config a left join site_config b on a.site_id=b.site_id where b.site_company in "+
@@ -793,8 +922,16 @@ public interface TotalMapper {
     int selectCatCountByTime(Map<String,Object> param);
 
     @Select("<script>" +
-            "select rtu_state from rtu_now_data where site_id=#{site_id}" +
+            "select rtu_state from rtu_config a left join rtu_now_data b on a.rtu_id=b.rtu_id where a.site_id=#{site_id}" +
             "</script>")
     List<Integer> selectRTUStatusBySiteId(Map<String,Object> param);
+
+    @Update("<script>" +
+            "replace into site_now_data(site_id,status,updateTime,deviceNum,rtuNum) values " +
+            "<foreach collection=\"siteList\" index=\"index\" item=\"item\" open=\"\" separator=\",\" close=\"\">"+
+            "(#{item.site_id},#{item.status},now(),#{item.deviceNum},#{item.rtuNum})"+
+            "</foreach>"+
+            "</script>")
+    int replaceSiteNowData(Map<String,Object> param);
 
 }

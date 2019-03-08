@@ -181,8 +181,8 @@ public class RswsController {
 
         Map<String,Object> tempParams = new HashMap<>();
         tempParams.put("rtu",rtu);
-        tempParams.put("Rsws",Rsws);
-        tempParams.put("op",0);
+        tempParams.put("rsws",Rsws);
+        tempParams.put("op",1);
         String res = feignForMQ.sendRswsConfForRTU(tempParams);
         Map<String,Object> map = new HashMap<>();
         if("配置成功".equals(res)){

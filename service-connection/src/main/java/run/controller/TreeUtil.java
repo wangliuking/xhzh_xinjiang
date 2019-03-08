@@ -9,11 +9,11 @@ import java.util.List;
 public class TreeUtil {
 
     // 入口方法
-    public List<Node> getInfiniteLevelTree(List<Node> nodeList) {
+    public List<Node> getInfiniteLevelTree(List<Node> nodeList,int id) {
         List<Node> list = new ArrayList<>();
         // 遍历节点列表
         for (Node node : nodeList) {
-            if (node.getpId() == -1) {
+            if (node.getId() == id) {
                 // parentID为-1（根节点）作为入口
                 node.setChildren(getChildrenNode(node.getId(), nodeList));
                 list.add(node);

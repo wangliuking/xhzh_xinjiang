@@ -13,8 +13,8 @@ public class StructureService {
     @Autowired
     StructureMapper structureMapper;
 
-    public List<Node> selectAll(){
-        return structureMapper.selectAll();
+    public List<Node> selectAll(Map<String,Object> param){
+        return structureMapper.selectAll(param);
     }
 
     public List<Map<String,Object>> selectStructureList(Map<String,Object> param){

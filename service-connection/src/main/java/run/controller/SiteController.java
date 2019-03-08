@@ -73,6 +73,49 @@ public class SiteController {
         param.put("start",start);
         param.put("limit",limit);
         List<Map<String,Object>> siteList = siteService.selectAllSite(param);
+        int siteListCount = siteService.selectAllSiteCount(param);
+
+        Map<String,Object> siteListMap = new HashMap<>();
+        siteListMap.put("items",siteList);
+        siteListMap.put("totals",siteListCount);
+        return siteListMap;
+    }
+
+    /*@RequestMapping(value = "/selectAllSite",method = RequestMethod.GET)
+    public Map<String,Object> selectAllSite (HttpServletRequest req, HttpServletResponse resp){
+        int start;
+        if(req.getParameter("start") != null && !"".equals(req.getParameter("start"))){
+            start = Integer.parseInt(req.getParameter("start"));
+        }else {
+            start = -1;
+        }
+        int limit;
+        if(req.getParameter("limit") != null && !"".equals(req.getParameter("limit"))){
+            limit = Integer.parseInt(req.getParameter("limit"));
+        }else {
+            limit = -1;
+        }
+        String site_name = req.getParameter("site_name");
+        String site_industry = req.getParameter("site_industry");
+        String site_province = req.getParameter("site_province");
+        String site_city = req.getParameter("site_city");
+        String site_county = req.getParameter("site_county");
+        String site_company = req.getParameter("site_company");
+        String status = req.getParameter("status");
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("site_name",site_name);
+        param.put("site_industry",site_industry);
+        param.put("site_province",site_province);
+        param.put("site_city",site_city);
+        param.put("site_county",site_county);
+        param.put("site_company",site_company);
+        param.put("start",start);
+        param.put("limit",limit);
+        List<Map<String,Object>> siteList = siteService.selectAllSite(param);
         Map<String,Object> siteListMap = new HashMap<>();
         if(start == -1 || limit == -1){
             siteListMap.put("items",siteList);
@@ -155,7 +198,7 @@ public class SiteController {
                 return siteListMap;
             }
         }
-    }
+    }*/
 
     @RequestMapping(value = "/selectSiteById", method = RequestMethod.GET)
     public String selectSiteById (@RequestParam int id){

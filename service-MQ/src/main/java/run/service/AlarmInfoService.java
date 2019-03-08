@@ -13,6 +13,14 @@ public class AlarmInfoService {
     @Autowired
     AlarmInfoMapper alarmInfoMapper;
 
+    public List<Map<String,Object>> selectAllAlarmInfoNow(Map<String,Object> params){
+        return alarmInfoMapper.selectAllAlarmInfoNow(params);
+    }
+
+    public int selectAllAlarmInfoNowCount(Map<String,Object> params){
+        return alarmInfoMapper.selectAllAlarmInfoNowCount(params);
+    }
+
     public List<Map<String,Object>> selectAllAlarmInfo(Map<String,Object> params){
         return alarmInfoMapper.selectAllAlarmInfo(params);
     }

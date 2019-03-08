@@ -12,10 +12,20 @@
                     <input type="hidden" id="pId" value="" name="pId">
                     <input type="hidden" id="level" value="" name="level">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group col-md-12">
                                 <label>组织结构名称</label>&nbsp;<span class="text-danger">[*]</span>
                                 <input type="text" value="" class="form-control" name="name" placeholder="请输入组织结构的名称" style="border: 1px solid black;">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group col-md-12">
+                                <label>所属行业</label>&nbsp;<span class="text-danger">[*]</span> <!--<input
+									type="text" value="" class="form-control" name="site_industry">-->
+                                <select class="selectForArea" id="testIndustrys" style="width:100%;" name="industry">
+                                    <option ng-repeat="x in industrys" ng-value="x">{{x}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>

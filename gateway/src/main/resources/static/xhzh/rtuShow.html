@@ -117,7 +117,7 @@
                     </select>
                     <select class="selectForArea" id="testCompanyName" ng-model="y" ng-change="changeCompany(y)" style="width:12%;">
                         <option value="">请选择组织结构</option>
-                        <option ng-repeat="y in companys" ng-value="y">{{y}}</option>
+                        <option ng-repeat="y in companys" ng-value="y.id">{{y.name}}</option>
                     </select>
                     <select class="selectForArea" id="testSiteName" ng-model="z" ng-change="changeSite(z)" style="width:12%;">
                         <option value="">请选择站点</option>
@@ -125,7 +125,7 @@
                     </select>
                     <select class="selectForArea" id="testRTU" style="width:12%;">
                         <option value="">请选择RTU</option>
-                        <option ng-repeat="a in rtuNames" ng-value="a.rtu_id">{{a.rtu_id}}</option>
+                        <option ng-repeat="a in rtuNames" ng-value="a.rtu_id" ng-selected="a.rtu_id == rtuChooseId">{{a.rtu_id}}</option>
                     </select>
                     <button type="button" class="btn btn-success btn-rounded" ng-click="searchDevicesByRTU()">查询
                     </button>

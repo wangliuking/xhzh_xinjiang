@@ -17,7 +17,10 @@ public interface RoleMapper {
     Role selectRoleById(int id);
 
     @Select("<script>" +
-            "select a.*,b.name as structureName from xhzh.role as a left join structure as b on a.structure=b.id where 1=1 " +
+            "select a.*,b.name as structureName from xhzh.role as a left join structure as b on a.structure=b.id where a.structure in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"param != null and param != ''\">" +
             "and name like concat('%',#{param},'%')" +
             "</if>" +
@@ -26,7 +29,10 @@ public interface RoleMapper {
     List<Map<String,Object>> selectRoleList(Map<String, Object> param);
 
     @Select("<script>" +
-            "select count(*) from xhzh.role where 1=1 " +
+            "select count(*) from xhzh.role a where a.structure in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"param != null and param != ''\">" +
             "and name like concat('%',#{param},'%')" +
             "</if>" +

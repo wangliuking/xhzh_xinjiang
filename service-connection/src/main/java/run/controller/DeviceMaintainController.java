@@ -14,6 +14,8 @@ import java.util.Map;
 public class DeviceMaintainController {
     @Autowired
     private DeviceMaintainService deviceMaintainService;
+    @Autowired
+    private StructureController structureController;
 
     @RequestMapping(value = "/selectAllDeviceMaintain",method = RequestMethod.GET)
     public Map<String,Object> selectAllDeviceMaintain (HttpServletRequest req, HttpServletResponse resp) {
@@ -64,6 +66,12 @@ public class DeviceMaintainController {
         param.put("content", content);
         param.put("startTime", startTime);
         param.put("endTime", endTime);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = structureController.foreachIdAndPIdForConnection(Integer.parseInt(structure));
+        System.out.println("strList : ++++++++++++"+strList);
+        param.put("strList", strList);
+
         List<Map<String, Object>> deviceMaintainList = deviceMaintainService.selectAllDeviceMaintain(param);
         int count = deviceMaintainService.selectAllDeviceMaintainCount(param);
 

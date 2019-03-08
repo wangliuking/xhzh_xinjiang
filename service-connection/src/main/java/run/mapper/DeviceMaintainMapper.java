@@ -11,7 +11,10 @@ import java.util.Map;
 public interface DeviceMaintainMapper {
 
     @Select("<script>" +
-            "select a.*,b.site_name from deviceMaintain as a left join site_config as b on a.site_id=b.site_id where 1=1 " +
+            "select a.*,b.site_name from deviceMaintain as a left join site_config as b on a.site_id=b.site_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+
@@ -32,7 +35,10 @@ public interface DeviceMaintainMapper {
     List<Map<String,Object>> selectAllDeviceMaintain(Map<String, Object> param);
 
     @Select("<script>" +
-            "select count(*) from deviceMaintain as a left join site_config as b on a.site_id=b.site_id where 1=1 " +
+            "select count(*) from deviceMaintain as a left join site_config as b on a.site_id=b.site_id where b.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"site_id != null and site_id != -1\">" +
             "and a.site_id =#{site_id}"+
             "</if>"+

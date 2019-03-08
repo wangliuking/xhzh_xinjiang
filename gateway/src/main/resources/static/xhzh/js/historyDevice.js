@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -65,11 +66,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -87,7 +88,7 @@ xh.load = function() {
         var startTime = getNowFormatDate(b)+" 00:00:00";
         console.log("startTime:"+startTime);
 
-        $http.get("../../connect/selectAllSite").
+        $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;
             var siteNames = [];
@@ -103,7 +104,7 @@ xh.load = function() {
             $scope.siteNamesEdit = siteNames;
         });
 
-        $http.get("../../connect/selectAllRTU").
+        $http.get("../../connect/selectAllRTU?structure="+structure).
         success(function(response){
             var data = response.items;
             var rtuNames = [];
@@ -130,7 +131,7 @@ xh.load = function() {
         //多级联动start
         $scope.changeSiteName = function(x){
             console.log(x);
-            $http.get("../../connect/selectAllRTU?site_id="+x).
+            $http.get("../../connect/selectAllRTU?site_id="+x+"&structure="+structure).
             success(function(response){
                 var data = response.items;
                 var rtuNames = [];
@@ -145,7 +146,7 @@ xh.load = function() {
             var deviceName = $("#deviceName").val();
             var rtu_id = $("#rtuName").val();
             if(deviceName == 1){
-                $http.get("../../spd/selectAllSPD?rtu_id="+rtu_id).
+                $http.get("../../spd/selectAllSPD?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -156,7 +157,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 2){
-                $http.get("../../etcr/selectAllETCR?rtu_id="+rtu_id).
+                $http.get("../../etcr/selectAllETCR?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -167,7 +168,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 3){
-                $http.get("../../lightning/selectAllLightning?rtu_id="+rtu_id).
+                $http.get("../../lightning/selectAllLightning?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -178,7 +179,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 4){
-                $http.get("../../static/selectAllStatic?rtu_id="+rtu_id).
+                $http.get("../../static/selectAllStatic?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -189,7 +190,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 5){
-                $http.get("../../rsws/selectAllRsws?rtu_id="+rtu_id).
+                $http.get("../../rsws/selectAllRsws?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -200,7 +201,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 6){
-                $http.get("../../svt/selectAllSvt?rtu_id="+rtu_id).
+                $http.get("../../svt/selectAllSvt?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -211,7 +212,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 7){
-                $http.get("../../hc/selectAllHc?rtu_id="+rtu_id).
+                $http.get("../../hc/selectAllHc?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -222,7 +223,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 8){
-                $http.get("../../stray/selectAllStray?rtu_id="+rtu_id).
+                $http.get("../../stray/selectAllStray?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -233,7 +234,7 @@ xh.load = function() {
                     $scope.deviceIds = deviceIdArr;
                 });
             }else if(deviceName == 9){
-                $http.get("../../cat/selectAllCat?rtu_id="+rtu_id).
+                $http.get("../../cat/selectAllCat?rtu_id="+rtu_id+"&structure="+structure).
                 success(function(response){
                     console.log(response);
                     var tempArr = response.items;
@@ -280,7 +281,7 @@ xh.load = function() {
             $http.get("../../total/selectHistoryValue?site_id="+site_id+"&rtu_id="+rtu_id+"&deviceId="+deviceId+"&deviceType="+deviceName+"&startTime="+startTime+"&endTime="+endTime).
             success(function(response){
                 var data = response.items;
-                //console.log(data);
+                console.log(data);
                 deviceHistory(data);
             });
 			

@@ -22,6 +22,7 @@ toastr.options = {
 
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
+var structure;
 xh.load = function() {
 	var app = angular.module("app", []);
     var pageSize = $("#page-limit").val();
@@ -38,11 +39,11 @@ xh.load = function() {
         //判断是否登录start
         $.ajax({
             type: 'GET',
-            url: "../../connect/ensure",
+            url: "../../getLoginUser",
             async: false,
             dataType: 'json',
             success: function(response){
-
+                structure = response.structure;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -52,14 +53,14 @@ xh.load = function() {
         });
         //判断是否登录end
 
-        $http.get("../../connect/selectRoleList?start=0&limit="+pageSize).
+        $http.get("../../connect/selectRoleList?start=0&limit="+pageSize+"&structure="+structure).
         success(function(response){
             $scope.data = response.items;
             $scope.totals = response.totals;
             xh.pagging(1, parseInt($scope.totals), $scope);
         });
 
-        $http.get("../../connect/selectStructureList").
+        $http.get("../../connect/selectStructureList?structure="+structure).
         success(function(response){
             //console.log(response);
             $scope.structureList = response.nodeList;
@@ -136,7 +137,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectRoleList?start=0&limit=" + limit+"&param="+searchUser).
+			$http.get("../../connect/selectRoleList?start=0&limit=" + limit+"&param="+searchUser+"&structure="+structure).
 			success(function(response){
 				console.log(response);
 				$scope.data = response.items;
@@ -157,7 +158,7 @@ xh.load = function() {
 				start = (page - 1) * pageSize;
 			}
 			
-			$http.get("../../connect/selectRoleList?start="+start+"&limit=" + limit+"&param="+searchUser).
+			$http.get("../../connect/selectRoleList?start="+start+"&limit=" + limit+"&param="+searchUser+"&structure="+structure).
 			success(function(response){
 				/*xh.maskHide();*/
 				$scope.start = (page - 1) * pageSize + 1;

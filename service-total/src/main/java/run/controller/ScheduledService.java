@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 import run.service.TotalService;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ScheduledService {
+    @Autowired
+    private TotalController totalController;
     @Autowired
     private TotalService totalService;
 
@@ -29,37 +28,91 @@ public class ScheduledService {
 
     public static void main(String[] args) {
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH");
-        String nowTime = sdf.format(d);
+        String nowTime = sdf.format(d.getTime() - 3600 * 1000);
         String hour = sdf1.format(d);
         System.out.println("当前时间：" + nowTime);
-        System.out.println("hour：" + ((Integer.parseInt(hour)+1)+""));
+        System.out.println("hour：" + hour);
+        System.out.println("startTime：" + nowTime+":00:00");
+        System.out.println("endTime：" + nowTime+":59:59");
+    }
+
+    @Scheduled(cron = "0/30 * * * * ?")
+    @Async
+    public void scheduledForSite(){
+        List<Map<String,Object>> siteList = totalService.selectSite();
+        System.out.println("siteList 为 ："+siteList);
+        //遍历siteList集合
+        if(siteList.size()>0){
+            for(int i=0;i<siteList.size();i++){
+                Map<String,Object> map = siteList.get(i);
+                Map<String,Object> param = new HashMap<>();
+                param.put("site_id",map.get("site_id")+"");
+
+                int deviceWarningCount = totalService.selectDeviceWarningCountSchedule(param);
+                int rtuNum = totalService.selectRTUNumBySiteIdCountSchedule(param);
+                int rtuOffNum = totalService.selectRTUOffCountSchedule(param);
+                int rtuWarningNum = totalService.selectRTUWarningCountSchedule(param);
+                int spdNum = totalService.selectSPDCountSchedule(param);
+                int etcrNum = totalService.selectETCRCountSchedule(param);
+                int lightningNum = totalService.selectLightningCountSchedule(param);
+                int staticNum = totalService.selectStaticCountSchedule(param);
+                int rswsNum = totalService.selectRswsCountSchedule(param);
+                int svtNum = totalService.selectSvtCountSchedule(param);
+                int hcNum = totalService.selectHcCountSchedule(param);
+                int strayNum = totalService.selectStrayCountSchedule(param);
+                int catNum = totalService.selectCatCountSchedule(param);
+                List<Integer> rtuStatusList = totalService.selectRTUStatusBySiteId(param);
+                Map<String,Object> resultMap = new HashMap<>();
+                resultMap.put("rtuStatusList",rtuStatusList);
+                resultMap.put("deviceWarningCount",deviceWarningCount);
+                resultMap.put("rtuNum",rtuNum);
+                resultMap.put("rtuOffNum",rtuOffNum);
+                resultMap.put("rtuWarningNum",rtuWarningNum);
+                resultMap.put("deviceNum",spdNum+etcrNum+lightningNum+staticNum+rswsNum+svtNum+hcNum+strayNum+catNum);
+
+                System.out.println("resultMap : "+resultMap);
+
+                if(rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == null || rtuStatusList.size() == 0){
+                    //离线
+                    map.put("status",1);
+                }else if(deviceWarningCount > 0){
+                    //异常
+                    map.put("status",2);
+                }else{
+                    //正常
+                    map.put("status",0);
+                }
+                map.put("deviceNum",resultMap.get("deviceNum"));
+                map.put("rtuNum",rtuNum);
+
+            }
+
+            System.out.println("遍历后的siteList 为 ："+siteList);
+
+            Map<String,Object> updateMap = new HashMap<>();
+            updateMap.put("siteList",siteList);
+            totalService.replaceSiteNowData(updateMap);
+        }
+
     }
 
     @Scheduled(cron = "0 0/30 * * * ?")
     @Async
     public void scheduled() {
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH");
-        String nowTime = sdf.format(d);
+        String nowTime = sdf.format(d.getTime() - 3600 * 1000);
         String hour = sdf1.format(d);
-        String str;
-        if(Integer.parseInt(hour)<10 && Integer.parseInt(hour)>0){
-            str = "0"+(Integer.parseInt(hour)-1);
-        }else if(Integer.parseInt(hour) == 0){
-            str = "23";
-        }else{
-            str = (Integer.parseInt(hour)-1)+"";
-        }
         System.out.println("当前时间：" + nowTime);
-        System.out.println("hour：" + hour);
-        System.out.println("startTime：" + nowTime+" "+str+":00:00");
-        System.out.println("endTime：" + nowTime+" "+str+":59:59");
+        System.out.println("startTime：" + nowTime+":00:00");
+        System.out.println("endTime：" + nowTime+":59:59");
+
         Map<String,Object> param = new HashMap<>();
-        param.put("startTime",nowTime+" "+str+":00:00");
-        param.put("endTime",nowTime+" "+str+":59:59");
+        param.put("startTime",nowTime+":00:00");
+        param.put("endTime",nowTime+":59:59");
         int spdNum = totalService.selectSPDCountByTime(param);
         int etcrNum = totalService.selectETCRCountByTime(param);
         int lightningNum = totalService.selectLightningCountByTime(param);

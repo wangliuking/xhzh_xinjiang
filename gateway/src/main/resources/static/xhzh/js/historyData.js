@@ -147,7 +147,7 @@ xh.load = function() {
 
             $.ajax({
                 type: 'GET',
-                url: "../../etcr/selectAllETCRHistory?start=0&limit="+limit+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                url: "../../etcr/selectAllETCRHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
                 async: false,
                 dataType: 'json',
                 success: function(response){

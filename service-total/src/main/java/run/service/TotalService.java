@@ -15,12 +15,25 @@ public class TotalService {
     public List<Map<String,Object>> selectRTUOff(Map<String,Object> param){
         return totalMapper.selectRTUOff(param);
     }
+
+    public int selectRTUOffCountSchedule(Map<String,Object> param){
+        return totalMapper.selectRTUOffCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectRTUWarning(Map<String,Object> param){
         return totalMapper.selectRTUWarning(param);
     }
 
+    public int selectRTUWarningCountSchedule(Map<String,Object> param){
+        return totalMapper.selectRTUWarningCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectDeviceWarning(Map<String,Object> param){
         return totalMapper.selectDeviceWarning(param);
+    }
+
+    public int selectDeviceWarningCountSchedule(Map<String,Object> param){
+        return totalMapper.selectDeviceWarningCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectDeviceOff(Map<String,Object> param){
@@ -39,8 +52,16 @@ public class TotalService {
         return totalMapper.selectRTUNumBySiteId(param);
     }
 
+    public int selectRTUNumBySiteIdCountSchedule(Map<String,Object> param){
+        return totalMapper.selectRTUNumBySiteIdCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectSPDCount(Map<String,Object> param){
         return totalMapper.selectSPDCount(param);
+    }
+
+    public int selectSPDCountSchedule(Map<String,Object> param){
+        return totalMapper.selectSPDCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectSPDPort(Map<String,Object> param){
@@ -51,12 +72,20 @@ public class TotalService {
         return totalMapper.selectETCRCount(param);
     }
 
+    public int selectETCRCountSchedule(Map<String,Object> param){
+        return totalMapper.selectETCRCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectETCRPort(Map<String,Object> param){
         return totalMapper.selectETCRPort(param);
     }
 
     public List<Map<String,Object>> selectLightningCount(Map<String,Object> param){
         return totalMapper.selectLightningCount(param);
+    }
+
+    public int selectLightningCountSchedule(Map<String,Object> param){
+        return totalMapper.selectLightningCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectLightningPort(Map<String,Object> param){
@@ -67,12 +96,20 @@ public class TotalService {
         return totalMapper.selectStaticCount(param);
     }
 
+    public int selectStaticCountSchedule(Map<String,Object> param){
+        return totalMapper.selectStaticCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectStaticPort(Map<String,Object> param){
         return totalMapper.selectStaticPort(param);
     }
 
     public List<Map<String,Object>> selectRswsCount(Map<String,Object> param){
         return totalMapper.selectRswsCount(param);
+    }
+
+    public int selectRswsCountSchedule(Map<String,Object> param){
+        return totalMapper.selectRswsCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectRswsPort(Map<String,Object> param){
@@ -83,6 +120,10 @@ public class TotalService {
         return totalMapper.selectSvtCount(param);
     }
 
+    public int selectSvtCountSchedule(Map<String,Object> param){
+        return totalMapper.selectSvtCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectSvtPort(Map<String,Object> param){
         return totalMapper.selectSvtPort(param);
     }
@@ -91,12 +132,20 @@ public class TotalService {
         return totalMapper.selectHcCount(param);
     }
 
+    public int selectHcCountSchedule(Map<String,Object> param){
+        return totalMapper.selectHcCountSchedule(param);
+    }
+
     public List<Map<String,Object>> selectHcPort(Map<String,Object> param){
         return totalMapper.selectHcPort(param);
     }
 
     public List<Map<String,Object>> selectStrayCount(Map<String,Object> param){
         return totalMapper.selectStrayCount(param);
+    }
+
+    public int selectStrayCountSchedule(Map<String,Object> param){
+        return totalMapper.selectStrayCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectStray485Port(Map<String,Object> param){
@@ -109,6 +158,10 @@ public class TotalService {
 
     public List<Map<String,Object>> selectCatCount(Map<String,Object> param){
         return totalMapper.selectCatCount(param);
+    }
+
+    public int selectCatCountSchedule(Map<String,Object> param){
+        return totalMapper.selectCatCountSchedule(param);
     }
 
     public List<Map<String,Object>> selectCat485Port(Map<String,Object> param){
@@ -239,6 +292,10 @@ public class TotalService {
         return totalMapper.selectCatTotal(param);
     }
 
+    public List<Map<String,Object>> selectSite(){
+        return totalMapper.selectSite();
+    }
+
     public int selectSiteTotal(Map<String,Object> param){
         return totalMapper.selectSiteTotal(param);
     }
@@ -261,5 +318,9 @@ public class TotalService {
 
     public List<Integer> selectRTUStatusBySiteId(Map<String,Object> param){
         return totalMapper.selectRTUStatusBySiteId(param);
+    }
+
+    public int replaceSiteNowData(Map<String,Object> param){
+        return totalMapper.replaceSiteNowData(param);
     }
 }

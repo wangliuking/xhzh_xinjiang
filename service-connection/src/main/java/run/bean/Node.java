@@ -8,6 +8,7 @@ public class Node {
     private int pId;
     private String name;
     private int level;
+    private String industry;
     private List<Node> children = new ArrayList<>();
 
     public int getId() {
@@ -50,6 +51,14 @@ public class Node {
         this.children = children;
     }
 
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
     @Override
     public String toString() {
         return "Node{" +
@@ -57,6 +66,7 @@ public class Node {
                 ", pId=" + pId +
                 ", name='" + name + '\'' +
                 ", level=" + level +
+                ", industry='" + industry + '\'' +
                 ", children=" + children +
                 '}';
     }

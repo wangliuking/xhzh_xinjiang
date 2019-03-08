@@ -1006,7 +1006,10 @@
                                 <div class="tab-content">
                                     <div ng-if="$index == 0" ng-repeat="x in deviceData" class="tab-pane show active" id="tagIndexes{{$index}}" style="text-align: center;">
                                         <span style="color: black;font-size: 16px;">RTU-ID：</span>
-                                        <span style="margin-right: 30px;color: blue;font-size: 16px;">{{x.rtu_id}}</span>
+                                        <span style="margin-right: 30px;color: blue;font-size: 16px;"><a href="javascript:void(0);" ng-click="goRTU(x.rtu_id)">{{x.rtu_id}}</a></span>
+                                        <span style="color: black;font-size: 16px;">当前状态：</span>
+                                        <span ng-if="x.rtu_state == 0" style="color: green;font-size: 16px;">在线</span>
+                                        <span ng-if="x.rtu_state != 0" style="color: red;font-size: 16px;">离线</span>
                                         <table style="height:320px;width: 100%;">
                                             <tbody>
                                             <tr>
@@ -1036,7 +1039,10 @@
 
                                     <div ng-if="$index != 0" ng-repeat="x in deviceData" class="tab-pane" id="tagIndexes{{$index}}" style="text-align: center;">
                                         <span style="color: black;font-size: 16px;">RTU-ID：</span>
-                                        <span style="margin-right: 30px;color: blue;font-size: 16px;">{{x.rtu_id}}</span>
+                                        <span style="margin-right: 30px;color: blue;font-size: 16px;"><a href="javascript:void(0);" ng-click="goRTU(x.rtu_id)">{{x.rtu_id}}</a></span>
+                                        <span style="color: black;font-size: 16px;">当前状态：</span>
+                                        <span ng-if="x.rtu_state == 0" style="color: green;font-size: 16px;">在线</span>
+                                        <span ng-if="x.rtu_state != 0" style="color: red;font-size: 16px;">离线</span>
                                         <table style="height:320px;width: 100%;">
                                             <tbody>
                                             <tr>

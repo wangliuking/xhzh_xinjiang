@@ -76,6 +76,54 @@ public class Z4WAlarmController {
 
     }
 
+    @RequestMapping(value = "/selectAllAlarmInfoNow",method = RequestMethod.GET)
+    public Map<String,Object> selectAllAlarmInfoNow (HttpServletRequest req, HttpServletResponse resp){
+        int start = -1;
+        if(req.getParameter("start") != null && !"".equals(req.getParameter("start"))){
+            start = Integer.parseInt(req.getParameter("start"));
+        }
+        int limit = -1;
+        if(req.getParameter("limit") != null && !"".equals(req.getParameter("limit"))){
+            limit = Integer.parseInt(req.getParameter("limit"));
+        }
+        int site_id = -1;
+        if(req.getParameter("site_id") != null && !"".equals(req.getParameter("site_id"))){
+            site_id = Integer.parseInt(req.getParameter("site_id"));
+        }
+        int rtuId = -1;
+        if(req.getParameter("rtuId") != null && !"".equals(req.getParameter("rtuId"))){
+            rtuId = Integer.parseInt(req.getParameter("rtuId"));
+        }
+        int type = -1;
+        if(req.getParameter("type") != null && !"".equals(req.getParameter("type"))){
+            type = Integer.parseInt(req.getParameter("type"));
+        }
+        String startTime = req.getParameter("startTime");
+        String endTime = req.getParameter("endTime");
+        Map<String,Object> params = new HashMap<>();
+        params.put("start",start);
+        params.put("limit",limit);
+        params.put("site_id",site_id);
+        params.put("rtuId",rtuId);
+        params.put("type",type);
+        params.put("startTime",startTime);
+        params.put("endTime",endTime);
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        params.put("strList",strList);
+
+        List<Map<String,Object>> list = alarmInfoService.selectAllAlarmInfoNow(params);
+        int count = alarmInfoService.selectAllAlarmInfoNowCount(params);
+
+        Map<String,Object> listMap = new HashMap<>();
+        listMap.put("items",list);
+        listMap.put("totals",count);
+        return listMap;
+
+    }
+
     void openTest(){
         //spd
         Thread threadSpd = new Thread(()->{

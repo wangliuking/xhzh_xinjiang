@@ -66,7 +66,7 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item">当前位置</li>
                                 <li class="breadcrumb-item"><a href="Views/menu/menu_alarm.html" target="_self">系统报警</a></li>
-                                <li class="breadcrumb-item"><a style="color: #0caff4">历史告警</a></li>
+                                <li class="breadcrumb-item"><a style="color: #0caff4">实时告警</a></li>
                             </ol>
                         </div>
 
@@ -77,38 +77,23 @@
 
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-body" >
-                            <div id="alarmForMonth" style="width: 100%;height: 260px;"></div>
-                        </div> <!-- end card body-->
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
                     <form id="searchForm" class="form-inline">
-                        <select class="selectForArea" id="siteName" ng-model="x" style="width:15%;" ng-change="changeRtuList()" >>
+                        <select class="selectForArea" id="siteName" ng-model="x" style="width:18%;" ng-change="changeRtuList()" >>
                             <option value="">全部名称</option>
                             <option ng-repeat="x in siteNames" ng-value="x.site_id">{{x.site_name}}</option>
                         </select>
-                        <select class="selectForArea" id="rtuName" style="width:15%;">
+                        <select class="selectForArea" id="rtuName" style="width:18%;">
                             <option value="">全部rtu</option>
                             <option ng-repeat="x in rtuNames" ng-value="x.rtu_id">{{x.rtu_name}}</option>
                         </select>
-                        <select class="selectForArea" id="description" style="width:15%;">
+                        <select class="selectForArea" id="description" style="width:18%;">
                             <option value="">全部情况</option>
                             <option ng-repeat="x in description" ng-value="x.id">{{x.name}}</option>
                         </select>
-                        <select class="selectForArea" id="allStatus" style="width:15%;">
-                            <option value="">告警状态</option>
-                            <option ng-repeat="x in allStatus" ng-value="x.id">{{x.name}}</option>
-                        </select>
-                        <input type="text" style="width:15%;" class="form-control" id="startTime" autocomplete="off"
+                        <input type="text" style="width:18%;" class="form-control" id="startTime" autocomplete="off"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                placeholder="起始时间">
-                        <input type="text" style="width:15%;" class="form-control" id="endTime" autocomplete="off"
+                        <input type="text" style="width:18%;" class="form-control" id="endTime" autocomplete="off"
                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'twoer'})"
                                placeholder="结束时间">
                         <button type="button" class="btn btn-success btn-rounded pull-right" ng-click="refresh()">查询
@@ -159,8 +144,7 @@
                                     <td ng-if="x.type == 2">RTU离线</td>
                                     <td ng-if="x.type == 3">设备异常</td>
                                     <td ng-if="x.type > 3">其他</td>
-                                    <td ng-if="x.alarmStatus == 0" style="color: green;">告警恢复</td>
-                                    <td ng-if="x.alarmStatus == 1" style="color: red;">告警中</td>
+                                    <td style="color: red;">告警中</td>
                                     <td>{{x.udpateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-if="x.alarmStr != null">{{x.alarmStr}}</td>
                                     <td ng-if="x.alarmStr == null"></td>
@@ -212,7 +196,7 @@
 <script src="angularjs/metisMenu.min.js"></script>
 <script src="js/sweet-alert.js"></script>
 <script src="js/toastr.min.js"></script>
-<script src="js/systemAlarm.js"></script>
+<script src="js/systemAlarmNow.js"></script>
 <script src="js/paging.js"></script>
 <script src="js/My97DatePicker/WdatePicker.js"></script>
 <!--<script src="./javascript/demo.dashboard.js"></script>-->

@@ -18,7 +18,10 @@ public interface UserMapper {
 
     @Select("<script>" +
             "select a.*,b.name as groupName,c.name as roleName from xhzh.user as a left join xhzh.user_group as b on a.groupId=b.id " +
-            "left join xhzh.role as c on a.roleId=c.id where 1=1 " +
+            "left join xhzh.role as c on a.roleId=c.id where c.structure in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"param != null and param != ''\">" +
             "and a.name like concat('%',#{param},'%') or username like concat('%',#{param},'%')" +
             "</if>" +
@@ -28,7 +31,10 @@ public interface UserMapper {
 
     @Select("<script>" +
             "select count(*) from xhzh.user as a left join xhzh.user_group as b on a.groupId=b.id " +
-            "left join xhzh.role as c on a.roleId=c.id where 1=1 " +
+            "left join xhzh.role as c on a.roleId=c.id where c.structure in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
             "<if test=\"param != null and param != ''\">" +
             "and a.name like concat('%',#{param},'%') or username like concat('%',#{param},'%')" +
             "</if>" +
