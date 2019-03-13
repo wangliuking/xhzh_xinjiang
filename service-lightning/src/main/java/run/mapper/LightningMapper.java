@@ -11,7 +11,7 @@ import java.util.Map;
 public interface LightningMapper {
 
     @Select("<script>" +
-            "select a.*,b.ltn_state,b.alarm,count(b.ltn_state) num from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id where d.site_company in " +
+            "select a.*,b.ltn_state,b.alarm,count(b.ltn_state) num,e.rtu_state from lightning_config as a left join lightning_now_data as b on a.rtu_id=b.rtu_id and a.rtu_port=b.rtu_channel and a.ltn_id=b.ltn_id left join rtu_config c on a.rtu_id=c.rtu_id left join site_config d on c.site_id=d.site_id left join rtu_now_data e on c.rtu_id=e.rtu_id where d.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+

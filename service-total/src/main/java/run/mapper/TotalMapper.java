@@ -101,7 +101,7 @@ public interface TotalMapper {
     List<Map<String,Object>> selectSiteDeviceOffTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select * from (select a.*,b.rtu_id,c.rtu_state from site_config a left join rtu_config b on a.site_id=b.site_id left join rtu_now_data c on b.rtu_id=c.rtu_id where b.rtu_id is null or rtu_state=1 group by a.site_id) t where site_company in "+
+            "select a.* from site_config a left join site_now_data b on a.site_id=b.site_id where b.status=1 and a.site_company in "+
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+

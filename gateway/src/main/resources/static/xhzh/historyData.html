@@ -356,6 +356,8 @@
                                                     <th>型号</th>
                                                     <th>名称</th>
                                                     <th>安装位置</th>
+                                                    <th>零地电压</th>
+                                                    <th>零线电流</th>
                                                     <th>剩余电流</th>
                                                     <th>线缆温度</th>
                                                     <th>记录时间</th>
@@ -372,6 +374,10 @@
                                                     <td>{{x.es_model}}</td>
                                                     <td>{{x.es_name}}</td>
                                                     <td>{{x.es_location}}</td>
+                                                    <td ng-if="x.alarm == 0" style="color: green;">{{x.es_vol_value | changeValueTwo}}V</td>
+                                                    <td ng-if="x.alarm == 1" style="color: red;">{{x.es_vol_value | changeValueTwo}}V</td>
+                                                    <td ng-if="x.alarm == 0" style="color: green;">{{x.es_cur_value | changeValueTwo}}A</td>
+                                                    <td ng-if="x.alarm == 1" style="color: red;">{{x.es_cur_value | changeValueTwo}}A</td>
                                                     <td ng-if="x.alarm == 0" style="color: green;">{{x.es_i_value | changeValueTwo}}mA</td>
                                                     <td ng-if="x.alarm == 1" style="color: red;">{{x.es_i_value | changeValueTwo}}mA</td>
                                                     <td ng-if="x.alarm == 0" style="color: green;">{{x.es_temp_value | changeValueTwo}}℃</td>

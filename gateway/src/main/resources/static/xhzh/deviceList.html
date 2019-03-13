@@ -142,9 +142,9 @@
                                     <td>{{x.spd_model}}</td>
                                     <td>{{x.spd_location}}</td>
                                     <td>{{x.spd_space}}</td>
-                                    <td ng-if="x.spd_state == 0"><span style="color: green;">正常</span></td>
-                                    <td ng-if="x.spd_state == 1"><span style="color: red;">离线</span></td>
-                                    <td ng-if="x.num == 0"></td>
+                                    <td ng-if="x.spd_state == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                    <td ng-if="x.spd_state == 1 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
+                                    <td ng-if="x.num == 0 && x.rtu_state == 0"></td>
                                     <td>
                                         <a href="#" ng-click="showEditSpd($index)">修改</a>
                                         |
@@ -185,9 +185,9 @@
                                         <td>{{x.rst_location}}</td>
                                         <td>{{x.rst_space}}</td>
                                         <td>{{x.rst_ospace}}</td>
-                                        <td ng-if="x.rst_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="(x.rst_state > 0 && x.rst_state < x.num) || (x.alarm > 0 && x.rst_state != x.num)"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.rst_state == x.num || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.rst_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="(x.rst_state > 0 && x.rst_state < x.num && x.rtu_state == 0) || (x.alarm > 0 && x.rst_state != x.num && x.rtu_state == 0)"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.rst_state == x.num || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditEtcr(x.rtu_id,x.rst_id,x.rtu_port)">修改</a>
                                             |
@@ -229,9 +229,9 @@
                                         <td>{{x.ltn_space}}</td>
                                         <td>{{x.ltn_ospace}}</td>
 
-                                        <td ng-if="x.ltn_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.ltn_state == 0 && x.alarm > 0"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.ltn_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.ltn_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.ltn_state == 0 && x.alarm > 0 && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.ltn_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
 
                                         <td>
                                             <a href="#" ng-click="showEditLightning($index)">修改</a>
@@ -273,9 +273,9 @@
                                         <td>{{x.staet_location}}</td>
                                         <td>{{x.staet_space}}</td>
                                         <td>{{x.staet_ospace}}</td>
-                                        <td ng-if="x.staet_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.staet_state == 0 && x.alarm > 0"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.staet_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.staet_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.staet_state == 0 && x.alarm > 0 && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.staet_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditStatic($index)">修改</a>
                                             |
@@ -316,9 +316,9 @@
                                         <td>{{x.hmt_location}}</td>
                                         <td>{{x.hmt_space}}</td>
                                         <td>{{x.hmt_ospace}}</td>
-                                        <td ng-if="x.hmt_state == 0 && x.tempAlarm == 0 && x.humiAlarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.hmt_state == 0 && (x.tempAlarm > 0 || x.humiAlarm > 0)"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.hmt_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.hmt_state == 0 && x.tempAlarm == 0 && x.humiAlarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.hmt_state == 0 && (x.tempAlarm > 0 || x.humiAlarm > 0) && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.hmt_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditRsws($index)">修改</a>
                                             |
@@ -359,9 +359,9 @@
                                         <td>{{x.tilt_location}}</td>
                                         <td>{{x.tilt_space}}</td>
                                         <td>{{x.tilt_ospace}}</td>
-                                        <td ng-if="x.tilt_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.tilt_state == 0 && x.alarm > 0"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.tilt_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.tilt_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.tilt_state == 0 && x.alarm > 0 && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.tilt_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditSvt($index)">修改</a>
                                             |
@@ -402,9 +402,9 @@
                                         <td>{{x.es_location}}</td>
                                         <td>{{x.es_space}}</td>
                                         <td>{{x.es_ospace}}</td>
-                                        <td ng-if="x.es_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.es_state == 0 && x.alarm > 0"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.es_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.es_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.es_state == 0 && x.alarm > 0 && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.es_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditHc($index)">修改</a>
                                             |
@@ -445,9 +445,9 @@
                                         <td>{{x.stret_location}}</td>
                                         <td>{{x.stret_space}}</td>
                                         <td>{{x.stret_ospace}}</td>
-                                        <td ng-if="x.stret_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="(x.stret_state > 0 && x.stret_state < x.num) || (x.alarm > 0 && x.stret_state != x.num)"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.stret_state == x.num || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.stret_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="(x.stret_state > 0 && x.stret_state < x.num && x.rtu_state == 0) || (x.alarm > 0 && x.stret_state != x.num && x.rtu_state == 0)"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.stret_state == x.num || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditStray(x.rtu_id,x.stret_id,x.rtu_port)">修改</a>
                                             |
@@ -488,9 +488,9 @@
                                         <td>{{x.cathode_location}}</td>
                                         <td>{{x.cathode_space}}</td>
                                         <td>{{x.cathode_ospace}}</td>
-                                        <td ng-if="x.cathode_state == 0 && x.alarm == 0"><span style="color: green;">正常</span></td>
-                                        <td ng-if="x.cathode_state == 0 && x.alarm > 0"><span style="color: #EEAD0E;">异常</span></td>
-                                        <td ng-if="x.cathode_state == 1 || x.num == 0"><span style="color: red;">离线</span></td>
+                                        <td ng-if="x.cathode_state == 0 && x.alarm == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
+                                        <td ng-if="x.cathode_state == 0 && x.alarm > 0 && x.rtu_state == 0"><span style="color: #EEAD0E;">异常</span></td>
+                                        <td ng-if="x.cathode_state == 1 || x.num == 0 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
                                         <td>
                                             <a href="#" ng-click="showEditCat($index)">修改</a>
                                             |

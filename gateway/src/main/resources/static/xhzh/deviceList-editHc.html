@@ -110,6 +110,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group col-md-12">
+                                <label>零地电压阈值</label>&nbsp;<span class="text-danger">[*]</span>
+                                <input type="text" ng-value="editData.es_vol_threshold" class="form-control" name="es_vol_threshold"
+                                       placeholder="请输入零线电压阈值">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group col-md-12">
+                                <label>零线电流阈值</label>&nbsp;<span class="text-danger">[*]</span>
+                                <input type="text" ng-value="editData.es_cur_threshold" class="form-control" name="es_cur_threshold"
+                                       placeholder="请输入零线电流阈值">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group col-md-12">
                                 <label>剩余电流预警阈值</label>&nbsp;<span class="text-danger">[*]</span>
                                 <input type="text" ng-value="editData.es_i_threshold" class="form-control" name="es_i_threshold"
                                        placeholder="请输入剩余预警阈值(mA)">
@@ -120,22 +136,6 @@
                                 <label>线缆温度阈值</label>&nbsp;<span class="text-danger">[*]</span>
                                 <input type="text" ng-value="editData.es_temp_threshold" class="form-control" name="es_temp_threshold"
                                        placeholder="请输入线缆温度阈值(℃)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group col-md-12">
-                                <label>零线电流阈值</label>&nbsp;<span class="text-danger">[*]</span>
-                                <input type="text" ng-value="editData.es_cur_threshold" class="form-control" name="es_cur_threshold"
-                                       placeholder="请输入零线电流阈值">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group col-md-12">
-                                <label>零线电压阈值</label>&nbsp;<span class="text-danger">[*]</span>
-                                <input type="text" ng-value="editData.es_vol_threshold" class="form-control" name="es_vol_threshold"
-                                       placeholder="请输入零线电压阈值">
                             </div>
                         </div>
                     </div>

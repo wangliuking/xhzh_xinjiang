@@ -1,5 +1,7 @@
 package run.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +18,8 @@ public class ScheduledService {
     @Autowired
     private TotalService totalService;
 
+    private final Logger log = LoggerFactory.getLogger(ScheduledService.class);
+
     private static LinkedList<Map<String,Object>> nowDataList = new LinkedList<>();
 
     public static LinkedList<Map<String, Object>> getNowDataList() {
@@ -27,22 +31,22 @@ public class ScheduledService {
     }
 
     public static void main(String[] args) {
-        Date d = new Date();
+        /*Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH");
         String nowTime = sdf.format(d.getTime() - 3600 * 1000);
         String hour = sdf1.format(d);
-        System.out.println("当前时间：" + nowTime);
-        System.out.println("hour：" + hour);
-        System.out.println("startTime：" + nowTime+":00:00");
-        System.out.println("endTime：" + nowTime+":59:59");
+        log.info("当前时间：" + nowTime);
+        log.info("hour：" + hour);
+        log.info("startTime：" + nowTime+":00:00");
+        log.info("endTime：" + nowTime+":59:59");*/
     }
 
     @Scheduled(cron = "0/30 * * * * ?")
     @Async
     public void scheduledForSite(){
         List<Map<String,Object>> siteList = totalService.selectSite();
-        System.out.println("siteList 为 ："+siteList);
+        log.info("siteList 为 ："+siteList);
         //遍历siteList集合
         if(siteList.size()>0){
             for(int i=0;i<siteList.size();i++){
@@ -72,7 +76,7 @@ public class ScheduledService {
                 resultMap.put("rtuWarningNum",rtuWarningNum);
                 resultMap.put("deviceNum",spdNum+etcrNum+lightningNum+staticNum+rswsNum+svtNum+hcNum+strayNum+catNum);
 
-                System.out.println("resultMap : "+resultMap);
+                log.info("resultMap : "+resultMap);
 
                 if(rtuNum == 0 || rtuOffNum > 0 || rtuStatusList == null || rtuStatusList.size() == 0){
                     //离线
@@ -89,7 +93,7 @@ public class ScheduledService {
 
             }
 
-            System.out.println("遍历后的siteList 为 ："+siteList);
+            log.info("遍历后的siteList 为 ："+siteList);
 
             Map<String,Object> updateMap = new HashMap<>();
             updateMap.put("siteList",siteList);
@@ -106,9 +110,9 @@ public class ScheduledService {
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH");
         String nowTime = sdf.format(d.getTime() - 3600 * 1000);
         String hour = sdf1.format(d);
-        System.out.println("当前时间：" + nowTime);
-        System.out.println("startTime：" + nowTime+":00:00");
-        System.out.println("endTime：" + nowTime+":59:59");
+        log.info("当前时间：" + nowTime);
+        log.info("startTime：" + nowTime+":00:00");
+        log.info("endTime：" + nowTime+":59:59");
 
         Map<String,Object> param = new HashMap<>();
         param.put("startTime",nowTime+":00:00");
@@ -126,7 +130,14 @@ public class ScheduledService {
         for(int i=0;i<nowDataList.size();i++){
             Map<String,Object> temp = nowDataList.get(i);
             String label = temp.get("label")+"";
-            if((Integer.parseInt(hour)-1+"").equals(label)){
+            String result;
+            int tempHour = Integer.parseInt(hour)-1;
+            if(tempHour < 10){
+                result = "0" + tempHour;
+            }else {
+                result = "" + tempHour;
+            }
+            if(result.equals(label)){
                 Map<String,Object> params = new HashMap<>();
                 params.put("label",label);
                 params.put("num",total);
