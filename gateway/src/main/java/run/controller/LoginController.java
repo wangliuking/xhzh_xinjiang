@@ -1,18 +1,22 @@
 package run.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import run.EncryptUtil;
+import run.exportWord.ZipUtils;
 import run.redis.RedisTest;
 import run.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 @RestController
 public class LoginController {
@@ -137,4 +141,5 @@ public class LoginController {
         }
         return ip;
     }
+
 }
