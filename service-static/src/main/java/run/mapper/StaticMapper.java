@@ -63,7 +63,7 @@ public interface StaticMapper {
     @Select("select * from static_electricity_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and staet_id=#{staet_id}")
     Static selectOneStatic(Map<String, Object> param);
 
-    @Select("select * from static_electricity_now_data where rtu_id=#{rtu_id}")
+    @Select("select a.*,b.staet_location from static_electricity_now_data a left join static_electricity_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.staet_id=b.staet_id where a.rtu_id=#{rtu_id}")
     List<Map<String,Object>> selectStaticByRTU(int rtu_id);
 
     @Select("<script>" +

@@ -63,7 +63,7 @@ public interface HcMapper {
     @Select("select * from electrical_safety_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and es_id=#{es_id}")
     Hc selectOneHc(Map<String, Object> param);
 
-    @Select("select * from electrical_safety_now_data where rtu_id=#{rtu_id}")
+    @Select("select a.*,b.es_location from electrical_safety_now_data a left join electrical_safety_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.es_id=b.es_id where a.rtu_id=#{rtu_id}")
     List<Map<String,Object>> selectHcByRTU(int rtu_id);
 
     @Select("<script>" +

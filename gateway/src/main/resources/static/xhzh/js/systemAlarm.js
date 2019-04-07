@@ -63,6 +63,10 @@ xh.load = function() {
         });
         //判断是否登录end
 
+        $scope.addContent = function(x) {
+            window.location.href = '/xhzh/deviceMaintainList.html?site_id='+x.site_id+"&rtu_id="+x.rtu_id+"&deviceType="+x.deviceType;
+        };
+
         $http.get("../../connect/selectAllSite?structure="+structure).
         success(function(response){
             var data = response.items;

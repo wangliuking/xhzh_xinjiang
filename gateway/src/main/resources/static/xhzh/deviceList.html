@@ -45,6 +45,9 @@
         input{
             border: 1px solid black!important;
         }
+        .form-control{
+            color:black;
+        }
     </style>
 
 </head>
@@ -84,7 +87,7 @@
                                     <option ng-repeat="x in siteNames" ng-value="x.site_id">{{x.site_name}}</option>
                                 </select>
                                 <select class="selectForArea" id="rtuName" style="width:15%;">
-                                    <option value="">全部RTU</option>
+                                    <option value="">RTU-ID</option>
                                     <option ng-repeat="x in rtuNames" ng-value="x.rtu_id" ng-selected="locationRTUID == x.rtu_id">{{x.rtu_name}}</option>
                                 </select>
                                 <select class="selectForArea" id="deviceName" style="width:15%;">

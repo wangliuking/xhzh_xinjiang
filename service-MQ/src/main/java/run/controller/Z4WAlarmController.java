@@ -397,8 +397,8 @@ public class Z4WAlarmController {
                 d.setDevicetype(2);
                 System.out.println(d);
                 //调用入库函数
-                alarmInfoService.insertAlarmInfo(d);
-                alarmInfoService.changeAlarmNow(d);
+                //alarmInfoService.insertAlarmInfo(d);
+                //alarmInfoService.changeAlarmNow(d);
                 System.out.println("==================================");
             } catch (JMSException e) {
                 e.printStackTrace();

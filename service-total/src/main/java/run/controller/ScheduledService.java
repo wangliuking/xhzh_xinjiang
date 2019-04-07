@@ -168,4 +168,11 @@ public class ScheduledService {
             nowDataList.add(params);
         }
     }
+
+    //雷电流告警采集(待定)
+    /*@Scheduled(cron = "0 0/20 * * * ?")
+    @Async
+    public void scheduledForLightningAlarm() {
+
+    }*/
 }

@@ -117,7 +117,7 @@ public interface ETCRMapper {
      * @param
      * @return
      */
-    @Select("select * from resistance_now_data where rtu_id=#{rtu_id} and rst_id=#{rst_id} and rtu_channel=#{rtu_channel} and rst_type is null and relayno!=0")
+    @Select("select a.*,b.rst_location,b.relayno_name from resistance_now_data a left join resistance_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno where a.rtu_id=#{rtu_id} and a.rst_id=#{rst_id} and a.rtu_channel=#{rtu_channel} and a.rst_type is null and a.relayno!=0")
     List<Map<String,Object>> selectETCROneType(Map<String,Object> param);
 
     /**
@@ -125,7 +125,7 @@ public interface ETCRMapper {
      * @param rtu_id
      * @return
      */
-    @Select("select * from resistance_now_data where rtu_id=#{rtu_id} and rst_type is null and relayno=0")
+    @Select("select a.*,b.rst_location,b.relayno_name from resistance_now_data a left join resistance_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno where a.rtu_id=#{rtu_id} and a.rst_type is null and a.relayno=0")
     List<Map<String,Object>> selectETCRTwoType(@Param("rtu_id") int rtu_id);
 
     /**
@@ -133,7 +133,7 @@ public interface ETCRMapper {
      * @param rtu_id
      * @return
      */
-    @Select("select * from resistance_now_data where rtu_id=#{rtu_id} and rst_type=2")
+    @Select("select a.*,b.rst_location from resistance_now_data a left join resistance_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.rst_id=b.rst_id and a.relayno=b.relayno where a.rtu_id=#{rtu_id} and b.rst_type=2")
     List<Map<String,Object>> selectETCRThreeType(@Param("rtu_id") int rtu_id);
 
     @Select("select * from resistance_now_data where relayno = #{relayno} and rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_channel=#{rtu_channel}")

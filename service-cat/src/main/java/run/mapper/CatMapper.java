@@ -63,7 +63,7 @@ public interface CatMapper {
     @Select("select * from cathode_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and cathode_id=#{cathode_id}")
     Cat selectOneCat(Map<String, Object> param);
 
-    @Select("select * from cathode_now_data where rtu_id=#{rtu_id}")
+    @Select("select * from cathode_now_data a left join cathode_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.cathode_id=b.cathode_id where a.rtu_id=#{rtu_id}")
     List<Map<String,Object>> selectCatByRTU(int rtu_id);
 
     @Select("<script>" +

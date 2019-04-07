@@ -66,7 +66,7 @@
                                     <option ng-repeat="x in siteNames" ng-value="x.site_id" ng-selected="goSiteId == x.site_id">{{x.site_name}}</option>
                                 </select>
                                 <select class="selectForArea" id="rtuName" ng-model="y" ng-change="changeRtuName(y)" style="width:18%;">
-                                    <option value="">请选择RTU</option>
+                                    <option value="">请选择RTU-ID</option>
                                     <option ng-repeat="y in rtuNames" ng-value="y.rtu_id" >{{y.rtu_name}}</option>
                                 </select>
                                 <select class="selectForArea" id="deviceName" ng-model="z" ng-change="changeDeviceName(z)" style="width:18%;">
@@ -74,7 +74,7 @@
                                     <option ng-repeat="z in deviceNames" ng-value="z.id">{{z.name}}</option>
                                 </select>
                                 <select class="selectForArea" id="deviceId" style="width:18%;">
-                                    <option value="">请选择id</option>
+                                    <option value="">请选择设备ID</option>
                                     <option ng-repeat="a in deviceIds" ng-value="a.id">{{a.id}}</option>
                                 </select>
                                 <!--<input type="text" class="form-control" id="deviceId" placeholder="请输入设备的ID"

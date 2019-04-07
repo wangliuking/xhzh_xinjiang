@@ -16,17 +16,36 @@
 
         body {
             height: 100%;
-            background: #fff url(images/blueground.jpg) 50% 50% no-repeat;
+            background: #fff url(images/background.jpg) 50% 50% no-repeat;
             background-size: cover;
         }
 
+        .home{
+            position: fixed;
+            width:auto;
+            height:auto;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            top: 6%;
+        }
+
+        .foot{
+            width:100%;
+            /*position: absolute;
+            bottom: 0;*/
+            color:white;
+            margin:auto;
+            text-align: center;
+        }
+
+
+
         .dowebok {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 700px;
-            height: 350px;
-            margin: -220px 0 0 -350px;
+            /*position: fixed;*/
+            width: 730px;
+            height: 380px;
+            margin: auto;
             border: 1px solid #fff;
             border-radius: 20px;
             overflow: hidden;
@@ -201,8 +220,9 @@
     </style>
 </head>
 <body ng-app="login" ng-controller="loginController" class="fixed-iframe">
-<div class="titlefont"><img src="images/防雷防静电智能在线监测与管理服务平台.png" width="62%"></div>
-<div class="dowebok">
+    <div class="home">
+        <div class="titlefont"><img src="images/防雷防静电智能在线监测与管理服务平台.png" width="62%"></div>
+        <div class="dowebok">
     <div class="logo" style="float: right;"><img src="images/盾形防护图标.png" width="240" height="240" /></div>
     <div style="float: left;line-height: 35px;padding: 30px 0 0 30px;">
         <div class="form-item">
@@ -227,7 +247,14 @@
             <a class="forget" href="javascript:">忘记密码</a>
         </div>-->
     </div>
+
 </div>
+        <div class="foot">
+            新疆维吾尔自治区雷电防护技术开发中心监制<br/>
+            版本v2.0 powered by 中航信虹
+        </div>
+    </div>
+
 <script src="images/jquery.min.js"></script>
 <script src="images/angular.min.js"></script>
 <!--<script src="images/jquery.min.js"></script>-->

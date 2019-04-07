@@ -5,7 +5,7 @@ import redis.clients.jedis.Jedis;
 public class RedisTest {
     public static void main(String[] args) {
         //连接本地的 Redis 服务
-        Jedis jedis = new Jedis("192.168.120.161",6379);
+        Jedis jedis = new Jedis("localhost",6379);
         //jedis.auth("XinHong12345");
         jedis.select(2);
         jedis.flushAll();

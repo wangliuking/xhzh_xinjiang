@@ -37,6 +37,10 @@ public class ETCR {
     private String rst_line_radius2;
     private String rst_line_radius3;
     private String rst_line_radius4;
+    private String relayno_location1;
+    private String relayno_location2;
+    private String relayno_location3;
+    private String relayno_location4;
 
     public int getSite_id() {
         return site_id;
@@ -310,6 +314,38 @@ public class ETCR {
         this.relayno_name4 = relayno_name4;
     }
 
+    public String getRelayno_location1() {
+        return relayno_location1;
+    }
+
+    public void setRelayno_location1(String relayno_location1) {
+        this.relayno_location1 = relayno_location1;
+    }
+
+    public String getRelayno_location2() {
+        return relayno_location2;
+    }
+
+    public void setRelayno_location2(String relayno_location2) {
+        this.relayno_location2 = relayno_location2;
+    }
+
+    public String getRelayno_location3() {
+        return relayno_location3;
+    }
+
+    public void setRelayno_location3(String relayno_location3) {
+        this.relayno_location3 = relayno_location3;
+    }
+
+    public String getRelayno_location4() {
+        return relayno_location4;
+    }
+
+    public void setRelayno_location4(String relayno_location4) {
+        this.relayno_location4 = relayno_location4;
+    }
+
     @Override
     public String toString() {
         return "ETCR{" +
@@ -347,6 +383,10 @@ public class ETCR {
                 ", rst_line_radius2='" + rst_line_radius2 + '\'' +
                 ", rst_line_radius3='" + rst_line_radius3 + '\'' +
                 ", rst_line_radius4='" + rst_line_radius4 + '\'' +
+                ", relayno_location1='" + relayno_location1 + '\'' +
+                ", relayno_location2='" + relayno_location2 + '\'' +
+                ", relayno_location3='" + relayno_location3 + '\'' +
+                ", relayno_location4='" + relayno_location4 + '\'' +
                 '}';
     }
 }

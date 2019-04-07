@@ -14,7 +14,7 @@
 							<div class="form-group col-md-12">
 								<label>站点名称</label>&nbsp;<span class="text-danger">[*]</span>
 								<select class="selectForArea" id="siteName" style="width: 100%;" name="site_id">
-									<option ng-repeat="x in siteNames" ng-value="x.site_id" ng-selected="goSiteId == x.site_id">{{x.site_name}}</option>
+									<option ng-repeat="x in siteNames" ng-value="x.site_id" ng-selected="goSiteId == x.site_id || siteIdAdd == x.site_id">{{x.site_name}}</option>
 								</select>
 							</div>
 						</div>
@@ -22,8 +22,8 @@
 							<div class="form-group col-md-12">
 								<label>RTU-ID</label>&nbsp;<span class="text-danger">[*]</span>
 								<select class="selectForArea" id="rtuName" style="width: 100%;" name="rtu_id">
-									<option value="">全部RTU</option>
-									<option ng-repeat="x in rtuNames" ng-value="x.rtu_id">{{x.rtu_name}}</option>
+									<option value="">RTU-ID</option>
+									<option ng-repeat="x in rtuNames" ng-value="x.rtu_id" ng-selected="rtuIdAdd == x.rtu_id">{{x.rtu_name}}</option>
 								</select>
 							</div>
 						</div>
@@ -31,7 +31,7 @@
 							<div class="form-group col-md-12">
 								<label>设备类型</label>&nbsp;<span class="text-danger">[*]</span>
 								<select class="selectForArea" id="deviceName" style="width: 100%;" name="deviceType">
-									<option ng-repeat="x in deviceNames" ng-value="x.id">{{x.name}}</option>
+									<option ng-repeat="x in deviceNames" ng-value="x.id" ng-selected="deviceTypeAdd == x.id">{{x.name}}</option>
 								</select>
 							</div>
 						</div>

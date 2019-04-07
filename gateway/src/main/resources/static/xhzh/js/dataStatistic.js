@@ -127,6 +127,7 @@ function statusForDevice() {
         },
         series : [
             {
+                name: '统计情况',
                 type: 'pie',
                 radius : '65%',
                 center: ['50%', '50%'],
@@ -196,10 +197,10 @@ function deviceForMonth(site_id) {
                     data: data.list
                 },
                 yAxis: {
-                    type: 'value'
-                    /*axisLabel: {
-                        formatter: '{value} °C'
-                    }*/
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 次'
+                    }
                 },
                 series: [
                     {

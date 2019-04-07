@@ -63,7 +63,7 @@ public interface LightningMapper {
     @Select("select * from lightning_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and ltn_id=#{ltn_id}")
     Lightning selectOneLight(Map<String,Object> param);
 
-    @Select("select * from lightning_now_data where rtu_id=#{rtu_id}")
+    @Select("select a.*,b.ltn_location from lightning_now_data a left join lightning_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.ltn_id=b.ltn_id where a.rtu_id=#{rtu_id}")
     List<Map<String,Object>> selectLightningByRTU(int rtu_id);
 
     @Select("<script>" +

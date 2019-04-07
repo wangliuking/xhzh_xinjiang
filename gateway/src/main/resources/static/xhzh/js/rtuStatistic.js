@@ -136,17 +136,11 @@ xh.load = function() {
                 }
             }
             if(count>0){
-                if(status > 0 && alarm == 0){
-                    return {"background-color" : "red"};
-                }else if(status > 0 && alarm > 0){
-                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                }else if(status == 0 && alarm > 0){
-                    return {"background-color" : "#EEAD0E"};
+                if(status == 0 && alarm == 0){
+                    return {"background" : "-webkit-linear-gradient(top, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
                 }else{
-                    return {"background-color" : "green"};
+                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                 }
-            }else{
-                return {"background-color" : "grey"};
             }
         };
 
@@ -182,21 +176,27 @@ xh.load = function() {
                             var state = temp["0"];
                             var alarm = temp["-1"];
                             if(state == 0 && alarm == 0){
-                                return {"background-color" : "green"};
-                            }else if(state > 0 && alarm == 0){
-                                return {"background-color" : "red"};
-                            }else if(state > 0 && alarm > 0){
-                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                            }else if(state == 0 && alarm > 0){
-                                return {"background-color" : "#EEAD0E"};
+                                return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
+                            }else{
+                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                             }
                         }
                     }
                 }
 
             }
-            return {"background-color" : "grey"};
         };
+
+        $scope.nameSPD = function(x){
+            var spdPorts = $scope.spdPort;
+            for(var i=0;i<spdPorts.length;i++){
+                var temp = spdPorts[i].spd_number;
+                if(temp == x){
+                    return "SPD"+x;
+                }
+            }
+            return x;
+        }
 
         $scope.compareSpd = function (x) {
             var spdPorts = $scope.spdPort;
@@ -205,13 +205,12 @@ xh.load = function() {
                 if(temp == x){
                     var state = spdPorts[i].spd_state;
                     if(state == 0){
-                        return {"background-color" : "green"};
+                        return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)"};
                     }else{
-                        return {"background-color" : "#EEAD0E"};
+                        return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)"};
                     }
                 }
             }
-            return {"background-color" : "grey"};
         };
 
 		/* 刷新数据 */
@@ -260,6 +259,7 @@ function statusForDevice() {
         },
         series : [
             {
+                name: '统计情况',
                 type: 'pie',
                 radius : '65%',
                 center: ['50%', '50%'],
@@ -328,10 +328,10 @@ function deviceForMonth(rtu_id) {
                     data: data.list
                 },
                 yAxis: {
-                    type: 'value'
-                    /*axisLabel: {
-                        formatter: '{value} °C'
-                    }*/
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 次'
+                    }
                 },
                 series: [
                     {

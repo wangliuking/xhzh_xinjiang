@@ -18,7 +18,7 @@ import java.util.Map;
 public class RedisTest {
     public static void main(String[] args) {
         //连接本地的 Redis 服务
-        Jedis jedis = new Jedis("39.104.240.180",6379);
+        Jedis jedis = new Jedis("localhost",6379);
         jedis.auth("XinHong12345");
         jedis.select(1);
         //jedis.set("1",strayConfJson.toString());
@@ -69,7 +69,7 @@ public class RedisTest {
         String rtuId = r.getRtuId();
 
         //连接redis,通过rtuId查询是否存在该rtu配置
-        Jedis jedis = new Jedis("39.104.240.180",6379);
+        Jedis jedis = new Jedis("localhost",6379);
         jedis.auth("XinHong12345");
         jedis.select(1);
         String rtuString = jedis.get(rtuId);

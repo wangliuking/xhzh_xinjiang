@@ -791,33 +791,37 @@ public class ETCRController {
                     List<Map<String,Object>> list = ETCRService.selectETCROneType(param);
                     for(int j=0;j<list.size();j++){
                         Map<String,Object> map = list.get(j);
+                        etcr.setRst_location(map.get("rst_location")+"");
                         if(map.get("relayno") != null && Integer.parseInt(map.get("relayno").toString()) == 1){
                             etcr.setRtu_port(Integer.parseInt(map.get("rtu_channel").toString()));
                             etcr.setRelayno1(Integer.parseInt(map.get("relayno").toString()));
                             etcr.setRelayno_name1(map.get("rst_state").toString());
                             etcr.setRst_line_long1(map.get("rst_value").toString());
                             etcr.setRst_line_radius1(map.get("alarm").toString());
+                            etcr.setRelayno_location1(map.get("relayno_name")+"");
                         }
                         if(map.get("relayno") != null && Integer.parseInt(map.get("relayno").toString()) == 2){
                             etcr.setRelayno2(Integer.parseInt(map.get("relayno").toString()));
                             etcr.setRelayno_name2(map.get("rst_state").toString());
                             etcr.setRst_line_long2(map.get("rst_value").toString());
                             etcr.setRst_line_radius2(map.get("alarm").toString());
+                            etcr.setRelayno_location2(map.get("relayno_name")+"");
                         }
                         if(map.get("relayno") != null && Integer.parseInt(map.get("relayno").toString()) == 3){
                             etcr.setRelayno3(Integer.parseInt(map.get("relayno").toString()));
                             etcr.setRelayno_name3(map.get("rst_state").toString());
                             etcr.setRst_line_long3(map.get("rst_value").toString());
                             etcr.setRst_line_radius3(map.get("alarm").toString());
+                            etcr.setRelayno_location3(map.get("relayno_name")+"");
                         }
                         if(map.get("relayno") != null && Integer.parseInt(map.get("relayno").toString()) == 4){
                             etcr.setRelayno4(Integer.parseInt(map.get("relayno").toString()));
                             etcr.setRelayno_name4(map.get("rst_state").toString());
                             etcr.setRst_line_long4(map.get("rst_value").toString());
                             etcr.setRst_line_radius4(map.get("alarm").toString());
+                            etcr.setRelayno_location4(map.get("relayno_name")+"");
                         }
                     }
-
                     finalList.add(etcr);
                 }
             }

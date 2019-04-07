@@ -429,16 +429,23 @@ function deviceHistory(data) {
             dataListFive.push([time,temp5]);
         }
     }else if(deviceName == 7){
+        header.push("零地电压");
+        header.push("零线电流");
         header.push("剩余电流");
-        header.push("");
         header.push("线缆温度");
+        unit.push("V");
+        unit.push("A");
         unit.push("mA");
         unit.push("℃");
         for(var i=0;i<data.length;i++){
-            var temp1 = data[i].es_i_value;
+            var temp1 = data[i].es_cur_value;
             dataListOne.push(temp1);
-            var temp2 = data[i].es_temp_value;
-            dataListThree.push(temp2);
+            var temp2 = data[i].es_vol_value;
+            dataListTwo.push(temp2);
+            var temp3 = data[i].es_i_value;
+            dataListThree.push(temp3);
+            var temp4 = data[i].es_temp_value;
+            dataListFour.push(temp4);
         }
     }else if(deviceName == 8){
         header.push("杂散直流电压");

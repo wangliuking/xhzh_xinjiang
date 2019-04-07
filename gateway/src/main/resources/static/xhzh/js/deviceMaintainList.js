@@ -95,7 +95,7 @@ xh.load = function() {
             //修改页面的rtu-id
             $scope.rtuNamesEdit = rtuNames;
 
-            var deviceNames = [{"id":"0","name":"全部类型"},{"id":"1","name":"SPD在线监测仪"},{"id":"2","name":"接地电阻在线监测仪"},{"id":"3","name":"雷电流在线监测仪"},{"id":"4","name":"静电在线监测仪"},{"id":"5","name":"温湿度在线监测仪"},{"id":"6","name":"倾斜度在线监测仪"},{"id":"7","name":"电气安全在线监测仪"},{"id":"8","name":"杂散电流在线监测仪"},{"id":"9","name":"阴极保护在线监测仪"}]
+            var deviceNames = [{"id":"0","name":"接触式接地电阻"},{"id":"1","name":"非接触式接地电阻"},{"id":"2","name":"雷电流"},{"id":"3","name":"温湿度"},{"id":"4","name":"静电"},{"id":"5","name":"倾斜度"},{"id":"6","name":"电气安全"},{"id":"7","name":"杂散电流"},{"id":"8","name":"阴极保护"}]
             $scope.deviceNames = deviceNames;
         });
 
@@ -106,6 +106,20 @@ xh.load = function() {
             console.log($scope.data);
             xh.pagging(1, parseInt($scope.totals), $scope);
             //xh.maskHide();
+
+            var x = $location.search().site_id;
+            var y = $location.search().rtu_id;
+            var z = $location.search().deviceType;
+            if(!x){
+                console.log("为空");
+            }else{
+                $scope.siteIdAdd = x;
+                $scope.rtuIdAdd = y;
+                $scope.deviceTypeAdd = z;
+                console.log("有值"+x+"---"+y+"---"+z);
+                $('#add').modal('show');
+            }
+
         });
 
         /* 显示添加框 */

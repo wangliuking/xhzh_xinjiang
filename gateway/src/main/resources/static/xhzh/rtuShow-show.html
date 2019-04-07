@@ -40,15 +40,19 @@
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_port" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.rst_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -60,28 +64,28 @@
 
 										<div class="row">
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
+												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" ng-attr-title="{{x.relayno_location1}}" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
 												<button ng-if="x.relayno_name1 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅰ</span> </button>
 												<button ng-if="x.relayno_name1 != 1 && x.relayno_name1 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅰ</span> </button>
-												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
+												<button ng-if="x.relayno_name1 == 0 && x.rst_line_radius1 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" ng-attr-title="{{x.relayno_location1}}" onclick="settime(this)" value="0" name="1">  <span>Ⅰ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="2">  <span>Ⅱ</span> </button>
+												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" ng-attr-title="{{x.relayno_location2}}" onclick="settime(this)" value="0" name="2">  <span>Ⅱ</span> </button>
 												<button ng-if="x.relayno_name2 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅱ</span> </button>
 												<button ng-if="x.relayno_name2 != 1 && x.relayno_name2 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅱ</span> </button>
-												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="2"> <span>Ⅱ</span> </button>
+												<button ng-if="x.relayno_name2 == 0 && x.rst_line_radius2 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" ng-attr-title="{{x.relayno_location2}}" onclick="settime(this)" value="0" name="2"> <span>Ⅱ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="3">  <span>Ⅲ</span> </button>
+												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" ng-attr-title="{{x.relayno_location3}}" onclick="settime(this)" value="0" name="3">  <span>Ⅲ</span> </button>
 												<button ng-if="x.relayno_name3 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅲ</span> </button>
 												<button ng-if="x.relayno_name3 != 1 && x.relayno_name3 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅲ</span> </button>
-												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="3"><span>Ⅲ</span> </button>
+												<button ng-if="x.relayno_name3 == 0 && x.rst_line_radius3 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" ng-attr-title="{{x.relayno_location3}}" onclick="settime(this)" value="0" name="3"><span>Ⅲ</span> </button>
 											</div>
 											<div class="form-group col-md-3">
-												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" title="查询值" onclick="settime(this)" value="0" name="4">  <span>Ⅳ</span> </button>
+												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 != 1" type="button" class="btn-sm btn-info" style="background-color: #0c29ff" ng-attr-title="{{x.relayno_location4}}" onclick="settime(this)" value="0" name="4">  <span>Ⅳ</span> </button>
 												<button ng-if="x.relayno_name4 == 1" type="button" class="btn-sm btn-danger" disabled>  <span>Ⅳ</span> </button>
 												<button ng-if="x.relayno_name4 != 1 && x.relayno_name4 != 0" type="button" class="btn-sm btn-gray" disabled>  <span>Ⅳ</span> </button>
-												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" title="查询值" onclick="settime(this)" value="0" name="4"><span>Ⅳ</span> </button>
+												<button ng-if="x.relayno_name4 == 0 && x.rst_line_radius4 == 1" type="button" class="btn-sm btn-warning" style="background-color: #EEAD0E" ng-attr-title="{{x.relayno_location4}}" onclick="settime(this)" value="0" name="4"><span>Ⅳ</span> </button>
 											</div>
 										</div>
 									</div>
@@ -96,15 +100,19 @@
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_port" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.rst_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -154,15 +162,19 @@
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_channel" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.rst_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.rst_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -207,20 +219,24 @@
 							<div ng-repeat="x in LightningData" ng-class="changeRSContentClass(x)" id="tagIndexes{{$index}}">
 								<div class="row">
 									<div class="col-7" style="text-align: center;">
-										<img src="xhImg/XHLM-Ⅰ雷电流.jpg" width="47%"
+										<img src="xhImg/XHLM-Ⅰ雷电流.png" width="47%"
 											 height="100%">
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_channel" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.ltn_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.ltn_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.ltn_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -270,15 +286,19 @@
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_channel" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.staet_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.staet_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.staet_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -328,15 +348,19 @@
 									</div>
 									<div class="col-5">
 										<div class="row">
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label>接入端口</label>
 												<input class="form-control" ng-value="x.rtu_channel" type="text" readonly/>
+											</div>
+											<div class="form-group col-md-6">
+												<label>设备ID</label>
+												<input class="form-control" ng-value="x.hmt_id" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
 											<div class="form-group col-md-12">
-												<label>设备ID</label>
-												<input class="form-control" ng-value="x.hmt_id" type="text" readonly/>
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.hmt_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -397,6 +421,12 @@
 											<div class="form-group col-md-6">
 												<label>设备ID</label>
 												<input class="form-control" ng-value="x.tilt_id" type="text" readonly/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-12">
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.tilt_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -461,8 +491,8 @@
 							<div ng-repeat="x in HcData" ng-class="changeRSContentClass(x)" id="tagIndexes{{$index}}">
 								<div class="row">
 									<div class="col-7" style="line-height: 300px;">
-										<img src="xhImg/XHESM-Ⅰ电气安全.jpg" width="100%"
-											 height="85%">
+										<img src="xhImg/XHESM-Ⅰ电气安全.png" width="100%"
+											 height="67%">
 									</div>
 									<div class="col-5">
 										<div class="row">
@@ -473,6 +503,12 @@
 											<div class="form-group col-md-6">
 												<label>设备ID</label>
 												<input class="form-control" ng-value="x.es_id" type="text" readonly/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-12">
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.es_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -532,7 +568,7 @@
 								<div class="row">
 									<div class="col-7">
 										<img src="xhImg/XHSM-Ⅰ杂散电流.png" width="100%"
-											 height="100%">
+											 height="83%">
 									</div>
 									<div class="col-5">
 										<div class="row">
@@ -543,6 +579,12 @@
 											<div class="form-group col-md-6">
 												<label>设备ID</label>
 												<input class="form-control" ng-value="x.stret_id" type="text" readonly/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-12">
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.stret_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">
@@ -601,7 +643,7 @@
 								<div class="row">
 									<div class="col-7">
 										<img src="xhImg/XHCVM-1阴极保护.png" width="100%"
-											 height="100%">
+											 height="83%">
 									</div>
 									<div class="col-5">
 										<div class="row">
@@ -614,6 +656,12 @@
 											<div class="form-group col-md-12">
 												<label>设备ID</label>
 												<input class="form-control" ng-value="x.cathode_id" type="text" readonly/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-12">
+												<label>安装位置</label>
+												<input class="form-control" ng-value="x.cathode_location" type="text" readonly/>
 											</div>
 										</div>
 										<div class="row">

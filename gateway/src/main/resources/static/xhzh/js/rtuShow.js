@@ -26,6 +26,7 @@ var deviceTypeForName = {"接地电阻":1,"雷电流":3,"静电":4,"温湿度":5
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
 var structure;
+var tempRTUId;
 xh.load = function() {
 	var app = angular.module("app", []);
 
@@ -77,6 +78,17 @@ xh.load = function() {
             }
             $scope.rtuNames = rtuNames;
             $scope.industrys = ["医疗","气象","新能源","轨道交通","石油化工","国防军工","电力","通讯"]
+
+            //判断是否需要直接显示RTU
+            tempRTUId = $location.search().id;
+            console.log("!!!!!!!!!!!!!");
+            console.log(tempRTUId);
+            console.log("!!!!!!!!!!!!!");
+            $scope.rtuChooseId = tempRTUId;
+            if(!isNaN(tempRTUId)){
+                console.log("为数字，进来了！！！");
+                $scope.searchDevicesByRTU(tempRTUId);
+            }
         });
 
         //多级联动start
@@ -145,12 +157,14 @@ xh.load = function() {
         }
         //多级联动end
 
-        $scope.searchDevicesByRTU = function(){
+        $scope.searchDevicesByRTU = function(rtu_id){
             $(".popover").each(function(){
                 $(this).popover('dispose');
             });
 
-            var rtu_id = $("#testRTU").val();
+            if(rtu_id == -1){
+                rtu_id = $("#testRTU").val();
+            }
             //console.log("===");
             //console.log(rtu_id);
             if(rtu_id == null || rtu_id == ""){
@@ -193,17 +207,6 @@ xh.load = function() {
 
             });
         }
-
-        var tempRTUId = $location.search().id;
-        console.log("!!!!!!!!!!!!!");
-        console.log(tempRTUId);
-        console.log("!!!!!!!!!!!!!");
-        $scope.rtuChooseId = tempRTUId;
-        /*if(!isNaN(tempRTUId)){
-            console.log("为数字，进来了！！！");
-            $("#testRTU").val(tempRTUId);
-            $scope.searchDevicesByRTU();
-        }*/
 
         $scope.changeRSTabClass = function(x){
             var type = $scope.deviceTypeChoosed;
@@ -344,7 +347,7 @@ xh.load = function() {
                 }else{
                     color = redColor;
                 }
-                tempHtml += '<div class="tableStyle" style="float: left;margin:2px;'+color+'"><a href="javascript:void(0);" style="color: white;display : block;" onclick="popToModel('+x+','+showList[i].deviceId+')">'+showList[i].deviceId+'</a></div>';
+                tempHtml += '<div class="tableStyle" style="width:auto;float: left;margin:2px;'+color+'"><a href="javascript:void(0);" style="color: white;display : block;" onclick="popToModel('+x+','+showList[i].deviceId+')">'+"ID:"+showList[i].deviceId+'</a></div>';
             }
             $(event.target).popover({
                 placement:'bottom',
@@ -620,6 +623,42 @@ xh.load = function() {
             }
         };
 
+        var z = 10;
+        var y = 30;
+        var newtitle = '';
+        $scope.mouseoverSPD = function(x,$event){
+            var off = $($event.target).offset();
+            newtitle = '暂无位置信息';
+            var spdPorts = $scope.spdPort;
+            for(var i=0;i<spdPorts.length;i++){
+                var temp = spdPorts[i].spd_number;
+                if(temp == x){
+                    newtitle = "位置："+spdPorts[i].spd_location;
+                }
+            }
+            $('body').append('<div id="mytitle" >' + newtitle + '</div>');
+            $('#mytitle').css({
+                'left': (off.left + 'px'),
+                'top': (off.top + y - 80 + 'px')
+            }).show();
+
+        };
+
+        $scope.mouseoutSPD = function(x){
+            $('#mytitle').remove();
+        };
+
+        $scope.nameSPD = function(x){
+            var spdPorts = $scope.spdPort;
+            for(var i=0;i<spdPorts.length;i++){
+                var temp = spdPorts[i].spd_number;
+                if(temp == x){
+                    return "SPD"+x;
+                }
+            }
+            return x;
+        };
+
         $scope.compareSpd = function (x) {
             var spdPorts = $scope.spdPort;
             for(var i=0;i<spdPorts.length;i++){
@@ -665,12 +704,12 @@ function settime(obj) {
         var deviceType = $(obj).val();
         var channo;
         var deviceId;
-        if(deviceType == 5 || deviceType == 6 || deviceType == 7){
-            channo = $(obj).parent().parent().siblings().eq(0).find("div").eq(0).find("input").val();
-            deviceId = $(obj).parent().parent().siblings().eq(0).find("div").eq(1).find("input").val();
-        }else{
+        if(deviceType == 8){
             channo = $(obj).parent().parent().siblings().eq(0).find("div").find("input").val();
             deviceId = $(obj).parent().parent().siblings().eq(1).find("div").find("input").val();
+        }else {
+            channo = $(obj).parent().parent().siblings().eq(0).find("div").eq(0).find("input").val();
+            deviceId = $(obj).parent().parent().siblings().eq(0).find("div").eq(1).find("input").val();
         }
 
         if($scope.setTimeType == 0){
@@ -697,32 +736,37 @@ function settime(obj) {
                 }else if(deviceType == 5){//倾斜度
                     var x = parseFloat(data.resultValue[0]);
                     var y = parseFloat(data.resultValue[1]);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(x);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(y);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(x);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(y);
                     var tanX = Math.tan(x/180*(Math.PI));
                     var tanY = Math.tan(y/180*(Math.PI));
                     var Z = Math.sqrt((tanX*tanX)+(tanY*tanY));
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(tanX);
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(tanY);
-                    $(obj).parent().parent().siblings().eq(3).find("div").find("input").val(Z);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(0).find("input").val(tanX);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(1).find("input").val(tanY);
+                    $(obj).parent().parent().siblings().eq(4).find("div").find("input").val(Z);
                 }else if(deviceType == 6){//电气安全
                     var a = parseFloat(data.resultValue[0]);
                     var b = parseFloat(data.resultValue[1]);
                     var c = parseFloat(data.resultValue[2]);
                     var d = parseFloat(data.resultValue[3]);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(a);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(b);
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(c);
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(d);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(a);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(b);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(0).find("input").val(c);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(1).find("input").val(d);
                 }else if(deviceType == 7){//杂散电流
                     var a = parseFloat(data.resultValue[0]);
                     var b = parseFloat(data.resultValue[1]);
                     var c = parseFloat(data.resultValue[2]);
                     var d = parseFloat(data.resultValue[3]);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(0).find("input").val(a);
-                    $(obj).parent().parent().siblings().eq(1).find("div").eq(1).find("input").val(b);
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(c);
-                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(d);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(0).find("input").val(a);
+                    $(obj).parent().parent().siblings().eq(2).find("div").eq(1).find("input").val(b);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(0).find("input").val(c);
+                    $(obj).parent().parent().siblings().eq(3).find("div").eq(1).find("input").val(d);
+                }else if(deviceType == 8){
+                    var i = parseFloat(data.resultValue);
+                    var a = Math.round(i*100);
+                    var res = a/100;
+                    $(obj).parent().parent().siblings().eq(3).find("div").find("input").val(res);
                 }else{
                     var i = parseFloat(data.resultValue);
                     var a = Math.round(i*100);

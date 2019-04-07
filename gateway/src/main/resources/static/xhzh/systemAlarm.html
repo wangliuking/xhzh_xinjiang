@@ -94,7 +94,7 @@
                             <option ng-repeat="x in siteNames" ng-value="x.site_id">{{x.site_name}}</option>
                         </select>
                         <select class="selectForArea" id="rtuName" style="width:15%;">
-                            <option value="">全部rtu</option>
+                            <option value="">RTU-ID</option>
                             <option ng-repeat="x in rtuNames" ng-value="x.rtu_id">{{x.rtu_name}}</option>
                         </select>
                         <select class="selectForArea" id="description" style="width:15%;">
@@ -126,8 +126,9 @@
                             <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
                                 <thead>
                                 <tr style="text-align: center;">
-                                    <th>ID</th>
-                                    <th>RTUID</th>
+                                    <th>序号</th>
+                                    <th>站点名称</th>
+                                    <th>RTU-ID</th>
                                     <th>串口号</th>
                                     <th>设备ID</th>
                                     <th>设备类型</th>
@@ -135,12 +136,14 @@
                                     <th>告警状态</th>
                                     <th>时间</th>
                                     <th>描述</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
                                 <tbody style="font-size: 13px;">
                                 <tr style="text-align: center;" ng-repeat="x in data">
                                     <td>{{$index+1}}</td>
+                                    <td>{{x.site_name}}</td>
                                     <td>{{x.rtu_id}}</td>
                                     <td>{{x.rtu_channel}}</td>
                                     <td>{{x.devieceId}}</td>
@@ -164,6 +167,7 @@
                                     <td>{{x.udpateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-if="x.alarmStr != null">{{x.alarmStr}}</td>
                                     <td ng-if="x.alarmStr == null"></td>
+                                    <td><a href="#" ng-click="addContent(x)">添加记录</a></td>
                                 </tr>
                                 </tbody>
                             </table>

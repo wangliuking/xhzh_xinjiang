@@ -40,8 +40,8 @@ public interface RTUMapper {
     @Select("select count(*) from rtu_alarm_data where rtu_id = #{rtu_id} and type = 3")
     int selectDeviceWarningCount(@Param("rtu_id") int rtu_id);
 
-    @Select("select * from rtu_config where rtu_id = #{id}")
-    RTU selectRTUById(int id);
+    @Select("select *,b.rtu_state from rtu_config a left join rtu_now_data b on a.rtu_id=b.rtu_id where a.rtu_id = #{id}")
+    Map<String,Object> selectRTUById(int id);
 
     @Select("select count(*) from rtu_config where site_id = #{site_id}")
     int selectRTUCountBySiteId(int site_id);

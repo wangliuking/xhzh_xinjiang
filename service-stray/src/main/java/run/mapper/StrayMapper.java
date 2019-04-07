@@ -63,7 +63,7 @@ public interface StrayMapper {
     @Select("select * from stray_electricity_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and stret_id=#{stret_id}")
     List<Stray> selectStray(Map<String, Object> param);
 
-    @Select("select * from stray_electricity_now_data where rtu_id=#{rtu_id} group by stret_id")
+    @Select("select a.*,b.stret_location from stray_electricity_now_data a left join stray_electricity_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.stret_id=b.stret_id and a.portId=b.portId where a.rtu_id=#{rtu_id} group by a.stret_id")
     List<Map<String,Object>> selectStrayByRTU(int rtu_id);
 
     @Select("<script>" +

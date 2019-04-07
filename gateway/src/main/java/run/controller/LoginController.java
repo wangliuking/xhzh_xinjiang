@@ -1,22 +1,14 @@
 package run.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import run.EncryptUtil;
-import run.exportWord.ZipUtils;
 import run.redis.RedisTest;
 import run.service.LoginService;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipOutputStream;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class LoginController {
@@ -140,6 +132,79 @@ public class LoginController {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    public static void main(String[] args) {
+        LoginController loginController = new LoginController();
+        String path = loginController.getClass().getResource("/").getPath();
+        System.out.println(path);
+
+        String imgFile = path;
+        InputStream in = null;
+        byte[] data = null;
+        try
+        {
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        Base64.Encoder encoder = Base64.getEncoder();
+        System.out.println(encoder.encode(data));
+
+        /*String filename = "static/xhzh/JSsignature_pad/" + "text.txt";
+        try {
+            File imageFile = new File(filename);
+            imageFile.createNewFile();
+            if (!imageFile.exists()) {
+                imageFile.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    /**
+     * 解析base64并保存
+     */
+    @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
+    public void uploadImg(HttpServletRequest req) {
+        String imageFiles = req.getParameter("imgStr");
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] imageByte = null;
+        try {
+            imageByte = decoder.decode(imageFiles);
+            for (int i = 0; i < imageByte.length; ++i) {
+                if (imageByte[i] < 0) {
+                    imageByte[i] += 256;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String files = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + (new Random().nextInt(9000) % (9000 - 1000 + 1) + 1000) + ".png";
+        String filename = this.getClass().getResource("/").getPath()+"static/xhzh/JSsignature_pad/" + files;
+        try {
+            File imageFile = new File(filename);
+            imageFile.createNewFile();
+            if (!imageFile.exists()) {
+                imageFile.createNewFile();
+            }else{
+                imageFile.delete();
+                imageFile.createNewFile();
+            }
+            OutputStream imageStream = new FileOutputStream(imageFile);
+            imageStream.write(imageByte);
+            imageStream.flush();
+            imageStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

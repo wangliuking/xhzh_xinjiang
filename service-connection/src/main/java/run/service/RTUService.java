@@ -22,7 +22,7 @@ public class RTUService {
         return rtuMapper.selectDeviceWarningCount(rtu_id);
     }
 
-    public RTU selectRTUById(int id){
+    public Map<String,Object> selectRTUById(int id){
         return rtuMapper.selectRTUById(id);
     }
 

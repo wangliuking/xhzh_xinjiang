@@ -323,4 +323,24 @@ public class TotalService {
     public int replaceSiteNowData(Map<String,Object> param){
         return totalMapper.replaceSiteNowData(param);
     }
+
+    public List<Map<String,Object>> selectRTULightningConf(){
+        return totalMapper.selectRTULightningConf();
+    }
+
+    public List<Map<String,Object>> selectLightningAlarm(){
+        return totalMapper.selectLightningAlarm();
+    }
+
+    public int selectLightningAlarmStatusForNow(Map<String,Object> param){
+        return totalMapper.selectLightningAlarmStatusForNow(param);
+    }
+
+    public int selectLightningAlarmStatusForOld(Map<String,Object> param){
+        return totalMapper.selectLightningAlarmStatusForOld(param);
+    }
+
+
+
+
 }

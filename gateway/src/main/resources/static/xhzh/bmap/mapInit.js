@@ -59,6 +59,8 @@ xh.load = function() {
         };
 
         $scope.goRTU = function(id) {
+            /*console.log("===");
+            console.log(id);*/
             window.location.href = '/xhzh/rtuShow.html?id='+id;
             //$location.path('/xhzh/deviceList.html');
         };
@@ -152,17 +154,11 @@ xh.load = function() {
                 }
             }
             if(count>0){
-                if(status > 0 && alarm == 0){
-                    return {"background-color" : "red"};
-                }else if(status > 0 && alarm > 0){
-                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                }else if(status == 0 && alarm > 0){
-                    return {"background-color" : "#EEAD0E"};
+                if(status == 0 && alarm == 0){
+                    return {"background" : "-webkit-linear-gradient(top, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
                 }else{
-                    return {"background-color" : "green"};
+                    return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                 }
-            }else{
-                return {"background-color" : "grey"};
             }
         };
 
@@ -198,20 +194,26 @@ xh.load = function() {
                             var state = temp["0"];
                             var alarm = temp["-1"];
                             if(state == 0 && alarm == 0){
-                                return {"background-color" : "green"};
-                            }else if(state > 0 && alarm == 0){
-                                return {"background-color" : "red"};
-                            }else if(state > 0 && alarm > 0){
-                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(right, red, #EEAD0E)","background":"-moz-linear-gradient(right, red, #EEAD0E)","background":"linear-gradient(to right, red , #EEAD0E)"};
-                            }else if(state == 0 && alarm > 0){
-                                return {"background-color" : "#EEAD0E"};
+                                return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)","cursor":"pointer"};
+                            }else{
+                                return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)","cursor":"pointer"};
                             }
                         }
                     }
                 }
 
             }
-            return {"background-color" : "grey"};
+        };
+
+        $scope.nameSPD = function(x){
+            var spdPorts = $scope.spdPort;
+            for(var i=0;i<spdPorts.length;i++){
+                var temp = spdPorts[i].spd_number;
+                if(temp == x){
+                    return "SPD"+x;
+                }
+            }
+            return x;
         };
 
         $scope.compareSpd = function (x) {
@@ -221,13 +223,12 @@ xh.load = function() {
                 if(temp == x){
                     var state = spdPorts[i].spd_state;
                     if(state == 0){
-                        return {"background-color" : "green"};
+                        return {"background" : "-webkit-linear-gradient(left, #008B00 , #00FF00)","background":"-o-linear-gradient(top, #008B00 , #00FF00)","background":"-moz-linear-gradient(top, #008B00 , #00FF00)","background":"linear-gradient(to top, #008B00 , #00FF00)"};
                     }else{
-                        return {"background-color" : "#EEAD0E"};
+                        return {"background" : "-webkit-linear-gradient(left, red , #EEAD0E)","background":"-o-linear-gradient(top, red, #EEAD0E)","background":"-moz-linear-gradient(top, red, #EEAD0E)","background":"linear-gradient(to top, red , #EEAD0E)"};
                     }
                 }
             }
-            return {"background-color" : "grey"};
         };
         //deviceData end
 
@@ -248,6 +249,7 @@ xh.load = function() {
             }else{
                 $(".info_right").css({"display":"none"});
                 $(".info_right_temp").css({"display":"block"});
+                $(".navform").css({"display":"none"});
             }
         };
 
@@ -486,7 +488,7 @@ function start() {
         // 加载 bmap 组件
         bmap: {
             // 百度地图中心经纬度
-            center: [104.075493, 30.660545],
+            center: [87.642253, 43.800134],
             // 百度地图缩放
             zoom: 6,
             // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'

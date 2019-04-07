@@ -744,12 +744,14 @@ public class SendController {
         String serialNumber = getDeviceJson.get("callId")+"";
         Date a = new Date();
         while(true){
+            /*log.info("开始循环！！！");
+            log.info("map.keySet() = " + map.keySet());*/
             for (String key : map.keySet()) {
                 //log.info("Key = " + key);
                 if(serialNumber.equals(key)){
                     JSONObject jsonObject = map.get(serialNumber);
                     log.info("已查询到该条消息 ： "+jsonObject);
-                    String str = jsonObject.get("RespResult")+"";
+                    String str = jsonObject.get("respResult")+"";
                     if(Integer.parseInt(str) == 1){
                         SendController.removeMap(serialNumber);
                     }
@@ -783,6 +785,11 @@ public class SendController {
 
     public String search(JSONObject rtuConfJson){
         log.info("已进入扫描函数！！！");
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Map<String,Class> classMap = new HashMap<>();
         classMap.put("RS485InfoList", RS485Info.class);
         classMap.put("DAInfoList", DAInfo.class);
@@ -791,16 +798,14 @@ public class SendController {
         String serialNumber = r.getCallId();
         Date a = new Date();
         while(true){
-            //log.info("循环中！！！");
-            log.info("map = " + map);
+            /*log.info("开始循环！！！");
+            log.info("map.keySet() = " + map.keySet());*/
             if(map != null && map.size()>0){
-                log.info("map不为空，进来了！！！");
                 for (String key : map.keySet()) {
-                    log.info("map.keySet() = " + map.keySet());
                     if(serialNumber.equals(key)){
                         JSONObject jsonObject = map.get(serialNumber);
                         log.info("已查询到该条消息 ： "+jsonObject);
-                        String temp = jsonObject.get("RespResult").toString();
+                        String temp = jsonObject.get("respResult").toString();
                         int RespResult = Integer.parseInt(temp);
                         if(RespResult == 1){
                             log.info("流水号为 ： "+serialNumber+" 的该条信息返回成功");
@@ -820,7 +825,7 @@ public class SendController {
                 }
             }
             Date b = new Date();
-            log.info("b.getTime() - a.getTime() : "+(b.getTime()-a.getTime()));
+            //log.info("b.getTime() - a.getTime() : "+(b.getTime()-a.getTime()));
             if((b.getTime() - a.getTime()) > 30000){
                 return "请求超时";
             }

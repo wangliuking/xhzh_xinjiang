@@ -63,7 +63,7 @@ public interface SvtMapper {
     @Select("select * from tilt_config where rtu_id=#{rtu_id} and rtu_port=#{rtu_port} and tilt_id=#{tilt_id}")
     Svt selectOneSvt(Map<String, Object> param);
 
-    @Select("select * from tilt_now_data where rtu_id=#{rtu_id}")
+    @Select("select a.*,b.tilt_location from tilt_now_data a left join tilt_config b on a.rtu_id=b.rtu_id and b.rtu_port=a.rtu_channel and a.tilt_id=b.tilt_id where a.rtu_id=#{rtu_id}")
     List<Map<String,Object>> selectSvtByRTU(int rtu_id);
 
     @Select("<script>" +

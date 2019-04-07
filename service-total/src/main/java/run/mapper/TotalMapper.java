@@ -217,7 +217,7 @@ public interface TotalMapper {
     int selectSPDTotal(Map<String, Object> param);
 
     @Select("<script>" +
-            "select a.spd_number,b.spd_state from spd_config as a left join spd_now_data as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 "+
+            "select a.spd_number,b.spd_state,a.spd_location from spd_config as a left join spd_now_data as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number where 1=1 "+
             "<if test=\"rtu_id != null and rtu_id != ''\">" +
             "and a.rtu_id =#{rtu_id}"+
             "</if>"+
@@ -795,7 +795,7 @@ public interface TotalMapper {
     List<Map<String,Object>> selectSvtHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select es_i_value,es_temp_value,write_time from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
+            "select es_i_value,es_temp_value,es_cur_value,es_vol_value,write_time from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where 1=1 " +
             "<if test=\"site_id != null and site_id != -1\">" +
             "and b.site_id =#{site_id}"+
             "</if>"+
@@ -933,5 +933,35 @@ public interface TotalMapper {
             "</foreach>"+
             "</script>")
     int replaceSiteNowData(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select * from lightning_config" +
+            "</script>")
+    List<Map<String,Object>> selectRTULightningConf();
+
+    @Select("<script>" +
+            "select *,count(rtu_id) num from lightning_old_data where alarm=1 group by rtu_id,ltn_id,rtu_channel" +
+            "</script>")
+    List<Map<String,Object>> selectLightningAlarm();
+
+    @Select("<script>" +
+            "select count(*) from rtu_alarm_data where rtu_id=#{rtu_id} and rtu_channel=#{rtu_channel} and devieceId=#{ltn_id} and relayNo=0 and type=3" +
+            "</script>")
+    int selectLightningAlarmStatusForNow(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select count(*) from rtu_alarm_history where rtu_id=#{rtu_id} and rtu_channel=#{rtu_channel} and devieceId=#{ltn_id} and relayNo=0 and type=3" +
+            "</script>")
+    int selectLightningAlarmStatusForOld(Map<String,Object> param);
+
+    @Insert("<script>" +
+            "insert into rtu_alarm_data(rtu_id,rtu_channel,devieceId,deviceType,relayNo,alarmStatus,udpateTime,type,alarmStr) values(#{rtu_id},#{rtu_channel},#{ltn_id},2,0,1,now(),3,'雷电流超限')" +
+            "</script>")
+    int insertRTUNowDataForLightningAlarm(Map<String,Object> param);
+
+    @Insert("<script>" +
+            "insert into rtu_alarm_data(rtu_id,rtu_channel,devieceId,deviceType,relayNo,alarmStatus,udpateTime,type,alarmStr) values(#{rtu_id},#{rtu_channel},#{ltn_id},2,0,1,now(),3,'雷电流超限')" +
+            "</script>")
+    int insertRTUHisDataForLightningAlarm(Map<String,Object> param);
 
 }

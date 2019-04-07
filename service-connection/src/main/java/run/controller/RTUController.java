@@ -170,7 +170,7 @@ public class RTUController {
     }
 
     @RequestMapping(value = "/selectRTUById",method = RequestMethod.GET)
-    public RTU selectRTUById (@RequestParam int id){
+    public Map<String,Object> selectRTUById (@RequestParam int id){
         return rtuService.selectRTUById(id);
     }
 
