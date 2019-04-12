@@ -1088,6 +1088,13 @@ xh.add = function() {
             }
         });
     }else if($scope.deviceTypeChoose == 4){
+        var staet_threshold1 = f.staet_threshold1;
+        var staet_threshold2 = f.staet_threshold2;
+        var staet_v0 = f.staet_v0;
+        f["staet_threshold1"] = staet_threshold1*1000;
+        f["staet_threshold2"] = staet_threshold2*1000;
+        f["staet_v0"] = staet_v0*1000;
+        str = JSON.stringify(f);
         console.log(str);
         $.ajax({
             url : '../../static/insertStatic',
@@ -1442,6 +1449,12 @@ xh.editStatic = function() {
     $.each(fields,function(index,field){
         f[field.name] = field.value;//通过变量，将属性值，属性一起放到对象中
     });
+    var staet_threshold1 = f.staet_threshold1;
+    var staet_threshold2 = f.staet_threshold2;
+    var staet_v0 = f.staet_v0;
+    f["staet_threshold1"] = staet_threshold1*1000;
+    f["staet_threshold2"] = staet_threshold2*1000;
+    f["staet_v0"] = staet_v0*1000;
     var str = JSON.stringify(f);
     $.ajax({
         url : '../../static/updateStatic',

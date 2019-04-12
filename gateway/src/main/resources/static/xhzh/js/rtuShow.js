@@ -767,6 +767,12 @@ function settime(obj) {
                     var a = Math.round(i*100);
                     var res = a/100;
                     $(obj).parent().parent().siblings().eq(3).find("div").find("input").val(res);
+                }else if(deviceType == 4){
+                    console.log("静电");
+                    var i = parseFloat(data.resultValue)/1000;
+                    var a = Math.round(i*100);
+                    var res = a/100;
+                    $(obj).parent().parent().siblings().eq(2).find("div").find("input").val(res);
                 }else{
                     var i = parseFloat(data.resultValue);
                     var a = Math.round(i*100);

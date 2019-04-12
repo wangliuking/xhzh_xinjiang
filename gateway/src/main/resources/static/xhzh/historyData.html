@@ -248,8 +248,8 @@
                                                     <td>{{x.staet_model}}</td>
                                                     <td>{{x.staet_name}}</td>
                                                     <td>{{x.staet_location}}</td>
-                                                    <td ng-if="x.alarm == 0" style="color: green;">{{x.staet_value | changeValueTwo}}V</td>
-                                                    <td ng-if="x.alarm != 0" style="color: red;">{{x.staet_value | changeValueTwo}}V</td>
+                                                    <td ng-if="x.alarm == 0" style="color: green;">{{x.staet_value/1000 | changeValueTwo}}kV</td>
+                                                    <td ng-if="x.alarm != 0" style="color: red;">{{x.staet_value/1000 | changeValueTwo}}kV</td>
                                                     <td>{{x.write_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                                 </tr>
                                                 </tbody>

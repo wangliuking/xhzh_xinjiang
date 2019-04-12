@@ -370,7 +370,8 @@ function deviceHistory(data) {
             unit.push("");
             for(var i=0;i<data.length;i++){
                 var temp = data[i].rst_value;
-                dataListOne.push(temp);
+                var time = timestampToTime(data[i].write_time);
+                dataListOne.push([time,temp]);
             }
         }
     }else if(deviceName == 3){
@@ -385,17 +386,19 @@ function deviceHistory(data) {
     }else if(deviceName == 4){
         header.push("静电");
         header.push("");
-        unit.push("V");
+        unit.push("kV");
         unit.push("");
         for(var i=0;i<data.length;i++){
             var temp = data[i].staet_value;
-            dataListOne.push(temp);
+            var a = Math.round(temp/100);
+            dataListOne.push(a/10);
         }
     }else if(deviceName == 5){
         header.push("温度");
         header.push("");
         header.push("湿度");
         unit.push("℃");
+        unit.push("%");
         unit.push("%");
         for(var i=0;i<data.length;i++){
             var temp1 = data[i].hmt_temp;
@@ -410,6 +413,9 @@ function deviceHistory(data) {
         header.push("横向倾斜度");
         header.push("综合倾斜度");
         unit.push("°");
+        unit.push("");
+        unit.push("");
+        unit.push("");
         unit.push("");
         for(var i=0;i<data.length;i++){
             var temp1 = data[i].tilt_value1;
@@ -490,9 +496,49 @@ function deviceHistory(data) {
             text: '当前设备一月内数值变化',
             subtext: ''
         },
-        tooltip: {
-            trigger: 'axis'
-        },
+        tooltip: [{
+            trigger: 'axis',
+            formatter:function (params, ticket, callback) {
+                console.log(params);
+                if(deviceName == 2 || deviceName == 8){
+                    var value = params[0].value;
+                    var index = params[0].componentIndex;
+                    return params[0].axisValue+'<br />'+header[index]+":"+value[1]+unit[index];
+                }else if(deviceName == 5){
+                    var index0 = params[0].seriesIndex;
+                    var value0 = params[0].value;
+                    var index1 = params[1].seriesIndex;
+                    var value1 = params[1].value;
+                    return params[0].axisValue+'<br />'+header[index0]+":"+value0+unit[index0]+'<br />'+header[index1]+":"+value1+unit[index1];
+                }else if(deviceName == 6){
+                    var index0 = params[0].seriesIndex;
+                    var value0 = params[0].value;
+                    var index1 = params[1].seriesIndex;
+                    var value1 = params[1].value;
+                    var index2 = params[2].seriesIndex;
+                    var value2 = params[2].value;
+                    var index3 = params[3].seriesIndex;
+                    var value3 = params[3].value;
+                    var index4 = params[4].seriesIndex;
+                    var value4 = params[4].value;
+                    return params[0].axisValue+'<br />'+header[index0]+":"+value0[1]+unit[index0]+'<br />'+header[index1]+":"+value1[1]+unit[index1]+'<br />'+header[index2]+":"+value2[1]+unit[index2]+'<br />'+header[index3]+":"+value3[1]+unit[index3]+'<br />'+header[index4]+":"+value4[1]+unit[index4];
+                }else if(deviceName == 7){
+                    var index0 = params[0].seriesIndex;
+                    var value0 = params[0].value;
+                    var index1 = params[1].seriesIndex;
+                    var value1 = params[1].value;
+                    var index2 = params[2].seriesIndex;
+                    var value2 = params[2].value;
+                    var index3 = params[3].seriesIndex;
+                    var value3 = params[3].value;
+                    return params[0].axisValue+'<br />'+header[index0]+":"+value0+unit[index0]+'<br />'+header[index1]+":"+value1+unit[index1]+'<br />'+header[index2]+":"+value2+unit[index2]+'<br />'+header[index3]+":"+value3+unit[index3];
+                }else{
+                    var index = params[0].seriesIndex;
+                    var value = params[0].value;
+                    return params[0].axisValue+'<br />'+header[index]+":"+value+unit[index];
+                }
+            }
+        }],
         legend: {
             data:header
         },
