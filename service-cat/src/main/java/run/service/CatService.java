@@ -50,6 +50,10 @@ public class CatService {
         return catMapper.selectCatHistory(param);
     }
 
+    public List<Map<String,Object>> exportCatHistory(Map<String,Object> param){
+        return catMapper.exportCatHistory(param);
+    }
+
     public int selectCatHistoryCount(Map<String,Object> param){
         return catMapper.selectCatHistoryCount(param);
     }

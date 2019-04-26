@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import run.bean.RTU;
 import run.bean.Svt;
 import run.service.SvtService;
+import run.util.ExcelUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -272,6 +274,69 @@ public class SvtController {
         SvtListMap.put("items",SvtList);
         SvtListMap.put("totals",count);
         return SvtListMap;
+
+    }
+
+    @RequestMapping(value = "/exportAllSvtHistory",method = RequestMethod.GET)
+    public void exportAllSvtHistory (HttpServletRequest req, HttpServletResponse response){
+        int start;
+        if(req.getParameter("start") != null){
+            start = Integer.parseInt(req.getParameter("start"));
+        }else {
+            start = -1;
+        }
+        int limit;
+        if(req.getParameter("limit") != null){
+            limit = Integer.parseInt(req.getParameter("limit"));
+        }else {
+            limit = -1;
+        }
+        int site_id;
+        if(req.getParameter("site_id") != null && req.getParameter("site_id") != ""){
+            site_id = Integer.parseInt(req.getParameter("site_id"));
+        }else {
+            site_id = -1;
+        }
+        int rtu_id;
+        if(req.getParameter("rtu_id") != null && req.getParameter("rtu_id") != ""){
+            rtu_id = Integer.parseInt(req.getParameter("rtu_id"));
+        }else {
+            rtu_id = -1;
+        }
+        int tilt_id;
+        if(req.getParameter("tilt_id") != null && req.getParameter("tilt_id") != ""){
+            tilt_id = Integer.parseInt(req.getParameter("tilt_id"));
+        }else {
+            tilt_id = -1;
+        }
+        String tilt_location = req.getParameter("location");
+        String startTime = req.getParameter("startTime");
+        String endTime = req.getParameter("endTime");
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("tilt_id",tilt_id);
+        param.put("tilt_location",tilt_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+
+        //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
+        List<Map<String,Object>> SvtList = svtService.exportSvtHistory(param);
+        String sheetName = "测试";
+        String fileName = "SvtExcel";
+        System.out.println("准备进行导出！！！");
+        try {
+            ExcelUtil.exportExcel(response, SvtList, sheetName, fileName, 15) ;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 

@@ -94,6 +94,30 @@ public interface RswsMapper {
     List<Map<String,Object>> selectRswsHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.hmt_location,b.hmt_name,b.hmt_model,c.*,d.name as structureName from humiture_old_data as a left join humiture_config as b on a.rtu_id=b.rtu_id and a.hmt_id=b.hmt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"hmt_id != null and hmt_id != -1\">" +
+            "and b.hmt_id =#{hmt_id}"+
+            "</if>"+
+            "<if test=\"hmt_location != null and hmt_location != ''\">" +
+            "and hmt_location like concat('%',#{hmt_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportRswsHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from humiture_old_data as a left join humiture_config as b on a.rtu_id=b.rtu_id and a.hmt_id=b.hmt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

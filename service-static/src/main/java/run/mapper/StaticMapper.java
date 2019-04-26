@@ -94,6 +94,30 @@ public interface StaticMapper {
     List<Map<String,Object>> selectStaticHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.staet_location,b.staet_name,b.staet_model,c.*,d.name as structureName from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"staet_id != null and staet_id != -1\">" +
+            "and b.staet_id =#{staet_id}"+
+            "</if>"+
+            "<if test=\"staet_location != null and staet_location != ''\">" +
+            "and staet_location like concat('%',#{staet_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportStaticHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from static_electricity_old_data as a left join static_electricity_config as b on a.rtu_id=b.rtu_id and a.staet_id=b.staet_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

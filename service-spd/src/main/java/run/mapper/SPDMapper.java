@@ -106,6 +106,30 @@ public interface SPDMapper {
     List<Map<String,Object>> selectSPDHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.spd_location,b.spd_model,b.spd_name,c.*,d.name as structureName from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"spd_number != null and spd_number != -1\">" +
+            "and b.spd_number =#{spd_number}"+
+            "</if>"+
+            "<if test=\"spd_location != null and spd_location != ''\">" +
+            "and spd_location like concat('%',#{spd_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportSPDHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from spd_old_data as a left join spd_config as b on a.rtu_id=b.rtu_id and a.spd_number=b.spd_number left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

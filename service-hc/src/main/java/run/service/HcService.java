@@ -50,6 +50,10 @@ public class HcService {
         return hcMapper.selectHcHistory(param);
     }
 
+    public List<Map<String,Object>> exportHcHistory(Map<String,Object> param){
+        return hcMapper.exportHcHistory(param);
+    }
+
     public int selectHcHistoryCount(Map<String,Object> param){
         return hcMapper.selectHcHistoryCount(param);
     }

@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import run.bean.RTU;
 import run.bean.SPD;
 import run.service.SPDService;
+import run.util.ExcelUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -310,6 +312,75 @@ public class SpdController {
         spdListMap.put("items",spdList);
         spdListMap.put("totals",count);
         return spdListMap;
+
+    }
+
+    @RequestMapping(value = "/exportAllSPDHistory",method = RequestMethod.GET)
+    public void exportAllSPDHistory (HttpServletRequest req, HttpServletResponse response){
+        int start;
+        if(req.getParameter("start") != null){
+            start = Integer.parseInt(req.getParameter("start"));
+        }else {
+            start = -1;
+        }
+        int limit;
+        if(req.getParameter("limit") != null){
+            limit = Integer.parseInt(req.getParameter("limit"));
+        }else {
+            limit = -1;
+        }
+        int site_id;
+        if(req.getParameter("site_id") != null && req.getParameter("site_id") != ""){
+            site_id = Integer.parseInt(req.getParameter("site_id"));
+        }else {
+            site_id = -1;
+        }
+        int rtu_id;
+        if(req.getParameter("rtu_id") != null && req.getParameter("rtu_id") != ""){
+            rtu_id = Integer.parseInt(req.getParameter("rtu_id"));
+            if(rtu_id == 2){
+                rtu_id = -1;
+            }
+        }else {
+            rtu_id = -1;
+        }
+        int spd_number;
+        if(req.getParameter("spd_number") != null && req.getParameter("spd_number") != ""){
+            spd_number = Integer.parseInt(req.getParameter("spd_number"));
+            if(spd_number == 2){
+                spd_number = -1;
+            }
+        }else {
+            spd_number = -1;
+        }
+        String spd_location = req.getParameter("location");
+        String startTime = req.getParameter("startTime");
+        String endTime = req.getParameter("endTime");
+
+        String structure = req.getParameter("structure");
+        List<Integer> strList = feignForStructure.foreachIdAndPId(structure);
+        System.out.println("strList : ++++++++++++"+strList);
+        Map<String,Object> param = new HashMap<>();
+        param.put("strList",strList);
+        param.put("start",start);
+        param.put("limit",limit);
+        param.put("site_id",site_id);
+        param.put("rtu_id",rtu_id);
+        param.put("spd_number",spd_number);
+        param.put("spd_location",spd_location);
+        param.put("startTime",startTime);
+        param.put("endTime",endTime);
+        //System.out.println(start+"=="+limit+"=="+site_id+"=="+rtu_id+"=="+spd_number+"=="+spd_location);
+
+        List<Map<String,Object>> spdList = spdService.exportSPDHistory(param);
+        String sheetName = "测试";
+        String fileName = "SPDExcel";
+        System.out.println("准备进行导出！！！");
+        try {
+            ExcelUtil.exportExcel(response, spdList, sheetName, fileName, 15) ;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 

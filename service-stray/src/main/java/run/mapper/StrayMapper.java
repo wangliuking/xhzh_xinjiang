@@ -94,6 +94,30 @@ public interface StrayMapper {
     List<Map<String,Object>> selectStrayHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.stret_location,b.stret_name,b.portName,b.stret_model,c.*,d.name as structureName from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"stret_id != null and stret_id != -1\">" +
+            "and b.stret_id =#{stret_id}"+
+            "</if>"+
+            "<if test=\"stret_location != null and stret_location != ''\">" +
+            "and stret_location like concat('%',#{stret_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportStrayHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from stray_electricity_old_data as a left join stray_electricity_config as b on a.rtu_id=b.rtu_id and a.stret_id=b.stret_id and a.rtu_channel=b.rtu_port and a.portId=b.portId left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

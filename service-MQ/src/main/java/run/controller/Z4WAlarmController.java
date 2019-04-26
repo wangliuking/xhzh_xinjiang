@@ -684,23 +684,27 @@ public class Z4WAlarmController {
                 System.out.println(d);
                 System.out.println("==================================");
                 //调用更新函数
-                if(d.getDevicetype() == 0 || d.getDevicetype() == 1){
-                    alarmInfoService.updateEtcrNow(d);
-                }else if(d.getDevicetype() == 2){
-                    alarmInfoService.updateLightningNow(d);
-                }else if(d.getDevicetype() == 3){
-                    alarmInfoService.updateRswsNow(d);
-                }else if(d.getDevicetype() == 4){
-                    alarmInfoService.updateStaticNow(d);
-                }else if(d.getDevicetype() == 5){
-                    alarmInfoService.updateSvtNow(d);
-                }else if(d.getDevicetype() == 6){
-                    alarmInfoService.updateHcNow(d);
-                }else if(d.getDevicetype() == 7){
-                    alarmInfoService.updateStrayNow(d);
-                }else if(d.getDevicetype() == 8){
-                    alarmInfoService.updateCatNow(d);
+                //判断是设备离线还是rtu离线
+                if(d.getAlarmType() == 1){//设备离线
+                    if(d.getDevicetype() == 0 || d.getDevicetype() == 1){
+                        alarmInfoService.updateEtcrNow(d);
+                    }else if(d.getDevicetype() == 2){
+                        alarmInfoService.updateLightningNow(d);
+                    }else if(d.getDevicetype() == 3){
+                        alarmInfoService.updateRswsNow(d);
+                    }else if(d.getDevicetype() == 4){
+                        alarmInfoService.updateStaticNow(d);
+                    }else if(d.getDevicetype() == 5){
+                        alarmInfoService.updateSvtNow(d);
+                    }else if(d.getDevicetype() == 6){
+                        alarmInfoService.updateHcNow(d);
+                    }else if(d.getDevicetype() == 7){
+                        alarmInfoService.updateStrayNow(d);
+                    }else if(d.getDevicetype() == 8){
+                        alarmInfoService.updateCatNow(d);
+                    }
                 }
+
             } catch (JMSException e) {
                 e.printStackTrace();
             }

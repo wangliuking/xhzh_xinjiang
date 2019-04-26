@@ -50,6 +50,10 @@ public class StaticService {
         return StaticMapper.selectStaticHistory(param);
     }
 
+    public List<Map<String,Object>> exportStaticHistory(Map<String,Object> param){
+        return StaticMapper.exportStaticHistory(param);
+    }
+
     public int selectStaticHistoryCount(Map<String,Object> param){
         return StaticMapper.selectStaticHistoryCount(param);
     }

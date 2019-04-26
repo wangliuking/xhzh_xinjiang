@@ -50,6 +50,10 @@ public class LightningService {
         return lightningMapper.selectLightningHistory(param);
     }
 
+    public List<Map<String,Object>> exportLightningHistory(Map<String,Object> param){
+        return lightningMapper.exportLightningHistory(param);
+    }
+
     public int selectLightningHistoryCount(Map<String,Object> param){
         return lightningMapper.selectLightningHistoryCount(param);
     }

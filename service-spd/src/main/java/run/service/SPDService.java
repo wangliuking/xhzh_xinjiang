@@ -65,6 +65,10 @@ public class SPDService {
         return spdMapper.selectSPDHistory(param);
     }
 
+    public List<Map<String,Object>> exportSPDHistory(Map<String,Object> param){
+        return spdMapper.exportSPDHistory(param);
+    }
+
     public int selectSPDHistoryCount(Map<String,Object> param){
         return spdMapper.selectSPDHistoryCount(param);
     }

@@ -761,7 +761,7 @@ public class ETCRController {
         List<Map<String,Object>> etcrList = ETCRService.exportAllETCRHistoryExcel(param);
 
         String sheetName = "测试";
-        String fileName = "ExcelTest.xls";
+        String fileName = "ETCRExcel";
         System.out.println("准备进行导出！！！");
         try {
             ExcelUtil.exportExcel(response, etcrList, sheetName, fileName, 15) ;

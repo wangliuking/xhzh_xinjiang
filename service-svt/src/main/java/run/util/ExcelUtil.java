@@ -1,5 +1,7 @@
 package run.util;
+
 import org.apache.poi.hssf.usermodel.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +38,7 @@ public class ExcelUtil {
         //写入List<>中的数据
         int rowNum = 1;
 
-        String[] headers = { "行政区域", "机构名称", "站点名称", "RTU-ID","串口号","监测仪ID","型号","名称","安装位置","监测点","记录值(Ω)","记录时间"};
+        String[] headers = { "行政区域", "机构名称", "站点名称", "RTU-ID","串口号","监测仪ID","型号","名称","安装位置","顺线倾斜角(°)","横向倾斜角(°)","顺线倾斜度","横向倾斜度","综合倾斜度","记录时间"};
         //headers表示excel表中第一行的表头
         HSSFRow row = sheet.createRow(0);
         //在excel表中添加表头
@@ -54,13 +56,16 @@ public class ExcelUtil {
             row1.createCell(2).setCellValue(map.get("site_name")+"");
             row1.createCell(3).setCellValue(map.get("rtu_id")+"");
             row1.createCell(4).setCellValue(map.get("rtu_channel")+"");
-            row1.createCell(5).setCellValue(map.get("rst_id")+"");
-            row1.createCell(6).setCellValue(map.get("rst_model")+"");
-            row1.createCell(7).setCellValue(map.get("rst_name")+"");
-            row1.createCell(8).setCellValue(map.get("rst_location")+"");
-            row1.createCell(9).setCellValue(map.get("relayno")+"");
-            row1.createCell(10).setCellValue(map.get("rst_value")+"");
-            row1.createCell(11).setCellValue(map.get("write_time")+"");
+            row1.createCell(5).setCellValue(map.get("tilt_id")+"");
+            row1.createCell(6).setCellValue(map.get("tilt_model")+"");
+            row1.createCell(7).setCellValue(map.get("tilt_name")+"");
+            row1.createCell(8).setCellValue(map.get("tilt_location")+"");
+            row1.createCell(9).setCellValue(map.get("tilt_value1")+"");
+            row1.createCell(10).setCellValue(map.get("tilt_value2")+"");
+            row1.createCell(11).setCellValue(map.get("tilt_gx")+"");
+            row1.createCell(12).setCellValue(map.get("tilt_gy")+"");
+            row1.createCell(13).setCellValue(map.get("tilt_gs")+"");
+            row1.createCell(14).setCellValue(map.get("write_time")+"");
             rowNum++;
         }
 

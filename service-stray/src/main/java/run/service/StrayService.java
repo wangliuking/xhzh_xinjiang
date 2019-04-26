@@ -50,6 +50,10 @@ public class StrayService {
         return strayMapper.selectStrayHistory(param);
     }
 
+    public List<Map<String,Object>> exportStrayHistory(Map<String,Object> param){
+        return strayMapper.exportStrayHistory(param);
+    }
+
     public int selectStrayHistoryCount(Map<String,Object> param){
         return strayMapper.selectStrayHistoryCount(param);
     }

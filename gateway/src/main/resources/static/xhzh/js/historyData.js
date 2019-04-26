@@ -144,21 +144,144 @@ xh.load = function() {
             var endTime = $("#endTime").val();
 
             console.log(deviceName+" "+site_id+" "+rtu_id+" "+location+" "+deviceId);
-
-            $.ajax({
-                type: 'GET',
-                url: "../../etcr/selectAllETCRHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
-                async: false,
-                dataType: 'json',
-                success: function(response){
-                    var dataCount = response.totals;
-                    if(dataCount > 50000){
-                        alert("查询数据量过多，请调整查询条件");
-                    }else{
-                        window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+            if(deviceName == 1){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../spd/selectAllSPDHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&spd_number="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../spd/exportAllSPDHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
                     }
-                }
-            });
+                });
+            }else if(deviceName == 2){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../etcr/selectAllETCRHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../etcr/exportAllETCRHistoryExcel?site_id="+site_id+"&rtu_id="+rtu_id+"&rst_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 3){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../lightning/selectAllLightningHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../lightning/exportAllLightningHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&ltn_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 4){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../static/selectAllStaticHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../static/exportAllStaticHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&staet_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 5){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../rsws/selectAllRswsHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../rsws/exportAllRswsHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&hmt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 6){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../svt/selectAllSvtHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../svt/exportAllSvtHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&tilt_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 7){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../hc/selectAllHcHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../hc/exportAllHcHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&es_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 8){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../stray/selectAllStrayHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../stray/exportAllStrayHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&stret_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }else if(deviceName == 9){
+                $.ajax({
+                    type: 'GET',
+                    url: "../../cat/selectAllCatHistory?start=0&limit="+15+"&site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response){
+                        var dataCount = response.totals;
+                        if(dataCount > 50000){
+                            alert("查询数据量过多，请调整查询条件");
+                        }else{
+                            window.location.href = "../../cat/exportAllCatHistory?site_id="+site_id+"&rtu_id="+rtu_id+"&cathode_id="+deviceId+"&location="+location+"&startTime="+startTime+"&endTime="+endTime+"&structure="+structure;
+                        }
+                    }
+                });
+            }
+
+
         }
 		
 		/* 刷新数据 */

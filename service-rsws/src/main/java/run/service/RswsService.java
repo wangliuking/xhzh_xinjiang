@@ -50,6 +50,10 @@ public class RswsService {
         return rswsMapper.selectRswsHistory(param);
     }
 
+    public List<Map<String,Object>> exportRswsHistory(Map<String,Object> param){
+        return rswsMapper.exportRswsHistory(param);
+    }
+
     public int selectRswsHistoryCount(Map<String,Object> param){
         return rswsMapper.selectRswsHistoryCount(param);
     }

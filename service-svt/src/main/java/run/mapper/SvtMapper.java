@@ -94,6 +94,30 @@ public interface SvtMapper {
     List<Map<String,Object>> selectSvtHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.tilt_location,b.tilt_name,b.tilt_model,c.*,d.name as structureName from tilt_old_data as a left join tilt_config as b on a.rtu_id=b.rtu_id and a.tilt_id=b.tilt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"tilt_id != null and tilt_id != -1\">" +
+            "and b.tilt_id =#{tilt_id}"+
+            "</if>"+
+            "<if test=\"tilt_location != null and tilt_location != ''\">" +
+            "and tilt_location like concat('%',#{tilt_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportSvtHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from tilt_old_data as a left join tilt_config as b on a.rtu_id=b.rtu_id and a.tilt_id=b.tilt_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

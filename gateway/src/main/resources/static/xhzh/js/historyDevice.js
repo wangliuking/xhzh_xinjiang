@@ -413,7 +413,7 @@ function deviceHistory(data) {
         header.push("横向倾斜度");
         header.push("综合倾斜度");
         unit.push("°");
-        unit.push("");
+        unit.push("°");
         unit.push("");
         unit.push("");
         unit.push("");
@@ -532,6 +532,11 @@ function deviceHistory(data) {
                     var index3 = params[3].seriesIndex;
                     var value3 = params[3].value;
                     return params[0].axisValue+'<br />'+header[index0]+":"+value0+unit[index0]+'<br />'+header[index1]+":"+value1+unit[index1]+'<br />'+header[index2]+":"+value2+unit[index2]+'<br />'+header[index3]+":"+value3+unit[index3];
+                }else if(deviceName == 1){
+                    var index = params[0].seriesIndex;
+                    var value = params[0].value;
+                    var status = parseInt(value)==0?"正常":"异常";
+                    return params[0].axisValue+'<br />'+header[index]+":"+status+unit[index];
                 }else{
                     var index = params[0].seriesIndex;
                     var value = params[0].value;

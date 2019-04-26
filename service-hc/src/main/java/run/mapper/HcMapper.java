@@ -94,6 +94,30 @@ public interface HcMapper {
     List<Map<String,Object>> selectHcHistory(Map<String,Object> param);
 
     @Select("<script>" +
+            "select a.*,b.es_location,b.es_name,b.es_model,c.*,d.name as structureName from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
+            "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
+            "#{id}"+
+            "</foreach>"+
+            "<if test=\"site_id != null and site_id != -1\">" +
+            "and b.site_id =#{site_id}"+
+            "</if>"+
+            "<if test=\"rtu_id != null and rtu_id != -1\">" +
+            "and b.rtu_id =#{rtu_id}"+
+            "</if>"+
+            "<if test=\"es_id != null and es_id != -1\">" +
+            "and b.es_id =#{es_id}"+
+            "</if>"+
+            "<if test=\"es_location != null and es_location != ''\">" +
+            "and es_location like concat('%',#{es_location},'%')"+
+            "</if>"+
+            "<if test=\"startTime != null and startTime != ''\">" +
+            "and write_time between #{startTime} and #{endTime}"+
+            "</if>"+
+            "order by write_time desc"+
+            "</script>")
+    List<Map<String,Object>> exportHcHistory(Map<String,Object> param);
+
+    @Select("<script>" +
             "select count(*) from electrical_safety_old_data as a left join electrical_safety_config as b on a.rtu_id=b.rtu_id and a.es_id=b.es_id and a.rtu_channel=b.rtu_port left join site_config as c on b.site_id=c.site_id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+

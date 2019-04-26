@@ -50,6 +50,10 @@ public class SvtService {
         return svtMapper.selectSvtHistory(param);
     }
 
+    public List<Map<String,Object>> exportSvtHistory(Map<String,Object> param){
+        return svtMapper.exportSvtHistory(param);
+    }
+
     public int selectSvtHistoryCount(Map<String,Object> param){
         return svtMapper.selectSvtHistoryCount(param);
     }

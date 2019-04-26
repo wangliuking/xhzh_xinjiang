@@ -170,7 +170,7 @@ public interface ETCRMapper {
     List<Map<String,Object>> selectETCRHistory(Map<String,Object> param);
 
     @Select("<script>" +
-            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.* from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id where c.site_company in " +
+            "select a.*,b.rst_location,b.rst_name,b.rst_model,c.*,d.name as structureName from resistance_old_data as a left join resistance_config as b on a.rtu_id=b.rtu_id and a.rst_id=b.rst_id and a.relayno=b.relayno left join site_config as c on b.site_id=c.site_id left join structure as d on c.site_company=d.id where c.site_company in " +
             "<foreach collection=\"strList\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\">"+
             "#{id}"+
             "</foreach>"+
