@@ -743,31 +743,30 @@ public class SendController {
     public String searchValue(JSONObject getDeviceJson){
         String serialNumber = getDeviceJson.get("callId")+"";
         Date a = new Date();
-        while(true){
-            /*log.info("开始循环！！！");
-            log.info("map.keySet() = " + map.keySet());*/
-            for (String key : map.keySet()) {
-                //log.info("Key = " + key);
-                if(serialNumber.equals(key)){
-                    JSONObject jsonObject = map.get(serialNumber);
-                    log.info("已查询到该条消息 ： "+jsonObject);
-                    String str = jsonObject.get("respResult")+"";
-                    if(Integer.parseInt(str) == 1){
+        try{
+            while(true){
+                for (String key : map.keySet()) {
+                    if(serialNumber.equals(key)){
+                        JSONObject jsonObject = map.get(serialNumber);
                         SendController.removeMap(serialNumber);
-                    }
-                    if(Integer.parseInt(str) == 2){
-                        log.info("已查询到该条DBInfo");
-                        SendController.removeMap(serialNumber);
-                        return jsonObject.get("DBInfo")+"";
+                        log.info("已查询到该条消息 ： "+jsonObject);
+                        String str = jsonObject.get("respResult")+"";
+                        if(Integer.parseInt(str) == 2){
+                            log.info("已查询到该条DBInfo");
+                            return jsonObject.get("DBInfo")+"";
+                        }
                     }
                 }
+                Date b = new Date();
+                if((b.getTime() - a.getTime()) > 60000){
+                    return "请求超时";
+                }
+                Thread.sleep(500);
             }
-            Date b = new Date();
-            if((b.getTime() - a.getTime()) > 60000){
-                return "请求超时";
-            }
+        }catch (Exception e){
+            log.error(e.toString());
+            return e.toString();
         }
-
     }
 
     public static void main(String[] args) {
@@ -786,56 +785,45 @@ public class SendController {
     public String search(JSONObject rtuConfJson){
         log.info("已进入扫描函数！！！");
         try {
-            Thread.sleep(1000);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        Map<String,Class> classMap = new HashMap<>();
-        classMap.put("RS485InfoList", RS485Info.class);
-        classMap.put("DAInfoList", DAInfo.class);
-        classMap.put("userInfo", USERInfo.class);
-        RTUConfig r = (RTUConfig) JSONObject.toBean(rtuConfJson,RTUConfig.class,classMap);
-        String serialNumber = r.getCallId();
-        Date a = new Date();
-        while(true){
-            /*log.info("开始循环！！！");
-            log.info("map.keySet() = " + map.keySet());*/
-            if(map != null && map.size()>0){
-                for (String key : map.keySet()) {
-                    if(serialNumber.equals(key)){
-                        JSONObject jsonObject = map.get(serialNumber);
-                        log.info("已查询到该条消息 ： "+jsonObject);
-                        String temp = jsonObject.get("respResult").toString();
-                        int RespResult = Integer.parseInt(temp);
-                        if(RespResult == 1){
-                            log.info("流水号为 ： "+serialNumber+" 的该条信息返回成功");
+            Map<String,Class> classMap = new HashMap<>();
+            classMap.put("RS485InfoList", RS485Info.class);
+            classMap.put("DAInfoList", DAInfo.class);
+            classMap.put("userInfo", USERInfo.class);
+            RTUConfig r = (RTUConfig) JSONObject.toBean(rtuConfJson,RTUConfig.class,classMap);
+            String serialNumber = r.getCallId();
+            Date a = new Date();
+            while(true){
+                if(map != null && map.size()>0){
+                    for (String key : map.keySet()) {
+                        if(serialNumber.equals(key)){
+                            JSONObject jsonObject = map.get(serialNumber);
                             SendController.removeMap(serialNumber);
-                            return "配置成功";
-                        }else if(RespResult == 0) {
-                            log.info("流水号为 ： "+serialNumber+" 的该条信息发送设备无响应");
-                            SendController.removeMap(serialNumber);
-                            return "设备无响应";
-                        }else if(RespResult == 3) {
-                            log.info("流水号为 ： "+serialNumber+" 的该条信息请求格式错误");
-                            SendController.removeMap(serialNumber);
-                            return "请求格式错误";
-                        }
+                            log.info("已查询到该条消息 ： "+jsonObject);
+                            String temp = jsonObject.get("respResult").toString();
+                            int RespResult = Integer.parseInt(temp);
+                            if(RespResult == 1){
+                                log.info("流水号为 ： "+serialNumber+" 的该条信息返回成功");
+                                return "配置成功";
+                            }else if(RespResult == 0) {
+                                log.info("流水号为 ： "+serialNumber+" 的该条信息发送设备无响应");
+                                return "设备无响应";
+                            }else if(RespResult == 3) {
+                                log.info("流水号为 ： "+serialNumber+" 的该条信息请求格式错误");
+                                return "请求格式错误";
+                            }
 
+                        }
                     }
                 }
+                Date b = new Date();
+                if((b.getTime() - a.getTime()) > 30000){
+                    return "请求超时";
+                }
+                Thread.sleep(500);
             }
-            Date b = new Date();
-            //log.info("b.getTime() - a.getTime() : "+(b.getTime()-a.getTime()));
-            if((b.getTime() - a.getTime()) > 30000){
-                return "请求超时";
-            }
-            try {
-                Thread.sleep(1000);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        }catch (Exception e){
+            log.error(e.toString());
+            return e.toString();
         }
-
     }
-
 }
