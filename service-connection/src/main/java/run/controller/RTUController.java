@@ -185,7 +185,7 @@ public class RTUController {
     }
 
     @RequestMapping(value = "/insertRTU", method = RequestMethod.POST)
-    public Map<String, Object> insertSite (@RequestBody RTU rtu){
+    public Map<String, Object> insertRTU (@RequestBody RTU rtu){
         int result = rtuService.insertRTU(rtu);
         Map<String,Object> map = new HashMap<>();
         if(result>0){
@@ -213,8 +213,11 @@ public class RTUController {
         param.put("rtu",rtu);
         param.put("op",1);
         asyncController.asyncSendRtuDelNewConf(param);
+        //删除redis
+        asyncController.delRTUConfByRedis(rtu.getRtu_id()+"");
         //删除相关设备配置
         asyncController.asyncDelDeviceByRTUID(id);
+
         Map<String,Object> map = new HashMap<>();
         if(res>0){
             map.put("success",true);
@@ -227,7 +230,7 @@ public class RTUController {
     }
 
     @RequestMapping(value = "/updateRTU", method = RequestMethod.POST)
-    public Map<String, Object> updateSite(@RequestBody RTU rtu){
+    public Map<String, Object> updateRTU(@RequestBody RTU rtu){
         int result = rtuService.updateRTU(rtu);
         Map<String,Object> map = new HashMap<>();
         if(result>0){
