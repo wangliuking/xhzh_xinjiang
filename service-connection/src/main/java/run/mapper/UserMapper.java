@@ -16,6 +16,9 @@ public interface UserMapper {
     @Select("select * from xhzh.user where username = #{username}")
     User selectUserByUsername(String username);
 
+    @Select("select count(*) from xhzh.user where username = #{username}")
+    int selectCountUserByUsername(String username);
+
     @Select("<script>" +
             "select a.*,b.name as groupName,c.name as roleName from xhzh.user as a left join xhzh.user_group as b on a.groupId=b.id " +
             "left join xhzh.role as c on a.roleId=c.id where c.structure in " +
@@ -44,7 +47,7 @@ public interface UserMapper {
     @Insert("insert into xhzh.user(username,name,password,email,groupId,roleId) values(#{username},#{name},#{password},#{email},#{groupId},#{roleId})")
     int insertUser(User user);
 
-    @Update("update xhzh.user set name=#{name},email=#{email},groupId=#{groupId},roleId=#{roleId} where username=#{username}")
+    @Update("update xhzh.user set username=#{username},password=#{password},name=#{name},email=#{email},groupId=#{groupId},roleId=#{roleId} where username=#{activationKey}")
     int updateUser(User user);
 
     @Delete("delete from xhzh.user where username=#{username}")
