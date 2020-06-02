@@ -2,6 +2,7 @@ package run.mapper;
 
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import run.bean.App;
 
 import java.util.List;
 import java.util.Map;
@@ -50,5 +51,31 @@ public interface LoginMapper {
     @Insert("insert into xhzh.system_log(type,userId,ip,content) values(#{type},#{userId},#{ip},#{content})")
     int insertLog(Map<String,Object> param);
 
+
+
+    @Select("<script>" +
+            "select * from table_app where 1=1" +
+            "<if test=\"appName != null and appName != ''\">" +
+            "and appName like concat('%',#{appName},'%')" +
+            "</if>" +
+            "<if test=\"start != null and start != -1\">" +
+            "limit #{start},#{limit}"+
+            "</if>" +
+            "</script>")
+    List<App> selectAppList(Map<String, Object> param);
+
+    @Select("<script>" +
+            "select count(*) from table_app where 1=1" +
+            "<if test=\"appName != null and appName != ''\">" +
+            "and appName like concat('%',#{appName},'%')" +
+            "</if>" +
+            "</script>")
+    int selectAppListCount(Map<String, Object> param);
+
+    @Insert("insert into table_app(appName,appVersion,content,path,uploadTime,fileName) values(#{appName},#{appVersion},#{content},#{path},now(),#{fileName})")
+    int insertApp(App app);
+
+    @Delete("delete from table_app where id=#{id}")
+    int deleteApp(int id);
 
 }

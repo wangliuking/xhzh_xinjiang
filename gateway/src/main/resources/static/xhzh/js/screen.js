@@ -13,6 +13,7 @@ var alarmbs=true;
 var alarmji=true;
 var appElement = document.querySelector('[ng-controller=screen]');
 var structure;
+var username;
 xh.load = function() {
 	var app = angular.module("app", []);
 	app.controller("screen", function($scope, $http) {
@@ -24,6 +25,7 @@ xh.load = function() {
             dataType: 'json',
             success: function(response){
                 structure = response.structure;
+                username = response.username;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -92,14 +94,17 @@ xh.map=function(data){
 		chart = ec.init(document.getElementById('map'));
 		require('echarts/util/mapData/params').params.CD = {
 		    getGeoJson: function (callback) {
-		        $.getJSON('lib/echarts/util/mapData/params/65.json',callback);
+		    	//针对测试用户的特殊处理
+		    	if(username == 'xh1'){
+                    $.getJSON('lib/echarts/util/mapData/params/51.json',callback);
+				}else{
+                    $.getJSON('lib/echarts/util/mapData/params/65.json',callback);
+				}
 		    }
 		}
 		var option = {
 			    backgroundColor: '',
 			    color: ['gold','aqua','lime'],
-			  
-			 
 			    textStyle:{
                 	color:'#fff'
                 },

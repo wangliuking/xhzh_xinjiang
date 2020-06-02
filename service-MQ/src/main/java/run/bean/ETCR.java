@@ -17,6 +17,7 @@ public class ETCR {
     private String rst_line_radius;
     private int rst_space;
     private int rst_ospace;
+    private String calvalue;
     private int r1;
     private int rc;
 
@@ -346,6 +347,14 @@ public class ETCR {
         this.relayno_location4 = relayno_location4;
     }
 
+    public String getCalvalue() {
+        return calvalue;
+    }
+
+    public void setCalvalue(String calvalue) {
+        this.calvalue = calvalue;
+    }
+
     @Override
     public String toString() {
         return "ETCR{" +
@@ -365,6 +374,7 @@ public class ETCR {
                 ", rst_line_radius='" + rst_line_radius + '\'' +
                 ", rst_space=" + rst_space +
                 ", rst_ospace=" + rst_ospace +
+                ", calvalue='" + calvalue + '\'' +
                 ", r1=" + r1 +
                 ", rc=" + rc +
                 ", relayno1=" + relayno1 +

@@ -146,7 +146,7 @@
                                     <td>{{x.spd_location}}</td>
                                     <td>{{x.spd_space}}</td>
                                     <td ng-if="x.spd_state == 0 && x.rtu_state == 0"><span style="color: green;">正常</span></td>
-                                    <td ng-if="x.spd_state == 1 || x.rtu_state != 0"><span style="color: red;">离线</span></td>
+                                    <td ng-if="x.spd_state == 1 || x.rtu_state != 0"><span style="color: #EEAD0E;">异常</span></td>
                                     <td ng-if="x.num == 0 && x.rtu_state == 0"></td>
                                     <td>
                                         <a href="#" ng-click="showEditSpd($index)">修改</a>

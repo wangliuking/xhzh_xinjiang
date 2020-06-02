@@ -119,3 +119,5 @@ logging:
     #console: "%d - %msg%n"
   path: /usr/logs
   file: /usr/logs/gateway.log
+myConf:
+  appPath: /usr/java/web/appUpload

@@ -133,7 +133,11 @@ public class TestRTUConf {
         rs485Info.setBaudrate(etcr.getRtu_baud_rate()+"");
         rs485Info.setPolltime(etcr.getRst_space()+"");
         rs485Info.setMuxinterval(etcr.getRst_ospace()+"");
-        rs485Info.setCalvalue("0");
+        if(etcr.getCalvalue() != null && !"".equals(etcr.getCalvalue())){
+            rs485Info.setCalvalue(etcr.getCalvalue());
+        }else{
+            rs485Info.setCalvalue("0");
+        }
         rs485Info.setOp(op);
         rs485InfoList.add(rs485Info);
         //DAInfo

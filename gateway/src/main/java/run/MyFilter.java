@@ -106,7 +106,7 @@ public class MyFilter extends ZuulFilter{
 
         //请求验证
         if (!RedisTest.searchLoginUser(request.getSession().getId())) {
-            String redirectUrl = "/xhzh/login.html";
+            String redirectUrl = "/xhzh/noAuth.json";
             sendRedirect(ctx.getResponse(), redirectUrl);
         }
         return null;

@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class RedisTest {
-    private static String ip = "localhost";
+    private static String ip = "39.104.240.180";
 
     public static void main(String[] args) {
         //连接本地的 Redis 服务
         Jedis jedis = new Jedis(ip,6379);
         jedis.auth("XinHong12345");
         jedis.select(1);
-        //jedis.del("5");
+        //jedis.del("144");
         //jedis.flushDB();
         Set<String> strs = jedis.keys("*");
         System.out.println("strs : "+strs);

@@ -67,7 +67,7 @@ public interface ETCRMapper {
             "</script>")
     int selectAllRelaynoCount(@Param("start") int start, @Param("limit") int limit, @Param("site_id") int site_id, @Param("rtu_id") int rtu_id);
 
-    @Insert("insert into resistance_config(site_id,rtu_id,rtu_port,rtu_baud_rate,rst_id,rst_name,rst_model,rst_location,rst_threshold,rst_type,relayno,relayno_name,rst_line_long,rst_line_radius,rst_space,rst_ospace,r1,rc) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{rst_id},#{rst_name},#{rst_model},#{rst_location},#{rst_threshold},#{rst_type},#{relayno},#{relayno_name},#{rst_line_long},#{rst_line_radius},#{rst_space},#{rst_ospace},#{r1},#{rc})")
+    @Insert("insert into resistance_config(site_id,rtu_id,rtu_port,rtu_baud_rate,rst_id,rst_name,rst_model,rst_location,rst_threshold,rst_type,relayno,relayno_name,rst_line_long,rst_line_radius,rst_space,rst_ospace,r1,rc,calvalue) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{rst_id},#{rst_name},#{rst_model},#{rst_location},#{rst_threshold},#{rst_type},#{relayno},#{relayno_name},#{rst_line_long},#{rst_line_radius},#{rst_space},#{rst_ospace},#{r1},#{rc},#{calvalue})")
     int insertETCR(ETCR ETCR);
 
     @Select("select count(*) from resistance_config where site_id = #{id}")
@@ -85,7 +85,7 @@ public interface ETCRMapper {
     @Delete("delete from resistance_config where rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_port=#{rtu_port}")
     int deleteETCR(Map<String, Object> param);
 
-    @Update("replace into resistance_config(site_id,rtu_id,rtu_port,rtu_baud_rate,rst_id,rst_name,rst_model,rst_location,rst_threshold,rst_type,relayno,relayno_name,rst_line_long,rst_line_radius,rst_space,rst_ospace,r1,rc) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{rst_id},#{rst_name},#{rst_model},#{rst_location},#{rst_threshold},#{rst_type},#{relayno},#{relayno_name},#{rst_line_long},#{rst_line_radius},#{rst_space},#{rst_ospace},#{r1},#{rc})")
+    @Update("replace into resistance_config(site_id,rtu_id,rtu_port,rtu_baud_rate,rst_id,rst_name,rst_model,rst_location,rst_threshold,rst_type,relayno,relayno_name,rst_line_long,rst_line_radius,rst_space,rst_ospace,r1,rc,calvalue) values(#{site_id},#{rtu_id},#{rtu_port},#{rtu_baud_rate},#{rst_id},#{rst_name},#{rst_model},#{rst_location},#{rst_threshold},#{rst_type},#{relayno},#{relayno_name},#{rst_line_long},#{rst_line_radius},#{rst_space},#{rst_ospace},#{r1},#{rc},#{calvalue})")
     int updateETCR(ETCR ETCR);
 
     @Select("select * from resistance_config where site_id = #{site_id} and rtu_id = #{rtu_id} and rst_id = #{rst_id} and rtu_port=#{rtu_port}")

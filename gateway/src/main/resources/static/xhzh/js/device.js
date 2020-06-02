@@ -103,7 +103,7 @@ xh.load = function() {
 
             var deviceNames = [{"id":"1","name":"SPD在线监测仪"},{"id":"2","name":"接地电阻在线监测仪"},{"id":"3","name":"雷电流在线监测仪"},{"id":"4","name":"静电在线监测仪"},{"id":"5","name":"温湿度在线监测仪"},{"id":"6","name":"倾斜度在线监测仪"},{"id":"7","name":"电气安全在线监测仪"},{"id":"8","name":"杂散电流在线监测仪"},{"id":"9","name":"阴极保护在线监测仪"}]
 			$scope.deviceNames = deviceNames;
-            var etcrs = [{"id":"1","name":"地阻在线检测仪-J"},{"id":"2","name":"地阻在线检测仪-F"}];
+            var etcrs = [{"id":"1","name":"地阻在线检测仪-J"},{"id":"2","name":"地阻在线检测仪-F"},{"id":"3","name":"铁塔地阻在线检测仪-T"}];
             var strays = [{"id":"1","name":"RS485"},{"id":"2","name":"模拟量"}]
             var cats = [{"id":"1","name":"RS485"},{"id":"2","name":"模拟量"}]
             var strayParams = [{"id":"1","name":"A"},{"id":"2","name":"B"},{"id":"3","name":"C"}]
@@ -972,6 +972,7 @@ xh.load = function() {
 };
 
 xh.add = function() {
+    $('#add_btn').attr("disabled",true);
     var $scope = angular.element(appElement).scope();
 
     var fields = $("#addForm").serializeArray();
@@ -990,7 +991,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1013,7 +1014,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 2){
@@ -1025,7 +1026,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1048,7 +1049,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 3){
@@ -1061,7 +1062,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1084,7 +1085,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 4){
@@ -1104,7 +1105,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1127,7 +1128,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 5){
@@ -1140,7 +1141,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1163,7 +1164,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 6){
@@ -1176,7 +1177,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1199,7 +1200,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 7){
@@ -1212,7 +1213,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1235,7 +1236,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 8){
@@ -1248,7 +1249,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1271,7 +1272,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }else if($scope.deviceTypeChoose == 9){
@@ -1284,7 +1285,7 @@ xh.add = function() {
             async : true,
             data : str,
             success : function(data) {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
                 if (data.success) {
                     $('#add').modal('hide');
                     toastr.success(data.message, '提示');
@@ -1307,7 +1308,7 @@ xh.add = function() {
                 }
             },
             error : function() {
-                $("#add_btn").button('reset');
+                $('#add_btn').attr("disabled",false);
             }
         });
     }
@@ -1315,6 +1316,7 @@ xh.add = function() {
 };
 
 xh.editSpd = function() {
+    $('#editSpd_btn').attr("disabled",true);
     var fields = $("#editSpdForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1329,7 +1331,7 @@ xh.editSpd = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editSpd_btn").button('reset');
+            $('#editSpd_btn').attr("disabled",false);
             if (data.success) {
                 $('#editSpd').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1352,12 +1354,13 @@ xh.editSpd = function() {
             }
         },
         error : function() {
-            $("#editSpd_btn").button('reset');
+            $('#editSpd_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editEtcr = function() {
+    $('#editEtcr_btn').attr("disabled",true);
     var fields = $("#editEtcrForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1372,7 +1375,7 @@ xh.editEtcr = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editEtcr_btn").button('reset');
+            $('#editEtcr_btn').attr("disabled",false);
             if (data.success) {
                 $('#editEtcr').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1395,12 +1398,13 @@ xh.editEtcr = function() {
             }
         },
         error : function() {
-            $("#editEtcr_btn").button('reset');
+            $('#editEtcr_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editLightning = function() {
+    $('#editLightning_btn').attr("disabled",true);
     var fields = $("#editLightningForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1415,7 +1419,7 @@ xh.editLightning = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editLightning_btn").button('reset');
+            $('#editLightning_btn').attr("disabled",false);
             if (data.success) {
                 $('#editLightning').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1438,12 +1442,13 @@ xh.editLightning = function() {
             }
         },
         error : function() {
-            $("#editLightning_btn").button('reset');
+            $('#editLightning_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editStatic = function() {
+    $('#editStatic_btn').attr("disabled",true);
     var fields = $("#editStaticForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1464,7 +1469,7 @@ xh.editStatic = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editStatic_btn").button('reset');
+            $('#editStatic_btn').attr("disabled",false);
             if (data.success) {
                 $('#editStatic').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1487,12 +1492,13 @@ xh.editStatic = function() {
             }
         },
         error : function() {
-            $("#editStatic_btn").button('reset');
+            $('#editStatic_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editRsws = function() {
+    $('#editRsws_btn').attr("disabled",true);
     var fields = $("#editRswsForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1507,7 +1513,7 @@ xh.editRsws = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editRsws_btn").button('reset');
+            $('#editRsws_btn').attr("disabled",false);
             if (data.success) {
                 $('#editRsws').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1530,12 +1536,13 @@ xh.editRsws = function() {
             }
         },
         error : function() {
-            $("#editRsws_btn").button('reset');
+            $('#editRsws_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editSvt = function() {
+    $('#editSvt_btn').attr("disabled",true);
     var fields = $("#editSvtForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1550,7 +1557,7 @@ xh.editSvt = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editSvt_btn").button('reset');
+            $('#editSvt_btn').attr("disabled",false);
             if (data.success) {
                 $('#editSvt').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1573,12 +1580,13 @@ xh.editSvt = function() {
             }
         },
         error : function() {
-            $("#editSvt_btn").button('reset');
+            $('#editSvt_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editHc = function() {
+    $('#editHc_btn').attr("disabled",true);
     var fields = $("#editHcForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1593,7 +1601,7 @@ xh.editHc = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editHc_btn").button('reset');
+            $('#editHc_btn').attr("disabled",false);
             if (data.success) {
                 $('#editHc').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1616,12 +1624,13 @@ xh.editHc = function() {
             }
         },
         error : function() {
-            $("#editHc_btn").button('reset');
+            $('#editHc_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editStray = function() {
+    $('#editStray_btn').attr("disabled",true);
     var fields = $("#editStrayForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1636,7 +1645,7 @@ xh.editStray = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editStray_btn").button('reset');
+            $('#editStray_btn').attr("disabled",false);
             if (data.success) {
                 $('#editStray').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1659,12 +1668,13 @@ xh.editStray = function() {
             }
         },
         error : function() {
-            $("#editStray_btn").button('reset');
+            $('#editStray_btn').attr("disabled",false);
         }
     });
 };
 
 xh.editCat = function() {
+    $('#editCat_btn').attr("disabled",true);
     var fields = $("#editCatForm").serializeArray();
     var f = {};//声明一个对象
     $.each(fields,function(index,field){
@@ -1679,7 +1689,7 @@ xh.editCat = function() {
         async : true,
         data : str,
         success : function(data) {
-            $("#editCat_btn").button('reset');
+            $('#editCat_btn').attr("disabled",false);
             if (data.success) {
                 $('#editCat').modal('hide');
                 toastr.success(data.message, '提示');
@@ -1702,7 +1712,7 @@ xh.editCat = function() {
             }
         },
         error : function() {
-            $("#editCat_btn").button('reset');
+            $('#editCat_btn').attr("disabled",false);
         }
     });
 };

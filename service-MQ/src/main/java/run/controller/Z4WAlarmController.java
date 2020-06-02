@@ -126,126 +126,125 @@ public class Z4WAlarmController {
 
     void openTest(){
         //spd
-        Thread threadSpd = new Thread(()->{
+        new Thread(()->{
             System.out.println("SPDAlarm Running");
                 try {
                 alarmSPD();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadSpd.start();
+        }).start();
         //spd
         //etcr
-        Thread threadEtcr = new Thread(()->{
+        new Thread(()->{
             System.out.println("EtcrAlarm Running");
             try {
                 alarmEtcr();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadEtcr.start();
+        }).start();
         //etcr
         //etcrb
-        Thread threadEtcrB = new Thread(()->{
+        new Thread(()->{
             System.out.println("EtcrBAlarm Running");
             try {
                 alarmEtcrB();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadEtcrB.start();
+        }).start();
         //etcrb
         //lightning
-        Thread threadLightning = new Thread(()->{
+        new Thread(()->{
             System.out.println("LightningAlarm Running");
             try {
                 alarmLightning();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadLightning.start();
+        }).start();
         //lightning
         //static
-        Thread threadStatic = new Thread(()->{
+        new Thread(()->{
             System.out.println("StaticAlarm Running");
             try {
                 alarmStatic();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadStatic.start();
+        }).start();
         //static
         //rsws
-        Thread threadRsws = new Thread(()->{
+        new Thread(()->{
             System.out.println("RswsAlarm Running");
             try {
                 alarmRsws();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadRsws.start();
+        }).start();
         //rsws
         //svt
-        Thread threadSvt = new Thread(()->{
+        new Thread(()->{
             System.out.println("SvtAlarm Running");
             try {
                 alarmSvt();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadSvt.start();
+        }).start();
         //svt
         //hc
-        Thread threadHc = new Thread(()->{
+        new Thread(()->{
             System.out.println("HcAlarm Running");
             try {
                 alarmHc();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadHc.start();
+        }).start();
         //hc
         //stray
-        Thread threadStray = new Thread(()->{
+        new Thread(()->{
             System.out.println("StrayAlarm Running");
             try {
                 alarmStray();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadStray.start();
+        }).start();
         //stray
         //cat
-        Thread threadCat = new Thread(()->{
+        new Thread(()->{
             System.out.println("CatAlarm Running");
             try {
                 alarmCat();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadCat.start();
+        }).start();
         //cat
         //rtuAlarm
-        Thread threadRtuAlarm = new Thread(()->{
+        new Thread(()->{
             System.out.println("RTUAlarm Running");
             try {
                 rtuAlarm();
             }catch (Exception e){
                 e.printStackTrace();
             }
-        });
-        threadRtuAlarm.start();
+        }).start();
         //rtuAlarm
+        //Z2WMQ
+        new Thread(()->{
+            System.out.println("Z2WMQ Running");
+            try {
+                alarmMQ();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }).start();
+        //Z2WMQ
     }
 
     private void alarmSPD() throws Exception {
@@ -397,8 +396,8 @@ public class Z4WAlarmController {
                 d.setDevicetype(2);
                 System.out.println(d);
                 //调用入库函数
-                //alarmInfoService.insertAlarmInfo(d);
-                //alarmInfoService.changeAlarmNow(d);
+                alarmInfoService.insertAlarmInfo(d);
+                alarmInfoService.changeAlarmNow(d);
                 System.out.println("==================================");
             } catch (JMSException e) {
                 e.printStackTrace();
@@ -715,6 +714,52 @@ public class Z4WAlarmController {
         consumer.close();
         session.close();
         connection.close();*/
+    }
+
+    public static void alarmMQ() throws Exception {
+        // 第一步：创建一个ConnectionFactory对象。
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(Conf.ip_port);
+        // 第二步：从ConnectionFactory对象中获得一个Connection对象。
+        Connection connection = connectionFactory.createConnection();
+        // 第三步：开启连接。调用Connection对象的start方法。
+        connection.start();
+        // 第四步：使用Connection对象创建一个Session对象。
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        // 第五步：使用Session对象创建一个Destination对象。和发送端保持一致queue，并且队列的名称一致。
+        Queue queue = session.createQueue(Conf.z2w_MQ);
+        // 第六步：使用Session对象创建一个Consumer对象。
+        MessageConsumer consumer = session.createConsumer(queue);
+        // 第七步：接收消息。
+        consumer.setMessageListener(new MessageListener() {
+
+            @Override
+            public void onMessage(Message message) {
+                try {
+                    TextMessage textMessage = (TextMessage) message;
+                    String text = null;
+                    //取消息的内容
+                    text = textMessage.getText();
+                    JSONObject jsonObject = JSONObject.fromObject(text);
+                    /*Map<String,Class> classMap = new HashMap<>();
+                    classMap.put("DBInfo", DBInfo.class);
+                    classMap.put("values", Values.class);
+                    DeviceRES d = (DeviceRES) JSONObject.toBean(jsonObject,DeviceRES.class,classMap);*/
+                    SendController.putMap(jsonObject.get("callId").toString(),jsonObject);
+                    // 第八步：打印消息。
+                    System.out.println("==================================");
+                    System.out.println(jsonObject);
+                    System.out.println("==================================");
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        //等待键盘输入
+        System.in.read();
+        // 第九步：关闭资源
+        consumer.close();
+        session.close();
+        connection.close();
     }
 
 }

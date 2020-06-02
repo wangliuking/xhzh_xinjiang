@@ -19,6 +19,7 @@ if (!("xh" in window)) {
 var frist = 0;
 var appElement = document.querySelector('[ng-controller=xhcontroller]');
 var structure;
+var loginUserName;
 xh.load = function() {
     var app = angular.module("app", []);
 
@@ -44,6 +45,7 @@ xh.load = function() {
             dataType: 'json',
             success: function(response){
                 structure = response.structure;
+                loginUserName = response.username;
             } ,
             error: function () {
                 alert("登录已失效，请重新登录！");
@@ -52,6 +54,60 @@ xh.load = function() {
             }
         });
         //判断是否登录end
+
+        $scope.getProvinceList = function(){
+            var provinceListDom = '';
+            for(var x=1;x<provinceList.length;x++){
+                var cityListDom = '';
+                var cityData = $scope.getCityList(provinceList[x].name);
+                for(var y=0;y<cityData.length;y++){
+                    var countyListDom = '';
+                    var countyData = $scope.getCountyList(provinceList[x].name,cityData[y]);
+                    for(var z=0;z<countyData.length;z++){
+                        var countyDom = '<li><label style="color: black;"><input type="checkbox" onclick="chooseArea(this)" value="'+provinceList[x].name+":"+cityData[y]+":"+countyData[z]+'">'+countyData[z]+'</label></li>';
+                        countyListDom+=countyDom;
+                    }
+                    var cityDom = '<li class="dropdown-submenu"><label><input type="checkbox" onclick="chooseArea(this)" value="'+provinceList[x].name+":"+cityData[y]+'"><a href="#" style="color:black;">'+cityData[y]+'</a></label> <ul class="dropdown-menu pull-right">'+countyListDom+'</ul></li>';
+                    cityListDom+=cityDom;
+                }
+                var provinceDom = '<li class="dropdown-submenu"><label><input type="checkbox" onclick="chooseArea(this)" value="'+provinceList[x].name+":"+'"><a href="#" style="color:black;">'+provinceList[x].name+'</a></label><ul class="dropdown-menu pull-right">'+cityListDom+'</ul></li>';
+                provinceListDom+=provinceDom;
+            }
+            $("#createArea").html(provinceListDom);
+        }
+
+        $scope.getCityList = function(x){
+            var cityData = [];
+            for(var i=1;i<provinceList.length;i++){
+                if(x == provinceList[i].name){
+                    var tempArr = provinceList[i].cityList;
+                    for(var j=0;j<tempArr.length;j++){
+                        cityData.push(tempArr[j].name);
+                    }
+                }
+            }
+            return cityData;
+        }
+
+        $scope.getCountyList = function(x,y){
+            var countyData = [];
+            for(var i=1;i<provinceList.length;i++){
+                if(x == provinceList[i].name){
+                    var cityList = provinceList[i].cityList;
+                    for(var j=0;j<cityList.length;j++){
+                        if(y == cityList[j].name){
+                            var countyList = cityList[j].areaList;
+                            for(var t=0;t<countyList.length;t++){
+                                countyData.push(countyList[t].name);
+                            }
+                        }
+                    }
+                }
+            }
+            return countyData;
+        }
+
+        $scope.getProvinceList();
 
         $scope.goStatistic = function(id) {
             window.location.href = '/xhzh/dataStatistic.html?id='+id;
@@ -484,11 +540,18 @@ function start() {
         objTemp.push(x);
     }
 
+    var defaultLng = 103.327845;
+    var defaultLat = 31.242747;
+    if(loginUserName == 'xh1'){
+        defaultLng = 104.083002;
+        defaultLat = 30.66454;
+    }
+
     option = {
         // 加载 bmap 组件
         bmap: {
             // 百度地图中心经纬度
-            center: [87.642253, 43.800134],
+            center: [defaultLng, defaultLat],
             // 百度地图缩放
             zoom: 6,
             // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'
@@ -513,12 +576,12 @@ function start() {
                 },
                 label: {
                     normal: {
-                            show: true,
-                            formatter: "{b}",
-                            fontSize: 16,
-                            color: "white",
-                            offset: [0, 0]
-                        }
+                        show: true,
+                        formatter: "{b}",
+                        fontSize: 16,
+                        color: "white",
+                        offset: [0, 0]
+                    }
                 },
                 itemStyle: {
                     normal: {
@@ -549,6 +612,10 @@ function start() {
     chart.setOption(option);
     // 获取百度地图实例，使用百度地图自带的控件
     map = chart.getModel().getComponent('bmap').getBMap();
+    // 设置最小缩放值
+    map.setMinZoom(3);
+    // 设置最大缩放值
+    map.setMaxZoom(17);
     //添加地图类型控件
     map.addControl(new BMap.MapTypeControl({
         mapTypes: [
@@ -783,13 +850,44 @@ function getNowTime() {
 }
 
 //区域选择
+var provinceJson = {"北京市":11,"天津市":12,"河北省":13,
+    "山西省":14,"内蒙古自治区":15,"辽宁省":21,"吉林省":22,
+    "黑龙江省":23,"上海市":31,"江苏省":32,"浙江省":33,
+    "安徽省":34,"福建省":35,"江西省":36,"山东省":37,"河南省":41,
+    "湖北省":42,"湖南省":43,"广东省":44,"广西壮族自治区":45,
+    "海南省":46,"重庆市":50,"四川省":51,"贵州省":52,"云南省":53,
+    "西藏自治区":54,"陕西省":61,"甘肃省":62,"青海省":63,
+    "宁夏回族自治区":64,"新疆维吾尔自治区":65,"台湾省":71,"香港特别行政区":81,"澳门特别行政区":82};
 function choosedArea(params){
+    var tempArr = params.split(':');
+    var tempParams = "";
     //添加轮廓线start
-    var areaUrl = "area.json";
+    console.log(tempArr);
+    if(tempArr.length == 1){
+        tempParams = tempArr[0];
+    }else if(tempArr.length == 2){
+        if(tempArr[1] == "市辖区" || tempArr[1] == "市" || tempArr[1] == "县" || tempArr[1] == "省直辖县级行政单位"){
+            tempParams = tempArr[0];
+        }else{
+            tempParams = tempArr[0]+tempArr[1];
+        }
+    }else if(tempArr.length == 3){
+        if(tempArr[1] == "市辖区" || tempArr[1] == "市" || tempArr[1] == "县" || tempArr[1] == "省直辖县级行政单位"){
+            tempParams = tempArr[0]+tempArr[2];
+        }else{
+            tempParams = tempArr[0]+tempArr[1]+tempArr[2];
+        }
+    }
+    var areaUrl = "areaJson/"+provinceJson[tempArr[0]]+".json";
+    $.ajaxSettings.async = false;
     $.getJSON(areaUrl, function (data){
-        var rs = data[params];
+        console.log(tempParams)
+        var rs = data[tempParams];
         //map.clearOverlays();        //清除地图覆盖物
         var count = rs.length; //行政区域的点有多少个
+        if(count == 0){
+            alert("未查询到相关区域数据!");
+        }
         for(var i = 0; i < count; i++){
             var ply = new BMap.Polygon(rs[i], {strokeWeight: 2, strokeColor: "#ff0000"}); //建立多边形覆盖物
             map.addOverlay(ply);  //添加覆盖物
@@ -799,6 +897,7 @@ function choosedArea(params){
             areas.push(json);
         }
     });
+    $.ajaxSettings.async = true;
     //添加轮廓线end
 }
 
@@ -1141,4 +1240,64 @@ function deviceForBar(x,y,z) {
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+}
+
+//setTimeout(getMapTile,1000*10);
+
+var hostList = ["api0.map.bdimg.com","api1.map.bdimg.com","api2.map.bdimg.com"];
+var xmin=32;
+var xmax=159;
+var ymin=0;
+var ymax=95;
+var z=9;
+var count=0;
+
+//获取地图瓦片方法
+function getMapTile() {
+    console.log("开始获取瓦片 xmin = "+xmin);
+    var breaked = false;
+    for(var x=xmin;x<=xmax;x++){
+        for(var y=ymin;y<=ymax;y++){
+            var index = Math.abs(x + y) % 3;
+            if(count<500){
+                console.log("进来了");
+                count++;
+                $.ajax({
+                    type: 'GET',
+                    url: "http://"+hostList[index]+"/customimage/tile?&x="+x+"&y="+y+"&z="+z+"&udt=20180829&scale=1&ak=&styles=t%3Aland%7Ce%3Ag%7Cc%3A%23081734%2Ct%3Abuilding%7Ce%3Ag%7Cc%3A%2304406F%2Ct%3Abuilding%7Ce%3Al%7Cv%3Aoff%2Ct%3Ahighway%7Ce%3Ag%7Cc%3A%23015B99%2Ct%3Ahighway%7Ce%3Al%7Cv%3Aoff%2Ct%3Aarterial%7Ce%3Ag%7Cc%3A%23003051%2Ct%3Aarterial%7Ce%3Al%7Cv%3Aoff%2Ct%3Agreen%7Ce%3Ag%7Cv%3Aoff%2Ct%3Awater%7Ce%3Ag%7Cc%3A%23044161%2Ct%3Asubway%7Ce%3Ag.s%7Cc%3A%23003051%2Ct%3Asubway%7Ce%3Al%7Cv%3Aoff%2Ct%3Arailway%7Ce%3Ag%7Cv%3Aoff%2Ct%3Arailway%7Ce%3Al%7Cv%3Aoff%2Ct%3Aall%7Ce%3Al.t.s%7Cc%3A%23313131%2Ct%3Aall%7Ce%3Al.t.f%7Cc%3A%23FFFFFF%2Ct%3Amanmade%7Ce%3Ag%7Cv%3Aoff%2Ct%3Amanmade%7Ce%3Al%7Cv%3Aoff%2Ct%3Alocal%7Ce%3Ag%7Cv%3Aoff%2Ct%3Alocal%7Ce%3Al%7Cv%3Aoff%2Ct%3Asubway%7Ce%3Ag%7Cl%3A-65%2Ct%3Arailway%7Ce%3Aall%7Cl%3A-40%2Ct%3Aboundary%7Ce%3Ag%7Cc%3A%238b8787%7Cl%3A-29%7Cw%3A1",
+                    async: true,
+                    success: function (data) {
+                    }
+                });
+            }else{
+                console.log("待机中");
+                count=0;
+                xmin=x;
+                breaked = true;
+                break;
+            }
+        }
+
+        if(breaked){
+            break;
+        }
+
+    }
+
+    console.log("结束获取瓦片");
+    if(count == 0){
+        setTimeout(getMapTile,1000*15);
+    }
+
+}
+
+//自定义休眠
+function sleep(numberMillis) {
+    var now = new Date();
+    var exitTime = now.getTime() + numberMillis;
+    while (true) {
+        now = new Date();
+        if (now.getTime() > exitTime)
+            return;
+    }
 }

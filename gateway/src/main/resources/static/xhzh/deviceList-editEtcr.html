@@ -114,8 +114,11 @@
                                 <select ng-if="editData.rst_type == 1" class="selectForArea" style="width:100%;" >
                                     <option>地阻在线检测仪-J</option>
                                 </select>
-                                <select ng-if="editData.rst_type == 2" class="selectForArea" style="width:100%;" >
+                                <select ng-if="editData.rst_type == 2 && editData.calvalue == null" class="selectForArea" style="width:100%;" >
                                     <option>地阻在线检测仪-F</option>
+                                </select>
+                                <select ng-if="editData.rst_type == 2 && editData.calvalue != null" class="selectForArea" style="width:100%;" >
+                                    <option>铁塔地阻在线检测仪-T</option>
                                 </select>
                                 <input type="hidden" ng-value="editData.rst_type" name="rst_type">
                             </div>
@@ -182,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="etcr-f" ng-if="editData.rst_type == 2">
+                    <div class="etcr-f" ng-if="editData.rst_type == 2 && editData.calvalue == null">
                         <div class="row">
                             <div class="col-md-12">
                                 R1、RC参数：
@@ -201,6 +204,16 @@
                                 <div class="form-group col-md-12">
                                     <label>R2参数</label>&nbsp;<span class="text-danger">[*]</span>
                                     <input type="text" ng-value="editData.rc" class="form-control" name="rc" placeholder="请输入R2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="etcr-t" ng-if="editData.rst_type == 2 && editData.calvalue != null">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group col-md-12">
+                                    <label>修正参数</label>&nbsp;<span class="text-danger">[*]</span>
+                                    <input type="text" ng-value="editData.calvalue" class="form-control" name="calvalue" placeholder="请输入修正参数">
                                 </div>
                             </div>
                         </div>

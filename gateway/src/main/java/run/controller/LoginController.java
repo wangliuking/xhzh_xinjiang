@@ -1,12 +1,19 @@
 package run.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import run.EncryptUtil;
+import run.bean.App;
+import run.bean.UDPConf;
 import run.bean.User;
 import run.redis.RedisTest;
 import run.service.LoginService;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,6 +22,8 @@ import java.util.*;
 public class LoginController {
     @Autowired
     LoginService loginService;
+    @Autowired
+    private UDPConf udpConf;
 
     @RequestMapping(value = "/loginWeb",method = RequestMethod.POST)
     public Map<String,Object> login(@RequestBody User user, HttpServletRequest req) {
@@ -206,6 +215,164 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * @param req
+     * @return
+     * @description 删除
+     */
+    @GetMapping("deleteApp")
+    public Map<String,Object> deleteApp(HttpServletRequest req) throws Exception {
+        String id = req.getParameter("id");
+        String path = req.getParameter("path");
+        loginService.deleteApp(Integer.parseInt(id));
+
+        //删除数据库成功后删除对应文件
+        String fileName = udpConf.getAppPath()+"/"+path;
+        System.out.println(fileName);
+        File file = new File(fileName);
+        if (!file.exists()) {
+            System.out.println("文件不存在！");
+        } else {
+            if (file.isFile()){
+                deleteFile(fileName);
+            }
+            else{
+                System.out.println("不是文件类型");
+            }
+        }
+
+        Map<String,Object> map = new HashMap<>(){{
+            put("success",true);
+            put("message","删除成功");
+        }};
+        return map;
+    }
+
+    /**
+     * 删除单个文件
+     *
+     * @param fileName
+     *            要删除的文件的文件名
+     * @return 单个文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * ajax文件上传
+     * @param file
+     * @param session
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("/upload")
+    @ResponseBody
+    public Map<String,Object> fileUpload(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException{
+        System.out.println("已进入文件上传方法！！！");
+        System.out.println("file : "+file);
+        System.out.println("session : "+session);
+        String fileName = imgsUpload(file, session);
+        Map<String,Object> map = new HashMap<String,Object>(){{
+           put("fileName",fileName);
+           put("fileUrl",udpConf.getAppPath()+"/"+fileName);
+        }};
+        return map;
+    }
+
+    /**
+     * 文件上传公共方法
+     * @param file
+     * @param session
+     * @return
+     * @throws IOException
+     */
+    private String imgsUpload(MultipartFile file, HttpSession session)
+            throws IOException {
+        //获取文件在服务器的存储路径
+        String path = udpConf.getAppPath();
+        //获取上传文件的名称
+        String fileName = file.getOriginalFilename();
+        //进行文件存储
+        file.transferTo(new File(path,fileName));
+        return fileName;
+    }
+    /**
+     * 文件下载方法
+     */
+    @RequestMapping("/download")
+    public void download(HttpServletRequest request, HttpServletResponse response){
+        try{
+            String path = request.getParameter("path");
+            String filePath = udpConf.getAppPath()+"/"+path; //文件在项目中的路径
+            File outfile = new File(filePath);
+            String filename = outfile.getName();// 获取文件名称
+            InputStream fis = new BufferedInputStream(new FileInputStream(
+                    filePath));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer); //读取文件流
+            fis.close();
+            response.reset(); //重置结果集
+            response.addHeader("Content-Disposition", "attachment;filename="
+                    + new String(filename.replaceAll(" ", "").getBytes("utf-8"),
+                    "iso8859-1")); //返回头 文件名
+            response.addHeader("Content-Length", "" + outfile.length()); //返回头 文件大小
+            response.setContentType("application/octet-stream");  //设置数据种类
+            //获取返回体输出权
+            OutputStream os = new BufferedOutputStream(response.getOutputStream());
+            os.write(buffer); // 输出文件
+            os.flush();
+            os.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param app
+     * @return
+     * @description 添加
+     */
+    @RequestMapping("addApp")
+    public Map<String,Object> addApp(@Valid @RequestBody App app) {
+        System.out.println("***********************");
+        System.out.println(app);
+        loginService.addApp(app);
+        Map<String,Object> map = new HashMap<String,Object>(){{
+            put("success",true);
+            put("message","添加成功");
+        }};
+        return map;
+    }
+
+    /**
+     * @return
+     * @description 获取列表
+     */
+    @GetMapping("appList")
+    public Map<String, Object> findAllApp(HttpServletRequest req) {
+        String start = req.getParameter("start");
+        String limit = req.getParameter("limit");
+        String appName = req.getParameter("appName");
+        Map<String, Object> map = new HashMap<String, Object>() {{
+            put("start", "".equals(start) ? -1 : Integer.parseInt(start));
+            put("limit", "".equals(limit) ? -1 : Integer.parseInt(limit));
+            put("appName", appName);
+        }};
+        return loginService.selectAppList(map);
     }
 
 }
